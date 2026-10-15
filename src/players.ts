@@ -535,6 +535,8 @@ export class Cider implements Player {
 			this.request("GET", "volume"),
 		]);
 		const { info } = z.object({ info: CiderInfo.nullish() }).parse(now);
+		const shuffle = z.union([z.literal(0), z.literal(1)]).safeParse(info?.shuffleMode);
+		const repeat = z.union([z.literal(0), z.literal(1), z.literal(2)]).safeParse(info?.repeatMode);
 		return {
 			running: true,
 			state: z.object({ is_playing: z.boolean() }).parse(playing).is_playing
@@ -546,6 +548,8 @@ export class Cider implements Player {
 			),
 			track: info?.playParams?.id ? ciderTrack(info) : null,
 			position: info?.currentPlaybackTime,
+			...(shuffle.success ? { shuffle: shuffle.data === 1 } : {}),
+			...(repeat.success ? { repeat: ["off", "one", "all"][repeat.data] } : {}),
 		};
 	}
 	async playback(input: PlaybackRequest): Promise<Playback> {

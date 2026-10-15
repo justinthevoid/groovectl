@@ -1,6 +1,6 @@
 # Groovectl public-release development cycle
 
-This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The 0.6.0-rc.1 candidate extends the selected Collection browser with artist/album drill-downs, prioritizing Music.app/Cider control. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
+This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The 0.6.0-rc.2 candidate extends the selected Collection browser with artist/album drill-downs, shuffle/repeat, a phone timeline and preserved paging/error recovery, prioritizing Music.app/Cider control. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
 
 ## Product outcome
 
@@ -94,3 +94,7 @@ Checkpoint A source checks: 85 TypeScript tests passed on macOS, including SDK 1
 ## Final candidate boundary
 
 The 0.5 source candidate includes a scoped independent studio verdict (four material fixes resolved), separate website design documentation, release/preflight and isolated-package checks, portable qualification and a real Codex artwork-worker example. The user subsequently authorized GitHub publication: clean public history is now available at https://github.com/justinthevoid/groovectl, with all first-run CI jobs passing after recorded repairs. GitHub's macOS runner also built/tested/packaged the helper with an ad hoc signature. Desktop runtime and notarization remain separate. Final archive hashes and private deployment URLs belong in the private release packet. npm/directory publication and a public site hostname remain pending; no paid service or live personal preference change is implied.
+
+## Distribution follow-through
+
+The [0.6.0-rc.2 candidate notes](releases/0.6.0-rc.2.md) track the remaining owner/setup gates for npm, public listing, signed helper distribution and a public docs hostname. Current registry/auth checks do not constitute publication. Actual expanded-host interaction stays pending while its controller exposes no app tab; continue independent package, protocol, browser and source checks.

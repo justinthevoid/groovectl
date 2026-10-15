@@ -18,6 +18,7 @@ export class CollectionController {
 	private generation = 0;
 	private detailGeneration = 0;
 	private history: CollectionDetail[] = [];
+	private failedLoad?: { category: Category; source: LibrarySource; more: boolean };
 	subscribe = (listener: (state: CollectionState) => void) => {
 		this.listeners.add(listener); listener(this.state);
 		return () => { this.listeners.delete(listener); };
@@ -30,11 +31,11 @@ export class CollectionController {
 	async load(category = this.state.category, source = this.state.source, more = false) {
 		if (more && (this.state.loading || !this.state.hasMore)) return;
 		const generation = ++this.generation;
-		this.detailGeneration++;
-		this.history = [];
+		this.failedLoad = undefined;
+		if (!more) { this.detailGeneration++; this.history = []; }
 		const offset = more ? this.state.offset + 100 : 0;
-		this.update({ category, source, loading: true, error: undefined, detail: undefined,
-			...(more ? {} : { items: [], hasMore: false, offset: 0 }) });
+		this.update({ category, source, loading: true, error: undefined,
+			...(more ? {} : { items: [], hasMore: false, offset: 0, detail: undefined }) });
 		try {
 			const result = source === "native"
 				? await this.call("list_playlists", { source: "native", offset: 0 })
@@ -45,8 +46,15 @@ export class CollectionController {
 			const unique = [...new Map(items.map(item => [`${item.source}:${item.id}`, item])).values()];
 			this.update({ items: unique.slice(0, 1000), offset, hasMore: page.hasMore && unique.length < 1000, loading: false });
 		} catch (error) {
-			if (generation === this.generation) this.update({ loading: false, error: error instanceof Error ? error.message : "Collection read failed. Try refresh." });
+			if (generation === this.generation) {
+				this.failedLoad = { category, source, more };
+				this.update({ loading: false, error: error instanceof Error ? error.message : "Collection read failed. Try refresh." });
+			}
 		}
+	}
+	async retryLoad() {
+		const failed = this.failedLoad;
+		if (failed) await this.load(failed.category, failed.source, failed.more);
 	}
 	async open(item: CollectionItem, nested = false) {
 		if (nested && this.state.detail) this.history.push({ ...this.state.detail, loading: false });
