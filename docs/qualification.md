@@ -2,6 +2,24 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## 0.6.0-rc.5 Cider state convergence — October 15, 2026
+
+VPS Node 24 TypeScript/Svelte checks and build passed with all 147 tests. Regressions exercise delayed Play/Pause state, four-read exhaustion and accepted-command read failure, asserting a single command POST. This repairs the rc.4 live Pause readback lag; its installed-host check and final CI are recorded separately when complete.
+
+The private account plugin and Mac CLI/local plugin were updated to rc.5 through supported installation paths. Windows refreshed the private plugin to rc.5, and its runtime SHA-256 matched the packaged candidate. In the actual Windows Groovectl UI, selecting Cider read the existing paused recording; one Play click returned playing and one Pause click returned paused without a subsequent manual Refresh. The real read-only queue dialog loaded recording rows and closed. Apple Music and Cider were left paused. No queue mutation, playlist/preference write or credential transfer was performed. Final committed-source CI remains a separate receipt.
+
+## 0.6.0-rc.4 Windows app connection — October 15, 2026
+
+The operator authorized Windows UI control through Magic. The Mac computer-use controller and Windows frontend were separate surfaces. The actual current-chat panel showed Music.app and the Mac's track; the Windows-local global plugin context reached the PC. No project checkout was handed off and no credentials were transferred.
+
+- The Windows plugin UI refreshed to rc.4 and rendered the new Library/player with an explicit Windows execution-host label. Interactive session 1 ran rc.4 stdio servers. Its installed runtime hash matched the candidate bytes. The saved CLI default remained Windows while the UI selected Cider.
+- Apple Music initially had no recording loaded. Its old panel could receive nominal transport states without a song. Loading an existing library recording through Apple Music's own UI produced actual title/artist metadata in Groovectl. Play and Pause from both the older global view and rc.4 footer changed the player; the Apple Music window separately showed the same recording and corresponding transport state. This qualifies loaded-session play/pause, not a targeted-play API. The timeline remained zero/unknown. Earlier empty-metadata receipts remain valid for their sessions; they are not a permanent limitation of every Windows session.
+- The rc.4 footer switched read-only to Cider, showing its existing paused recording, timestamp, volume and modes. Play returned playing; a manual Refresh showed the same recording advancing from approximately one to 25 seconds. Pause's immediate readback still said playing; a subsequent read-only Refresh showed paused at the same timestamp. This delayed state observation motivated rc.5. No volume/mode change, skip, enqueue or queue replacement was made for this test. Cider's remaining targeted/queue-mutation gates retain their earlier scope.
+- Windows Library correctly reported missing local MusicKit configuration while desktop playback worked. This run does not qualify API Library reads on Windows. No Mac MusicKit material was copied to fill that gap.
+- VPS Node 24 checks/build and all 144 tests passed; both SDK client integration checks and an isolated package smoke passed after the versioned app-resource change. The synthetic desktop/390-pixel phone chooser check found a gallery-only reactive reset, repaired by isolating fixture initialization. The confirmatory switch retained the selected player with unsupported actions disabled. These fixtures remain distinct from the real Windows app observations above. Final CI receipts qualify the committed candidate separately.
+
+Private captures and operator receipts are excluded from public source/packages. Private account/local plugin installation is not npm or directory publication. Broader transport, notarization and public distribution gates remain open where documented.
+
 ## 0.6.0-rc.3 read and playback diagnosis — October 15, 2026
 
 - The actual expanded MCP App became visible through the controller. Its API playlist inspector contained six recordings and a failed/timed-out GET alert; the footer was stopped on Music.app with no current song. One read-only retry was clicked, but the subsequent controller read timed out and its MCP Apps provider became unavailable. That inspection failure is not evidence of an Apple API failure or a successful UI retry. No playback command was clicked in the panel.

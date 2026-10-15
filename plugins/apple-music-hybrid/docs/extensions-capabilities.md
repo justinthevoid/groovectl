@@ -55,6 +55,8 @@ Keep three checks separate: which bundle the frontend has downloaded, where the 
 
 The local player runs on the MCP executor's computer. A Windows view of a chat whose tool connection reports `darwin` does not turn that connection into Windows player control. Use a Windows-local execution context for Windows playback, or the Mac frontend/controller for Mac qualification. [OpenAI's remote-connection guide](https://learn.chatgpt.com/docs/remote-connections) explains that MCP and Computer Use come from the connected host. Its Git-backed chat handoff transfers repository state and requires a matching saved project; do not move an unrelated repository merely to test a music panel.
 
+The rc.4 Windows check used the local global Groovectl entrypoint without moving the existing chat's checkout. Its Library/player rendered with a Windows host label, and actual UI play/pause worked for a loaded Apple Music recording and Cider. The player chooser selects a local adapter per request; it does not move a Mac connection to Windows. Versioned app-resource URIs give newly negotiated releases a distinct HTML identity. A saved older global view was observed before the plugin refresh; its rendering does not identify the newly installed runtime. See the qualification ledger for the limits of these live checks.
+
 ## Network and artwork
 
 The released app declares no external connect/resource domains. A library full of album artwork needs a deliberate change: allow only reviewed Apple artwork origins or fetch validated artwork through a bounded server resource. A catalog item's artwork template is data, not permission for arbitrary URLs. Keep scripts, fonts and icons bundled. Do not relax the CSP broadly to make a mockup render.

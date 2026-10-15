@@ -1,6 +1,6 @@
 # Groovectl UI kit
 
-Source implementation, October 15, 2026. The 0.6.0-rc.2 candidate powers Library and the player with reusable Svelte 5 components inside the existing TypeScript MCP App. Public 0.5.2 and actual-host qualification remain separate checkpoints. The website retains its separate design system; Studio's existing forms and write flows are preserved.
+Source implementation, October 15, 2026. The 0.6.0-rc.5 candidate powers Library and the player with reusable Svelte 5 components inside the existing TypeScript MCP App. The player names its execution host and offers local adapter selection without playing or changing the saved default. Public 0.5.2 and actual-host qualification remain separate checkpoints. The website retains its separate design system; Studio's existing forms and write flows are preserved.
 
 ## Implemented slice
 

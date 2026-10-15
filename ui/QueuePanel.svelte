@@ -1,19 +1,19 @@
 <script lang="ts">
  import { z } from "zod";
  import type { Writable } from "svelte/store";
- import type { ToolCall } from "./collection-controller.js";
+ import type { PlaybackController } from "./playback-controller.js";
  import { Recording } from "./music-model.js";
  import IconButton from "./components/IconButton.svelte";
  import TrackRow from "./components/TrackRow.svelte";
  import Button from "./components/Button.svelte";
  import { X, ListMusic } from "@lucide/svelte";
- let { open, call }: { open: Writable<boolean>; call: ToolCall } = $props();
+ let { open, playback }: { open: Writable<boolean>; playback: PlaybackController } = $props();
  let dialog: HTMLDialogElement;
  let tracks = $state<Recording[]>([]), loading = $state(false), error = $state(''), truncated = $state(false);
  let generation = 0;
  async function load() {
   const request = ++generation; loading = true; error = '';
-  try { const page = z.object({ tracks: z.array(Recording).max(500), truncated: z.boolean() }).parse(await call('get_playback_queue'));
+  try { const page = z.object({ tracks: z.array(Recording).max(500), truncated: z.boolean() }).parse(await playback.queue());
    if (request === generation) { tracks = page.tracks; truncated = page.truncated; }
   } catch(e) { if (request === generation) error = e instanceof Error ? e.message : 'Queue read failed.'; }
   finally { if(request === generation) loading = false; }

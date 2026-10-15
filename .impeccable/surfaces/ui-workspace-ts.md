@@ -25,4 +25,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 ## Scope and proof
 
+The player destination row names its execution host and selects supported local adapters without playing or persisting a default. Failed switches, stale replies and restricted profiles retain capability guards. A 16px phone select avoids focus zoom. Actual Windows UI play/pause and synthetic responsive checks have separate receipts in the qualification ledger.
+
 Build shared controls, artwork, collection tiles, recording rows, connection status and player, with an account-free gallery. API categories and artist/album relationships paginate honestly; native Music.app offers its real playlist route. Detail reads keep library IDs and resource types, never fabricated catalog substitutions. Preserve loaded rows and retryable history across interrupted reads. Validate browser interaction with synthetic fixtures before claiming any live host qualification. Real account writes are outside this slice.

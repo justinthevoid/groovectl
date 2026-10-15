@@ -8,7 +8,7 @@
 	"bugs": {
 		"url": "https://github.com/justinthevoid/groovectl/issues"
 	},
-	"version": "0.6.0-rc.3",
+	"version": "0.6.0-rc.5",
 	"description": "Apple Music for agents: thoughtful playlists, library exploration, and native or Cider playback.",
 	"type": "module",
 	"license": "MIT",

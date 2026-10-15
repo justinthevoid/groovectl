@@ -5,6 +5,8 @@ import { Curation, comparePlaylists, sequenceTracks } from "./curation.js";
 import { auditTracks } from "./flow.js";
 import {
 	Cider,
+	MacMusic,
+	WindowsMusic,
 	playerCapabilities,
 	sessionCapabilities,
 	type Player,
@@ -59,6 +61,7 @@ const offset = z.number().int().min(0).max(100000).default(0);
 const refs = z.array(TrackRef).min(1).max(200),
 	name = z.string().min(1).max(120),
 	id = z.string().min(1).max(100);
+const playbackPlayer = z.enum(["native", "windows", "cider"]).optional();
 export function createTools(
 	music: MusicService,
 	player: Player,
@@ -71,6 +74,28 @@ export function createTools(
 		artwork = new Artwork(music.plans.root);
 	const preferences = new Preferences(music.catalog, music.plans);
 	const playbackEnabled = profile === "full" || profile === "player";
+	const nativePlayer = player.name === "native" ? player : new MacMusic();
+	const windowsPlayer = player.name === "windows" ? player : new WindowsMusic();
+	const availablePlayers = () => !playbackEnabled || player.name === "none" ? [] : [
+		...(process.platform === "darwin" ? [{ id: "native", label: "Music.app", configured: true }] : []),
+		...(process.platform === "win32" ? [{ id: "windows", label: "Apple Music", configured: true }] : []),
+		{ id: "cider", label: "Cider", configured: cider.configured() },
+	];
+	function selectPlayer(requested?: "native" | "windows" | "cider"): Player {
+		if (!requested) return player;
+		if (!playbackEnabled || player.name === "none") throw new Error("Player selection is unavailable in this profile or API-only mode.");
+		if (!playerCapabilities(requested).available) throw new Error(`The ${requested} player is unavailable on this execution host (${process.platform}). Connect Groovectl on the computer running that player.`);
+		return requested === "cider" ? cider : requested === "windows" ? windowsPlayer : nativePlayer;
+	}
+	function playbackResult(target: Player, status: Record<string, unknown>) {
+		return {
+			...status,
+			selected_player: target.name,
+			execution_platform: process.platform,
+			available_players: availablePlayers(),
+			player_capabilities: sessionCapabilities(target.name, status),
+		};
+	}
 	const toolIncluded = (t: ToolDefinition) =>
 		(player.name !== "none" || t.group !== "playback") &&
 		(profile === "full" ||
@@ -137,6 +162,8 @@ export function createTools(
 			player: {
 				...status,
 				selected_player: player.name,
+				execution_platform: process.platform,
+				available_players: availablePlayers(),
 				capabilities: playbackEnabled
 					? sessionCapabilities(player.name, status)
 					: playbackCapabilities(),
@@ -186,6 +213,7 @@ export function createTools(
 		{},
 		() => ({
 			platform: process.platform,
+			available_players: availablePlayers(),
 			player: player.name,
 			profile,
 			musickit: music.catalog.readiness(),
@@ -418,24 +446,25 @@ export function createTools(
 	);
 	add(
 		"get_playback_state",
-		"Read the selected player’s song and transport state. Does not start playback.",
+		"Read a local player’s song, transport state and execution platform. An optional player selects Music.app, Windows Apple Music or Cider on this host for this request only. Does not start playback or change the CLI default.",
 		"playback",
-		{},
-		async () => {
- const status = await player.status();
- return { ...status, selected_player: player.name, player_capabilities: sessionCapabilities(player.name, status) };
- },
+		{ player: playbackPlayer },
+		async (r) => {
+			const target = selectPlayer(r.player);
+			return playbackResult(target, await target.status());
+		},
 		false,
 		false,
 	);
 	add(
 		"control_playback",
-		"Control the selected player only when requested. Mac play IDs are native persistent IDs; Cider play IDs are catalog IDs. Windows supports session transport only. Volume 0–100; seek seconds; shuffle 0/1; repeat 0/1/2.",
+		"Control the requested local player, or the configured default, only when requested. Does not move playback to another computer. Mac play IDs are native persistent IDs; Cider play IDs are catalog IDs. Windows supports session transport only. Volume 0–100; seek seconds; shuffle 0/1; repeat 0/1/2.",
 		"playback",
-		PlaybackRequest.shape,
+		{ ...PlaybackRequest.shape, player: playbackPlayer },
 		(r) => music.plans.mutation(async () => {
-			const status = await player.playback(PlaybackRequest.parse(r));
-			return { ...status, selected_player: player.name, player_capabilities: sessionCapabilities(player.name, status) };
+			const { player: requested, ...command } = r;
+			const target = selectPlayer(requested);
+			return playbackResult(target, await target.playback(PlaybackRequest.parse(command)));
 		}),
 		true,
 		false,
@@ -828,11 +857,11 @@ export function createTools(
 	);
 	add(
 		"get_playback_queue",
-		"Read Cider’s current queue with audio asset URLs and DRM metadata removed. Requires Cider as the selected player.",
+		"Read Cider’s current queue with audio asset URLs and DRM metadata removed. Select Cider explicitly or use it as the configured default.",
 		"playback",
-		{},
-		() => {
-			if (player.name !== "cider")
+		{ player: playbackPlayer },
+		(r) => {
+			if (selectPlayer(r.player).name !== "cider")
 				throw new Error("Queue access requires the Cider player adapter.");
 			return cider.queue();
 		},
@@ -846,10 +875,11 @@ export function createTools(
 		{
 			catalog_id: z.string().regex(/^\d{1,20}$/),
 			position: z.enum(["next", "later"]).default("later"),
+			player: playbackPlayer,
 		},
 		(r) =>
 			music.plans.mutation(async () => {
-				if (player.name !== "cider")
+				if (selectPlayer(r.player).name !== "cider")
 					throw new Error("Queue access requires the Cider player adapter.");
 				await music.catalog.tracks([r.catalog_id]);
 				return cider.enqueue(r.catalog_id, r.position);

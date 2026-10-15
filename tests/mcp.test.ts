@@ -6,6 +6,7 @@ import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { root } from "./helpers.js";
 import { UI_URI } from "../src/server.js";
+import { VERSION } from "../src/version.js";
 import { resolve } from "node:path";
 import { join } from "node:path";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -85,6 +86,8 @@ for (const modern of [false, true])
 				JSON.stringify(invalid.content),
 				/Volume must be an integer from 0 to 100/,
 			);
+			assert.equal(tools.tools.find((t) => t.name === "open_music")?._meta?.["ui/resourceUri"], UI_URI);
+			assert.equal(UI_URI, `ui://apple-music-hybrid/${VERSION}/workspace`);
 			const ui = await client.readResource({ uri: UI_URI });
 			assert.ok(
 				ui.contents.some((c) => "text" in c && c.text.includes("Groovectl")),

@@ -10,7 +10,7 @@ import { createTools, type Profile } from "./tools.js";
 import { Artwork } from "./artwork.js";
 import { VERSION } from "./version.js";
 
-export const UI_URI = "ui://apple-music-hybrid/workspace";
+export const UI_URI = `ui://apple-music-hybrid/${VERSION}/workspace`;
 export function buildServer(
 	options: { music?: MusicService; profile?: Profile } = {},
 ) {

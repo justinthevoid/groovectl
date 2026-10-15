@@ -63,9 +63,10 @@ for (let run = 0; run < 2; run++) {
 			);
 			assert.equal(result.structuredContent?.recipes.length, 6);
 		}
-		const ui = await client.readResource({
-			uri: "ui://apple-music-hybrid/workspace",
-		});
+		const app = tools.tools.find((t) => t.name === "open_music");
+		const resourceUri = app?._meta?.["ui/resourceUri"];
+		assert.equal(typeof resourceUri, "string");
+		const ui = await client.readResource({ uri: resourceUri });
 		assert.ok(
 			ui.contents.some(
 				(c) => typeof c.text === "string" && c.text.includes("Groovectl"),

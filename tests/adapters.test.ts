@@ -109,6 +109,43 @@ test("Cider scales volume to its documented range and never sends token in URL",
 		"synthetic-token",
 	);
 });
+test("Cider play and pause observe delayed state without replaying the command", async () => {
+	for (const action of ["play", "pause"] as const) {
+		let posts = 0, reads = 0;
+		const expected = action === "play";
+		const cider = new Cider("http://127.0.0.1:10767", "synthetic", async (url, init) => {
+			const path = new URL(String(url)).pathname.split("/").at(-1);
+			if (init?.method === "POST") { posts++; return new Response(null, { status: 204 }); }
+			return Response.json(path === "is-playing" ? { is_playing: ++reads < 3 ? !expected : expected } : path === "volume" ? { volume: 0 } : { info: null });
+		});
+		assert.equal((await cider.playback({ action })).state, expected ? "playing" : "paused");
+		assert.equal(posts, 1);
+		assert.equal(reads, 3);
+	}
+});
+
+test("Cider bounds unconfirmed transport reads and requires inspection", async () => {
+	let posts = 0, reads = 0;
+	const cider = new Cider("http://127.0.0.1:10767", "synthetic", async (url, init) => {
+		if (init?.method === "POST") { posts++; return new Response(null, { status: 204 }); }
+		const path = new URL(String(url)).pathname.split("/").at(-1);
+		return Response.json(path === "is-playing" ? { is_playing: (++reads, true) } : path === "volume" ? { volume: 0 } : { info: null });
+	});
+	await assert.rejects(cider.playback({ action: "pause" }), /accepted pause.*not observed.*Refresh/);
+	assert.equal(posts, 1);
+	assert.equal(reads, 4);
+});
+
+test("Cider never replays an accepted transport after readback fails", async () => {
+	let posts = 0;
+	const cider = new Cider("http://127.0.0.1:10767", "synthetic", async (_url, init) => {
+		if (init?.method === "POST") { posts++; return new Response(null, { status: 204 }); }
+		throw new Error("private response detail");
+	});
+	await assert.rejects(cider.playback({ action: "pause" }), /not retried/);
+	assert.equal(posts, 1);
+});
+
 test("Cider HTTP failure cannot retry a command or expose a token-bearing body", async () => {
 	let calls = 0;
 	const cider = new Cider("http://127.0.0.1:10767", "secret", async () => {

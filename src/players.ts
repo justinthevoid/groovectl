@@ -466,6 +466,9 @@ export class Cider implements Player {
 	) {
 		this.url = loopbackURL(url);
 	}
+	configured() {
+		return !!this.token;
+	}
 	async request(
 		method: "GET" | "POST",
 		endpoint: string,
@@ -595,7 +598,18 @@ export class Cider implements Player {
 				"Cider mode did not converge. Inspect the player before changing it again.",
 			);
 		} else await this.request("POST", r.action);
-		return this.status();
+		let observed = await this.status();
+		if (!r.track_id && !r.playlist_id && (r.action === "play" || r.action === "pause")) {
+			const expected = r.action === "play" ? "playing" : "paused";
+			// The RPC acknowledgment can precede MusicKit's state event. Observe
+			// briefly without replaying the command or inventing its outcome.
+			for (let read = 0; observed.state !== expected && read < 3; read++) {
+				await new Promise(resolve => setTimeout(resolve, 150));
+				observed = await this.status();
+			}
+			if (observed.state !== expected) throw new Error(`Cider accepted ${r.action}, but the requested state was not observed. Refresh the player before trying another command.`);
+		}
+		return observed;
 	}
 	async queue() {
 		const raw = await this.request("GET", "queue");

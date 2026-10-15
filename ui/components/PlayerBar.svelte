@@ -15,6 +15,7 @@
  let blocked = $derived($controller.pending || $controller.needsRefresh || !p.capabilities?.available);
  let identity = $derived(JSON.stringify([p.selected_player, p.track?.name, p.track?.artist, p.track?.album]));
  let repeatNext = $derived(p.repeat === 'off' ? { label:'Repeat all', value:2 } : p.repeat === 'all' ? { label:'Repeat one song', value:1 } : { label:'Turn repeat off', value:0 });
+ let host = $derived(p.execution_platform === 'win32' ? 'Windows playback host' : p.execution_platform === 'darwin' ? 'Mac playback host' : p.execution_platform === 'linux' ? 'Linux playback host' : undefined);
  let seek = $state<number | undefined>();
  let volume = $state<number | undefined>();
  $effect(() => { identity; volume = undefined; seek = undefined; });
@@ -25,6 +26,7 @@
  }
 </script>
 <section class="g-player" aria-label="Music player" aria-busy={$controller.pending}>
+ {#if p.available_players?.length}<div class="g-player-destination"><label>Player<select aria-label="Playback player" value={p.selected_player} disabled={$controller.pending} onchange={e => void controller.selectPlayer(e.currentTarget.value)}>{#each p.available_players as choice}<option value={choice.id} disabled={!choice.configured}>{choice.label}{choice.configured ? '' : ' · setup needed'}</option>{/each}</select></label>{#if host}<span>{host}</span>{/if}{#if $controller.refreshing}<span role="status">Reading player…</span>{/if}</div>{:else if host}<p class="g-player-destination">{host}</p>{/if}
  <div class="g-now"><Artwork name={presentation.title} size="player"/><div><strong title={presentation.title}>{presentation.title}</strong><span title={presentation.subtitle}>{presentation.subtitle}</span><small>{$controller.error ? 'Last observed: ' : ''}{presentation.status}</small></div></div>
  <div class="g-transport">
   <div class="g-transport-buttons">
@@ -42,7 +44,7 @@
    {#if actions.includes('repeat')}<IconButton label={p.repeat === undefined ? 'Repeat state unavailable' : `Repeat ${p.repeat} · ${repeatNext.label.toLowerCase()}`} pressed={p.repeat === undefined ? undefined : p.repeat !== 'off'} disabled={blocked || p.repeat === undefined} onclick={() => void command('repeat', repeatNext.value)}>{#if p.repeat === 'one'}<Repeat1 size={18}/>{:else}<Repeat size={18}/>{/if}</IconButton>{/if}
   </div>{/if}
   {#if p.volume !== undefined && actions.includes('volume')}<label class="g-volume"><Volume2 size={18}/><span class="g-sr-only">Volume</span><input type="range" min="0" max="100" step="1" aria-label="Volume" aria-valuetext={`${volume ?? p.volume}%`} value={volume ?? p.volume} disabled={blocked} oninput={e => volume = +e.currentTarget.value} onchange={e => void command('volume', +e.currentTarget.value)}/></label>{:else}<span class="g-volume-unavailable">Volume unavailable</span>{/if}
-  {#if onqueue && $queueEnabled && p.selected_player === 'cider'}<IconButton label="Open Cider queue" onclick={onqueue}><ListMusic size={20}/></IconButton>{/if}
+  {#if onqueue && $queueEnabled && p.selected_player === 'cider'}<IconButton label="Open Cider queue" disabled={blocked || $controller.refreshing} onclick={onqueue}><ListMusic size={20}/></IconButton>{/if}
   <IconButton label="Refresh player state" disabled={$controller.pending || $controller.refreshing || !$controller.player.capabilities?.available} onclick={() => void controller.refresh()}><RefreshCw size={17}/></IconButton>
  </div>
  {#if $controller.error}<p class="g-player-error" role="status">{$controller.error}</p>{/if}

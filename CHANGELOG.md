@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0-rc.5 — observed Cider transport candidate
+
+- After an accepted Cider Play/Pause command, observe state up to four times with brief delays until the requested state is seen. Never resend the command. Unconfirmed or failed reads require inspection instead of presenting the acknowledgment as completion.
+- Preserve rc.4's local player chooser, execution-host label and versioned app resources, qualified through the actual Windows app.
+
+## 0.6.0-rc.4 — local player selection candidate
+
+- Choose Apple Music/Music.app or configured Cider in the persistent player. Show the MCP execution platform separately from the frontend's computer.
+- Scope player selection to the current app/request. Selection only reads state; it does not start playback or change the CLI default. Keep commands and queue reads on the chosen adapter.
+- Reject unsupported-platform targets, preserve profile/API-only restrictions and prevent stale/default observations or failed switches from controlling the previous player.
+
 ## 0.6.0-rc.3 — read reliability and native search candidate
 
 - Correct Music.app's search-area enum so title/artist library searches return native recording IDs instead of an Apple Event type error. Keep the retained Python bridge aligned.
