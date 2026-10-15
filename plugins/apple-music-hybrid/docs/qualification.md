@@ -24,6 +24,10 @@ The website now uses independent alpha vinyl, paper sleeve and tape images plus 
 - A fresh independent review requested two fixes: honest static controls and synchronized design documentation. Both were implemented and scored resolved with disposition ship at that fix-list scope. The prior direction/seed process limitation remains disclosed; no new comp or whole-surface approval is claimed.
 - All 12 source rasters have provenance; the three new components have real alpha. The public README retains the original sculpture image. The website's pinned GSAP dependency has its own upstream license notice, distinct from the project's MIT code.
 
+## Retained-reference dependency qualification
+
+The first GitHub dependency scan reported vulnerable PyJWT and pytest pins in server/uv.lock, including [the PyJWT asymmetric-key guard advisory](https://github.com/jpadilla/pyjwt/security/advisories/GHSA-ffc3-869f-jxw9). The reference pins and lockfile were updated to PyJWT 2.15.0 and pytest 9.0.3 without changing the 14 migration tests. Only those two package versions changed. The retained Python implementation signs developer tokens; it is not included in the active TypeScript CLI or portable plugin runtime. Patched frozen-regression CI and GitHub's refreshed alert status must be checked before release; an advisory's severity alone is not an assertion that this application's signing path was exploitable.
+
 ## Unreleased API/control checkpoint — October 15, 2026
 
 Implemented mixed catalog/API-library song references, Apple-provided alias-aware deduplication and ordered readback, optional parent placement for new API playlists, folder browsing/creation through reviewed plans, and explicit API-only/headless player capability reporting. Legacy journal payloads and fingerprint encoding remain supported.

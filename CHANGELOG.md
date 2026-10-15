@@ -11,6 +11,7 @@
 - Add public repository policies, pinned multi-platform/package/container CI, original branding and an Astro 7/Svelte 5/Starlight documentation site with Cloudflare/VPS deployment guidance.
 - Add a layered vinyl/sleeve/tape website scene with scroll separation/reassembly, word-level heading motion and control feedback, plus reduced-motion and static alternatives.
 - Qualify the first public CI run, including Swift helper tests/build/packaging, after fixing the legacy uv group, deterministic license inventory and Windows UTF-8 test oracle.
+- Update retained Python-reference pins to PyJWT 2.15.0 and pytest 9.0.3 for reported security fixes. Python remains outside the shipped TypeScript runtime.
 - Mix catalog songs and API-library imports in one playlist plan. Preserve Apple's direct recording aliases during deduplication and exact-order verification.
 - Browse library folders and preview folder creation through the existing music-change workflow. Choose and verify a parent folder for new API playlists.
 - Select an explicit API-only player mode. Linux defaults to it; capability reports and the studio no longer imply desktop playback on a headless host.
