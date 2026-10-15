@@ -71,7 +71,8 @@ Make Apple Music useful to agents: discover exact recordings, build thoughtful p
 - [x] Provide a real headless MCP deployment path with private persistent data and explicit authentication/transport limits.
 - [x] Demonstrate private deployment/health checks without changing unrelated services or exposing account credentials.
 - [x] Document environment variables, volumes, upgrades, rollback, backup/restore, limits and cost controls.
-- [ ] Keep public deployment/publication as a final review over concrete artifacts.
+- [x] Publish a clean public GitHub repository and correct/complete its first CI gates.
+- [ ] Publish registry/plugin-directory packages and select a public website hostname after their distribution-specific review.
 
 ## Evidence and completion
 
@@ -81,8 +82,15 @@ Each checkpoint records its source revision, checks actually run, live-service s
 
 Continue with the first unfinished checkpoint that can make meaningful progress. A blocked native build or unanswered publication decision does not prevent independent API, source, docs, asset, packaging or private-preview work. Do not mark the overall goal complete while required work remains.
 
+## Next focused cycle
+
+1. Bound workspace responses as journals grow. Return concise plan summaries for the dashboard and load a selected plan's full recordings/receipt through the existing inspector, preserving schemas and write safety. Avoid duplicating large plan histories into model-facing output.
+2. Qualify actual expanded MCP App hosts and interactive Windows/Cider sessions, including unsupported controls and recovery. Installed apps and synthetic hosts are separate evidence.
+3. Exercise mixed catalog/library and folder writes when a suitable requested playlist exists. Keep preferences and uncertain writes out of incidental testing.
+4. Improve first-run setup and distribution: inspectable installer paths, an available npm package, signed/notarized helper distribution and a public docs hostname. Preserve source/release-tarball installation until each route is actually published.
+
 Checkpoint A source checks: 85 TypeScript tests passed on macOS, including SDK 1/2 clients; build and type/UI checks passed. Read-only Apple folder discovery returned no root identity for this account. Contract coverage and remaining live/platform checks are recorded in [qualification.md](qualification.md). Original hero artwork is saved with provenance in assets/brand/.
 
 ## Final candidate boundary
 
-The 0.5 source candidate includes a scoped independent studio verdict (four material fixes resolved), separate website design documentation, release/preflight and isolated-package checks, portable Linux/Windows qualification, an unchanged-native-source qualification boundary and a real Codex artwork-worker example. The final archive/source hashes, installation results and private deployment URLs belong in the private release packet rather than distributable source. Public GitHub/npm/directory publication and a public site hostname remain a final operator decision. No public publication, paid service, live personal preference change or new native build is implied by completing these preparation checkpoints.
+The 0.5 source candidate includes a scoped independent studio verdict (four material fixes resolved), separate website design documentation, release/preflight and isolated-package checks, portable qualification and a real Codex artwork-worker example. The user subsequently authorized GitHub publication: clean public history is now available at https://github.com/justinthevoid/groovectl, with all first-run CI jobs passing after recorded repairs. GitHub's macOS runner also built/tested/packaged the helper with an ad hoc signature. Desktop runtime and notarization remain separate. Final archive hashes and private deployment URLs belong in the private release packet. npm/directory publication and a public site hostname remain pending; no paid service or live personal preference change is implied.

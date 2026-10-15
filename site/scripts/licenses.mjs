@@ -37,11 +37,25 @@ function inspect(directory) {
 					? licenseFiles(join(directory, name), name + "/")
 					: [name],
 			);
+		// GSAP's npm archive carries its notice in source headers, not LICENSE.
+		// Preserve that upstream declaration rather than mislabeling it as MIT.
+		if (pkg.name === "gsap" && !files.length) {
+			const header = readFileSync(
+				join(directory, "gsap-core.js"),
+				"utf8",
+			).match(/\/\*![\s\S]*?\*\//)?.[0];
+			if (!header?.includes("https://gsap.com/standard-license"))
+				throw new Error("GSAP's upstream license declaration is missing.");
+			notices.push(`${identity} — gsap-core.js license header\n\n${header}`);
+		}
 		packages.set(identity, {
 			name: pkg.name,
 			version: pkg.version,
 			license: pkg.license ?? "UNDECLARED",
-			license_files: files,
+			license_files:
+				pkg.name === "gsap" && !files.length
+					? ["gsap-core.js (license header)"]
+					: files,
 		});
 		for (const name of files)
 			notices.push(
@@ -69,6 +83,7 @@ for (const name of [
 	"@fontsource-variable/fraunces",
 	"@fontsource-variable/dm-sans",
 	"svelte",
+	"gsap",
 	"astro",
 	"@astrojs/starlight",
 ]) {

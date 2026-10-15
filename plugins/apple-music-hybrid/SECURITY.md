@@ -2,7 +2,7 @@
 
 ## Reporting
 
-Report vulnerabilities privately using GitHub's Security → Report a vulnerability flow for the official repository. Do not include exploitable details, .p8 keys, tokens, BYOK credentials or personal listening data in a public issue. If private reporting is unavailable, open a minimal issue requesting a private contact with no sensitive details. Private reporting availability is a first-public-release gate.
+Use the repository's [private vulnerability report](https://github.com/justinthevoid/groovectl/security/advisories/new). Private reporting is enabled. Do not include exploitable details, .p8 keys, tokens, BYOK credentials or personal listening data in a public issue. If that flow is unavailable, open a minimal issue requesting a private contact with no sensitive details.
 
 Include the affected version/commit, operating system, backend, a synthetic reproduction and impact. Do not send real credentials as proof. The maintainer will acknowledge and investigate reports as capacity permits; no response-time or bounty promise is made.
 

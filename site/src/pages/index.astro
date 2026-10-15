@@ -1,7 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import BriefLab from "../components/BriefLab.svelte";
-import hero from "../../../assets/brand/mixtape-hero.png";
+import disc from "../../../assets/brand/vinyl-disc.webp";
+import sleeve from "../../../assets/brand/paper-sleeve.webp";
+import tape from "../../../assets/brand/olive-tape.webp";
+import secondCover from "../../../assets/examples/between-stations.png";
 import cover from "../../../assets/examples/night-ferry.png";
 import "../styles/global.css";
 const base = import.meta.env.BASE_URL;
@@ -26,17 +29,39 @@ const steps = [
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header wrap">
    <a class="brand" href={base}><img src={base + "favicon.svg"} alt="" width="38" height="38" />Groovectl</a>
-   <nav aria-label="Main navigation"><a class="nav-demo" href="#brief">Try a brief</a><a href={doc("overview")}>Docs</a><a href={doc("install")}>Get started</a></nav>
+   <nav aria-label="Main navigation"><a class="nav-demo" href="https://github.com/justinthevoid/groovectl">GitHub</a><a href={doc("overview")}>Docs</a><a href={doc("install")}>Get started</a></nav>
   </header>
   <main id="main">
-   <section class="hero wrap" aria-labelledby="hero-title">
+   <section class="hero-scroll" aria-labelledby="hero-title">
+    <div class="hero hero-sticky wrap">
     <div class="hero-copy">
-     <h1 id="hero-title">Make a mixtape.<br />Make it yours.</h1>
+     <h1 id="hero-title">Make a mixtape.<br /> <span>Make it yours.</span></h1>
      <p>Apple Music for your agent. Find the right recordings, shape a listening journey, give it a cover, and press play.</p>
      <div class="actions"><a class="button primary" href={doc("install")}>Set up Groovectl <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></a><a class="button secondary" href="#brief">Find your starting point</a></div>
      <div class="hero-note">Open source · MCP server, CLI & interactive studio<br /><a href={doc("reference/platforms")}>macOS, Windows, Cider and API-only hosts</a></div>
     </div>
-    <figure class="hero-art"><Image src={hero} alt="A translucent red cassette and three original record sleeves connected by a looping ribbon of magnetic tape." widths={[640,960,1536]} sizes="(max-width: 760px) 100vw, 56vw" format="webp" quality={85} loading="eager" fetchpriority="high" /></figure>
+    <figure class="hero-art">
+     <div class="record-stage" role="img" aria-label="An exploded mixtape sculpture: a raspberry vinyl record, folded paper sleeve, olive tape and two original covers pull apart and come together.">
+      <div class="pointer-rig" aria-hidden="true">
+       <div class="music-object object-disc"><div class="object-intro"><Image src={disc} alt="" widths={[400,640,960]} sizes="(max-width: 760px) 56vw, 32vw" format="webp" quality={86} loading="eager" fetchpriority="high" /></div></div>
+       <div class="music-object object-sleeve"><div class="object-intro"><Image src={sleeve} alt="" widths={[400,640,960]} sizes="(max-width: 760px) 56vw, 32vw" format="webp" quality={86} loading="eager" /></div></div>
+       <div class="music-object object-tape"><div class="object-intro"><Image src={tape} alt="" widths={[500,800,1280]} sizes="(max-width: 760px) 80vw, 46vw" format="webp" quality={85} loading="eager" /></div></div>
+       <div class="music-object object-cover-a"><div class="object-intro"><Image src={cover} alt="" widths={[200,360]} sizes="(max-width: 760px) 20vw, 12vw" format="webp" loading="eager" /></div></div>
+       <div class="music-object object-cover-b"><div class="object-intro"><Image src={secondCover} alt="" widths={[200,360]} sizes="(max-width: 760px) 20vw, 12vw" format="webp" loading="eager" /></div></div>
+      </div>
+      <div class="scene-label label-recording" aria-hidden="true">The right recording.</div>
+      <div class="scene-label label-story" aria-hidden="true">A little listening story.</div>
+      <div class="scene-label label-cover" aria-hidden="true">A world of its own.</div>
+     </div>
+     <figcaption>
+      <div class="listening-rail" aria-label="From idea to finished mix">
+       <svg viewBox="0 0 400 12" preserveAspectRatio="none" aria-hidden="true"><path class="rail-base" d="M8 6H392" /><path class="rail-ink" pathLength="1" d="M8 6H392" /></svg>
+       {steps.map(([title]) => <span><i aria-hidden="true"></i>{title}</span>)}
+      </div>
+      <div class="scene-controls"><p class="scroll-cue" hidden>Scroll to pull it apart <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16m-6-6 6 6 6-6" /></svg></p><button class="motion-toggle" type="button" aria-pressed="false" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg><span>Pause motion</span></button></div>
+     </figcaption>
+    </figure>
+    </div>
    </section>
    <section class="section wrap" aria-labelledby="journey-title">
     <div class="section-intro"><h2 id="journey-title">A playlist is more<br />than a pile of songs.</h2><p>Groovectl gives your agent the tools to be a thoughtful curator: exact recordings, a listening order you can inspect, and a saved plan before anything changes in your library.</p></div>
@@ -45,6 +70,7 @@ const steps = [
    <section id="brief" class="studio-section" aria-labelledby="brief-title">
     <div class="wrap">
      <div class="section-intro"><h2 id="brief-title">Turn your brain off.<br />Keep your taste.</h2><p>Pick a few things, or leave it to chance. This little brief builder is a starting point; the full studio also takes your own words and fresh suggestions from your agent.</p></div>
+     <noscript><p class="brief-static-note">The interactive brief builder needs JavaScript. You can still select and copy the sample brief below, or write your own in your agent.</p></noscript>
      <BriefLab client:visible />
     </div>
    </section>
@@ -67,5 +93,8 @@ const steps = [
    </section>
   </main>
   <footer class="site-footer wrap"><p>Groovectl. Made for people who care about the next song.<br />Independent of Apple and Cider.</p><div><a href={doc("contribute")}>Contribute</a><a href={doc("security")}>Security & privacy</a><a href={base + "LICENSE.txt"}>MIT license</a></div></footer>
+  <script>
+   import "../scripts/hero-motion";
+  </script>
  </body>
 </html>

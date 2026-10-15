@@ -2,6 +2,28 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## First public CI qualification — October 15, 2026
+
+The [public repository](https://github.com/justinthevoid/groovectl) is available. [PR #7's full CI run](https://github.com/justinthevoid/groovectl/actions/runs/38728497948), for head de78360, passed all seven jobs: TypeScript on Linux/macOS/Windows, retained Python regressions, native Swift packaging, website, and hardened headless sessions. The first failures were corrected rather than waived: uv now selects the declared dev group, license aggregation is deterministic across dependency layouts, and the Python fingerprint oracle reads its Unicode fixture as UTF-8 on Windows. The runtime fingerprint format did not change.
+
+- Linux/macOS: 104 TypeScript tests passed. Windows: 103 passed and one POSIX-only symlink test skipped. All three passed checks, build, clean-tree preflight and isolated npm/plugin smoke checks.
+- Python: all 14 historical regressions passed with the frozen uv lockfile.
+- Swift: four hostless tests passed; the release helper built, app packaging completed and strict ad hoc signature verification passed on GitHub's macOS runner. This closes the newer packaging compile gate. It does not establish desktop Automation permission, runtime behavior, notarization or a signed public binary.
+- Website: Astro checks/build, generated links and Cloudflare dry run passed. Headless: two isolated container sessions passed protocol/persistence smoke checks.
+- Read-only Windows readiness found Apple Music and Cider installed but neither running. Interactive playback and authenticated Cider remain pending. No listening preferences or playlists were changed for these checks.
+
+npm and the public plugin directory remain unpublished. The installed private plugin and plain MCP tools retain their own earlier runtime receipts. A synthetic MCP App harness does not qualify the actual ChatGPT/Codex extension host; its expanded UI still needs that host check.
+
+## Public website motion checkpoint
+
+The website now uses independent alpha vinyl, paper sleeve and tape images plus two original cover layers. Its GSAP scene assembles, separates in depth with ordinary scrolling, and reassembles; SplitText supplies heading motion, with pointer and control feedback. The source retains static, paused, reduced-motion and no-JavaScript paths. No music/account service is called by the site.
+
+- Astro check/build passed with no errors/warnings. Root output verified 13 pages and 467 local references; the private subdirectory build verified 479. Cloudflare dry run passed without publication.
+- Actual live viewport frames were inspected at 1280 × 720, 900 × 900 and 390 × 844, including separated and reassembled phone states. Static full-page reduced-motion/no-JavaScript views supplement those frames. Continuous frame pacing was not measured from still images.
+- Real browser actions verified field locks, changed suggestions, preserved exclusions, polite announcements and clipboard success. Without JavaScript, every dependent choice/control and Copy are disabled while the sample remains selectable. Hydration enables the real composer.
+- A fresh independent review requested two fixes: honest static controls and synchronized design documentation. Both were implemented and scored resolved with disposition ship at that fix-list scope. The prior direction/seed process limitation remains disclosed; no new comp or whole-surface approval is claimed.
+- All 12 source rasters have provenance; the three new components have real alpha. The public README retains the original sculpture image. The website's pinned GSAP dependency has its own upstream license notice, distinct from the project's MIT code.
+
 ## Unreleased API/control checkpoint — October 15, 2026
 
 Implemented mixed catalog/API-library song references, Apple-provided alias-aware deduplication and ordered readback, optional parent placement for new API playlists, folder browsing/creation through reviewed plans, and explicit API-only/headless player capability reporting. Legacy journal payloads and fingerprint encoding remain supported.
