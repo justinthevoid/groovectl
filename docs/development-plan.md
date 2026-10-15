@@ -1,6 +1,6 @@
 # Groovectl public-release development cycle
 
-This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The next user-requested cycle plans the library dashboard and UI kit, prioritizing polished Music.app/Cider control. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
+This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The user selected the Collection browser. Its first Svelte Library/player slice is implemented in source, prioritizing Music.app/Cider control; installed 0.5.2 remains separate. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
 
 ## Product outcome
 
@@ -84,7 +84,7 @@ Continue with the first unfinished checkpoint that can make meaningful progress.
 
 ## Next focused cycle
 
-1. Compact workspace responses are released in 0.5.2: selected plan/draft inspectors retain full detail, with a measured 98.4% response reduction. The restarted desktop connection returns the compact shape. Correct the reported player metadata/setup labels and gather read-only host evidence for the next UI cycle.
+1. Compact workspace responses are released in 0.5.2: selected plan/draft inspectors retain full detail, with a measured 98.4% response reduction. The restarted desktop connection returns the compact shape. The metadata/setup labels are corrected and read-only host evidence is recorded. The first Collection browser and component gallery are implemented in source; qualify the actual host before the next installed release.
 2. Refresh and qualify the actual expanded MCP App host. Windows play/pause and Cider basic controls now have live receipts, including unsupported/authentication paths; remaining targeted play, enqueue and additional session controls need their own bounded scope. Installed apps and synthetic hosts are separate evidence.
 3. Exercise mixed catalog/library and folder writes when a suitable requested playlist exists. Keep preferences and uncertain writes out of incidental testing.
 4. Improve first-run setup and distribution: inspectable installer paths, an available npm package, signed/notarized helper distribution and a public docs hostname. Preserve source/release-tarball installation until each route is actually published.

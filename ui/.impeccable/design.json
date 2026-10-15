@@ -1,0 +1,372 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T15:36:46.622038+00:00",
+  "title": "Design System: Groovectl app UI kit",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Warm background"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Control surface"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Primary ink"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Secondary ink"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Divider"
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Raspberry accent"
+      },
+      "tint": {
+        "role": "primary",
+        "displayName": "Selection tint"
+      },
+      "soft": {
+        "role": "neutral",
+        "displayName": "Soft state surface"
+      },
+      "dark-bg": {
+        "role": "neutral",
+        "displayName": "Dark Warm background"
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Dark Control surface"
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Dark Primary ink"
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Dark Secondary ink"
+      },
+      "dark-line": {
+        "role": "neutral",
+        "displayName": "Dark Divider"
+      },
+      "dark-accent": {
+        "role": "primary",
+        "displayName": "Dark Raspberry accent"
+      },
+      "dark-tint": {
+        "role": "primary",
+        "displayName": "Dark Selection tint"
+      },
+      "dark-soft": {
+        "role": "neutral",
+        "displayName": "Dark Soft state surface"
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Collection title at wide and panel widths."
+      },
+      "headline-compact": {
+        "displayName": "Headline Compact",
+        "purpose": "Collection title at phone width."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Inspector, dialog and empty-state headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Scoped kit base text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form and source labels."
+      },
+      "recording-title": {
+        "displayName": "Recording Title",
+        "purpose": "Exact recording name."
+      },
+      "metadata": {
+        "displayName": "Metadata",
+        "purpose": "Artist, album, duration and supporting detail."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Primary, secondary and quiet action labels."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "control-state",
+        "value": ".12s ease",
+        "purpose": "Button background/press and icon-button background/text transitions."
+      },
+      {
+        "name": "artwork-hover",
+        "value": ".18s ease",
+        "purpose": "Small artwork lift; disabled by reduced-motion preference."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition:none!important;animation:none!important;scroll-behavior:auto!important",
+        "purpose": "Applied to kit elements and pseudo-elements when reduced motion is requested."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-detail",
+        "value": "min-width: 1180px"
+      },
+      {
+        "name": "panel",
+        "value": "max-width: 1050px"
+      },
+      {
+        "name": "phone",
+        "value": "max-width: 680px"
+      }
+    ],
+    "focus": {
+      "outline": "2px solid var(--g-focus)",
+      "offset": "3px",
+      "detailHeadingOffset": "4px"
+    },
+    "depth": {
+      "strategy": "Tonal surfaces and fine dividers; no component box-shadow tokens.",
+      "modalBackdrop": "rgb(0 0 0/.45)"
+    },
+    "themeBindings": {
+      "background": [
+        "--color-background-primary",
+        "--bg"
+      ],
+      "surface": [
+        "--color-background-secondary",
+        "--surface"
+      ],
+      "ink": [
+        "--color-text-primary",
+        "--ink"
+      ],
+      "muted": [
+        "--color-text-secondary",
+        "--muted"
+      ],
+      "line": [
+        "--color-border-primary",
+        "--line"
+      ],
+      "accent": [
+        "--accent"
+      ],
+      "tint": [
+        "--tint"
+      ],
+      "soft": [
+        "--soft"
+      ],
+      "darkTokens": {
+        "bg": "dark-bg",
+        "surface": "dark-surface",
+        "ink": "dark-ink",
+        "muted": "dark-muted",
+        "line": "dark-line",
+        "accent": "dark-accent",
+        "tint": "dark-tint",
+        "soft": "dark-soft"
+      },
+      "primaryDarkText": "dark-bg"
+    },
+    "scope": {
+      "owner": "ui",
+      "productTruth": "../PRODUCT.md",
+      "surfaceContract": "../.impeccable/surfaces/ui-workspace-ts.md",
+      "sourceFiles": [
+        "theme.css",
+        "kit.css",
+        "template.html",
+        "gallery.html",
+        "components/Button.svelte",
+        "components/IconButton.svelte",
+        "components/Artwork.svelte",
+        "components/CollectionTile.svelte",
+        "components/TrackRow.svelte",
+        "components/ConnectionStatus.svelte",
+        "components/PlayerBar.svelte",
+        "CollectionBrowser.svelte",
+        "QueuePanel.svelte",
+        "Gallery.svelte",
+        "collection-controller.ts",
+        "playback-controller.ts",
+        "music-model.ts",
+        "player-state.ts",
+        "workspace.ts",
+        "../scripts/build.mjs",
+        "../scripts/build-gallery.mjs"
+      ],
+      "excluded": [
+        "Repository-root website DESIGN.md and .impeccable/design.json",
+        "Legacy imperative Studio form styling, including eyebrows"
+      ],
+      "rasterProvenance": "../assets/examples/PROVENANCE.md",
+      "tokenBoundary": "Only observed app primitives are recorded. No synthesized tonal ramps or replacement palette are introduced."
+    },
+    "behavior": {
+      "identity": "source plus ID; no inferred catalog substitution",
+      "selection": "explicit local handoff to Studio, maximum 200; no implicit playback or Apple Music write",
+      "queue": "Cider plus advertised get_playback_queue; later profile exclusion closes the dialog; read-only current order",
+      "footer": "ResizeObserver sets --groovectl-player-height; library clearance adds 24px and tray gap adds 8px",
+      "unknowns": "Metadata, time, volume and unsupported detail remain explicit unknown/unavailable states"
+    },
+    "qualification": {
+      "documentationEvidence": "Current source and supplied synthetic-host screenshots; not a new test receipt.",
+      "finishReview": "Parent-supplied scoped ship verdict after queue/process fixes; no material visual defects reported.",
+      "cardComparison": "Unqualified: no QUALITY BAR card or concept roll for this user-pinned code-led extension.",
+      "actualHost": "Real ChatGPT/Codex expanded MCP App host and live account/player paths remain separately qualified.",
+      "screenshots": [
+        "desktop-final.png",
+        "windows-dark-phone.png",
+        "gallery-shared-theme.png"
+      ],
+      "notCanonized": "Legacy Studio eyebrows remain outside reusable app rules."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Button.svelte primary variant. Explicit handoff; the preview has no account or player connection.",
+      "html": "<div class=\"ds-kit\"><button type=\"button\" class=\"ds-button ds-primary\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"M12 5v14\"/></svg>Use in Studio</button></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit .ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;border:1px solid var(--g-line);border-radius:8px;padding:8px 13px;background:var(--g-surface);color:var(--g-ink);font-size:13px;font-weight:650;white-space:nowrap;transition:background .12s ease,transform .12s ease}.ds-kit .ds-button:hover:not(:disabled){background:var(--g-soft)}.ds-kit .ds-button:active:not(:disabled){transform:translateY(1px)}.ds-kit .ds-primary{background:var(--g-accent);border-color:transparent;color:#fff}.ds-kit .ds-primary:hover:not(:disabled){background:color-mix(in srgb,var(--g-accent) 87%,#000)}.ds-read-error .ds-button{margin-top:10px}.ds-queue-dialog>.ds-button{margin-top:18px}@media(max-width:680px){.ds-selection-tray .ds-button{padding:8px 10px}}:host-context([data-theme=dark]) .ds-kit .ds-primary{color:#191919}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Button.svelte neutral variant and disabled pending state.",
+      "html": "<div class=\"ds-kit\"><button type=\"button\" class=\"ds-button\">Refresh</button> <button type=\"button\" class=\"ds-button\" disabled aria-busy=\"true\">Reading…</button></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit .ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;border:1px solid var(--g-line);border-radius:8px;padding:8px 13px;background:var(--g-surface);color:var(--g-ink);font-size:13px;font-weight:650;white-space:nowrap;transition:background .12s ease,transform .12s ease}.ds-kit .ds-button:hover:not(:disabled){background:var(--g-soft)}.ds-kit .ds-button:active:not(:disabled){transform:translateY(1px)}.ds-read-error .ds-button{margin-top:10px}.ds-queue-dialog>.ds-button{margin-top:18px}@media(max-width:680px){.ds-selection-tray .ds-button{padding:8px 10px}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}"
+    },
+    {
+      "name": "Quiet action",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Button.svelte container-free secondary action.",
+      "html": "<div class=\"ds-kit\"><button type=\"button\" class=\"ds-button ds-quiet\">Collection</button></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit .ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;border:1px solid var(--g-line);border-radius:8px;padding:8px 13px;background:var(--g-surface);color:var(--g-ink);font-size:13px;font-weight:650;white-space:nowrap;transition:background .12s ease,transform .12s ease}.ds-kit .ds-button:hover:not(:disabled){background:var(--g-soft)}.ds-kit .ds-button:active:not(:disabled){transform:translateY(1px)}.ds-kit .ds-quiet{background:transparent;border-color:transparent}.ds-read-error .ds-button{margin-top:10px}.ds-queue-dialog>.ds-button{margin-top:18px}@media(max-width:680px){.ds-selection-tray .ds-button{padding:8px 10px}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}"
+    },
+    {
+      "name": "Icon action",
+      "kind": "button",
+      "refersTo": "icon-button",
+      "description": "IconButton.svelte labeled SVG with pressed state.",
+      "html": "<div class=\"ds-kit\"><button type=\"button\" class=\"ds-icon-button\" aria-label=\"Selected recording example\" title=\"Selected recording example\" aria-pressed=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></button></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit .ds-icon-button{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;min-width:36px;padding:0;border:0;border-radius:7px;background:transparent;color:var(--g-muted);transition:background .12s ease,color .12s ease}.ds-kit .ds-icon-button:hover:not(:disabled){background:var(--g-soft);color:var(--g-ink)}.ds-kit .ds-icon-button[aria-pressed=true]{background:var(--g-tint);color:var(--g-accent)}.ds-view-toggle .ds-icon-button{height:32px;width:32px;min-width:32px}@media(max-width:680px){.ds-kit .ds-icon-button{min-width:40px;width:40px;height:40px}.ds-view-toggle .ds-icon-button{min-width:32px;width:32px;height:32px}.ds-transport .ds-icon-button{width:32px;min-width:32px}.ds-player-tools .ds-icon-button{height:30px;width:30px;min-width:30px}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}"
+    },
+    {
+      "name": "Loaded collection filter",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "CollectionBrowser.svelte native search with decorative inset icon and accessible label.",
+      "html": "<div class=\"ds-kit\"><label class=\"ds-search\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/></svg><span class=\"ds-sr-only\">Filter loaded collection</span><input type=\"search\" placeholder=\"Filter loaded items\" maxlength=\"200\"/></label></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit input,.ds-kit select{color:var(--g-ink);background:var(--g-surface);border:1px solid var(--g-line);border-radius:8px;min-height:38px;padding:7px 10px;width:auto}.ds-kit label{font-size:13px;font-weight:500;margin:0;color:var(--g-muted)}.ds-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.ds-search{display:flex;align-items:center;gap:6px;flex:1;min-width:150px;position:relative}.ds-search svg{position:absolute;left:11px;color:var(--g-muted);pointer-events:none}.ds-search input{width:100%;padding-left:35px!important;min-width:0}.ds-search input::placeholder{color:var(--g-muted);opacity:1}@media(max-width:680px){.ds-search{flex:1}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}.ds-search{max-width:300px}"
+    },
+    {
+      "name": "Collection category",
+      "kind": "nav",
+      "refersTo": "category-selected",
+      "description": "CollectionBrowser.svelte current category; phone uses a labeled native select.",
+      "html": "<div class=\"ds-kit\"><aside class=\"ds-library-rail\"><nav aria-label=\"Collection type\"><button type=\"button\" aria-current=\"page\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M16 5H3\"/><path d=\"M11 12H3\"/><path d=\"M11 19H3\"/><path d=\"M21 16V5\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>Playlists</button><button type=\"button\">Songs</button></nav></aside><label class=\"ds-mobile-categories\">Collection<select><option>Playlists</option><option>Songs</option></select></label></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit input,.ds-kit select{color:var(--g-ink);background:var(--g-surface);border:1px solid var(--g-line);border-radius:8px;min-height:38px;padding:7px 10px;width:auto}.ds-kit label{font-size:13px;font-weight:500;margin:0;color:var(--g-muted)}.ds-library-rail{padding:8px 22px 24px 0;border-right:1px solid var(--g-line)}.ds-library-rail nav{display:flex;flex-direction:column;gap:4px;width:100%;margin:0}.ds-library-rail nav button{display:flex;align-items:center;gap:10px;background:transparent;border:0;border-radius:7px;color:var(--g-muted);padding:10px;min-height:42px;text-align:left;font-size:13px;font-weight:550;white-space:nowrap}.ds-library-rail nav button:hover:not(:disabled){background:var(--g-soft);color:var(--g-ink)}.ds-library-rail nav button[aria-current=page]{background:var(--g-tint);color:var(--g-accent)}.ds-library-rail>p{font-size:12px;line-height:1.7;color:var(--g-muted);margin-top:32px;padding:0 10px}.ds-mobile-categories{display:none}@media(max-width:680px){.ds-library-rail{display:none}.ds-mobile-categories{display:flex;align-items:center;gap:12px;margin-bottom:12px!important}.ds-mobile-categories select{flex:1}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}.ds-library-rail{width:166px}"
+    },
+    {
+      "name": "Collection tile and artwork fallback",
+      "kind": "card",
+      "refersTo": "collection-tile",
+      "description": "CollectionTile.svelte and Artwork.svelte. A single opening action with named fallback instead of invented imagery.",
+      "html": "<div class=\"ds-kit\"><button type=\"button\" class=\"ds-collection-tile\" aria-label=\"Open Open Windows\" aria-current=\"true\"><span class=\"ds-artwork\" aria-hidden=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"44\" height=\"44\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M6 12c0-1.7.7-3.2 1.8-4.2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M18 12c0 1.7-.7 3.2-1.8 4.2\"/></svg><span class=\"ds-artwork-letter\">O</span></span><strong>Open Windows</strong><span>Playlist</span></button></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit .ds-collection-tile{border:0;padding:0;min-width:0;background:transparent;display:flex;flex-direction:column;text-align:left;border-radius:9px;color:var(--g-ink);width:100%}.ds-collection-tile>strong{display:block;width:100%;font-size:13px;font-weight:650;margin-top:9px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.ds-collection-tile>span:last-child{width:100%;font-size:12px;color:var(--g-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.ds-collection-tile[aria-current=true] .ds-artwork{outline:2px solid var(--g-accent);outline-offset:3px}.ds-collection-tile:hover .ds-artwork{transform:translateY(-2px)}.ds-artwork{aspect-ratio:1;width:100%;display:flex;position:relative;align-items:center;justify-content:center;background:var(--g-soft);color:var(--g-muted);border-radius:7px;overflow:hidden;transition:transform .18s ease;flex-shrink:0}.ds-artwork>img{display:block;width:100%;height:100%;object-fit:cover}.ds-artwork-letter{position:absolute;bottom:8%;right:11%;font-size:12px;font-weight:600;opacity:.65}.ds-artwork-row .ds-artwork-letter,.ds-artwork-player .ds-artwork-letter{display:none}.ds-collection-list-item>span:not(.ds-artwork){flex:1;min-width:0}.ds-playlist-header>.ds-artwork{width:100px;height:100px}.ds-playlist-header span:not(.ds-artwork){font-size:11px;color:var(--g-muted)}.ds-now span:not(.ds-artwork){display:block;font-size:11px;color:var(--g-muted);white-space:nowrap;text-overflow:ellipsis;overflow:hidden}@media(max-width:680px){.ds-playlist-header>.ds-artwork{width:85px;height:85px}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}.ds-kit .ds-collection-tile{width:160px}"
+    },
+    {
+      "name": "Selected recording row",
+      "kind": "custom",
+      "refersTo": "recording-selected",
+      "description": "TrackRow.svelte exact metadata, unknown duration and independent selection action. All sample content is synthetic.",
+      "html": "<div class=\"ds-kit\"><ol class=\"ds-recording-list\"><li class=\"ds-track-row ds-selected\"><span class=\"ds-track-index\">1</span><div class=\"ds-track-copy\"><strong title=\"A House in the Trees\">A House in the Trees</strong><span>Mara Vale · Afternoon Light</span></div><span class=\"ds-track-time\">—</span><button type=\"button\" class=\"ds-icon-button\" aria-label=\"Deselect A House in the Trees for Studio\" aria-pressed=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></button></li></ol></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit .ds-icon-button{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;min-width:36px;padding:0;border:0;border-radius:7px;background:transparent;color:var(--g-muted);transition:background .12s ease,color .12s ease}.ds-kit .ds-icon-button:hover:not(:disabled){background:var(--g-soft);color:var(--g-ink)}.ds-kit .ds-icon-button[aria-pressed=true]{background:var(--g-tint);color:var(--g-accent)}.ds-view-toggle .ds-icon-button{height:32px;width:32px;min-width:32px}.ds-collection-list,.ds-recording-list{list-style:none;margin:0;padding:0}.ds-track-row{display:flex;align-items:center;gap:10px;min-height:66px;border-bottom:1px solid var(--g-line);padding:8px 3px;border-radius:0}.ds-track-row.ds-selected{background:var(--g-tint)}.ds-track-index{width:20px;text-align:center;flex-shrink:0;font-size:11px;color:var(--g-muted);font-variant-numeric:tabular-nums}.ds-track-copy{min-width:0;flex:1}.ds-track-copy>strong{font-size:13px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-track-copy>span{display:block;font-size:11px;color:var(--g-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-track-time{font-size:11px;color:var(--g-muted);font-variant-numeric:tabular-nums}@media(max-width:1050px){.ds-has-detail .ds-recording-list .ds-track-source{display:initial}}@media(max-width:680px){.ds-kit .ds-icon-button{min-width:40px;width:40px;height:40px}.ds-view-toggle .ds-icon-button{min-width:32px;width:32px;height:32px}.ds-track-row{gap:6px}.ds-transport .ds-icon-button{width:32px;min-width:32px}.ds-player-tools .ds-icon-button{height:30px;width:30px;min-width:30px}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}"
+    },
+    {
+      "name": "Capability-limited player",
+      "kind": "custom",
+      "refersTo": "player-bar",
+      "description": "PlayerBar.svelte presentation when metadata and volume are absent. The static preview has no adapter and does not establish a host capability.",
+      "html": "<div class=\"ds-kit\"><section class=\"ds-player\" aria-label=\"Music player\"><div class=\"ds-now\"><span class=\"ds-artwork ds-artwork-player\" aria-hidden=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M6 12c0-1.7.7-3.2 1.8-4.2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M18 12c0 1.7-.7 3.2-1.8 4.2\"/></svg></span><div><strong>Track details unavailable</strong><span>The player did not return track details.</span><small>Paused on Apple Music for Windows</small></div></div><div class=\"ds-transport\"><div class=\"ds-transport-buttons\"><button type=\"button\" class=\"ds-play-toggle\" aria-label=\"Start or resume playback\" disabled><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\"/></svg></button></div><div class=\"ds-timeline\"><span>—</span><span class=\"ds-time-unknown\">Time unavailable</span><span>—</span></div></div><div class=\"ds-player-tools\"><span class=\"ds-volume-unavailable\">Volume unavailable</span></div></section></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-collection-tile[aria-current=true] .ds-artwork{outline:2px solid var(--g-accent);outline-offset:3px}.ds-collection-tile:hover .ds-artwork{transform:translateY(-2px)}.ds-artwork{aspect-ratio:1;width:100%;display:flex;position:relative;align-items:center;justify-content:center;background:var(--g-soft);color:var(--g-muted);border-radius:7px;overflow:hidden;transition:transform .18s ease;flex-shrink:0}.ds-artwork>img{display:block;width:100%;height:100%;object-fit:cover}.ds-artwork-player{width:52px;height:52px;border-radius:7px}.ds-artwork-row .ds-artwork-letter,.ds-artwork-player .ds-artwork-letter{display:none}.ds-collection-list-item>span:not(.ds-artwork){flex:1;min-width:0}.ds-playlist-header>.ds-artwork{width:100px;height:100px}.ds-playlist-header span:not(.ds-artwork){font-size:11px;color:var(--g-muted)}.ds-player{display:grid;grid-template-columns:minmax(180px,1fr) minmax(170px,1fr) minmax(135px,1fr);gap:12px 25px;align-items:center;padding:12px 28px;background:var(--g-surface);border-top:1px solid var(--g-line)}.ds-now{display:flex;align-items:center;gap:12px;min-width:0}.ds-now>div{min-width:0}.ds-now strong{display:block;font-size:12px;font-weight:650;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.ds-now span:not(.ds-artwork){display:block;font-size:11px;color:var(--g-muted);white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.ds-now small{display:block;color:var(--g-muted);font-size:10px;margin-top:4px}.ds-transport{min-width:0}.ds-transport-buttons{display:flex;gap:9px;justify-content:center;align-items:center}.ds-kit .ds-play-toggle{width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--g-ink);color:var(--g-bg);border:0;border-radius:50%;padding:0}.ds-kit .ds-play-toggle:hover:not(:disabled){opacity:.8}.ds-timeline{display:flex;align-items:center;gap:8px;margin-top:3px;font-size:10px;color:var(--g-muted);font-variant-numeric:tabular-nums}.ds-timeline input{width:100%;min-width:0}.ds-time-unknown{flex:1;text-align:center;font-size:10px}.ds-player-tools{display:flex;align-items:center;gap:8px;justify-content:flex-end}.ds-volume-unavailable{font-size:10px;color:var(--g-muted)}@media(max-width:1050px){.ds-player{grid-template-columns:minmax(130px,1fr) minmax(150px,1fr);gap:10px 18px;padding:12px 20px}.ds-player-tools{grid-column:1 / -1;justify-content:flex-end;margin-top:-4px}.ds-player-tools .ds-volume{max-width:120px}.ds-player .ds-artwork-player{width:45px;height:45px}}@media(max-width:680px){.ds-playlist-header>.ds-artwork{width:85px;height:85px}.ds-player{grid-template-columns:minmax(0,1fr) auto;padding:10px 16px;gap:6px 10px}.ds-now{gap:9px}.ds-now small{font-size:9px}.ds-now .ds-artwork-player{width:38px;height:38px}.ds-now>div{max-width:100%}.ds-transport-buttons{gap:0}.ds-transport .ds-icon-button{width:32px;min-width:32px}.ds-transport .ds-play-toggle{width:34px;height:34px}.ds-timeline{grid-column:1/-1;display:none}.ds-player-tools{grid-column:1/-1;gap:8px;min-height:28px;margin-top:0}.ds-player-tools .ds-icon-button{height:30px;width:30px;min-width:30px}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}"
+    },
+    {
+      "name": "Read-only queue dialog",
+      "kind": "custom",
+      "refersTo": "queue-dialog",
+      "description": "QueuePanel.svelte empty state. The app supplies showModal, tool gating and real dialog focus behavior; the open preview only illustrates its interior.",
+      "html": "<div class=\"ds-kit\"><dialog open class=\"ds-kit ds-queue-dialog\" aria-labelledby=\"ds-queue-title\"><div class=\"ds-queue-heading\"><h2 id=\"ds-queue-title\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M16 5H3\"/><path d=\"M11 12H3\"/><path d=\"M11 19H3\"/><path d=\"M21 16V5\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>Cider queue</h2><button type=\"button\" class=\"ds-icon-button\" aria-label=\"Close queue\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg></button></div><p>Current player order. This view does not change your queue.</p><p>Cider returned an empty queue.</p><button type=\"button\" class=\"ds-button\">Refresh queue</button></dialog></div>",
+      "css": ".ds-kit{--g-bg:var(--color-background-primary,var(--bg,#faf9f6));--g-surface:var(--color-background-secondary,var(--surface,#fff));--g-ink:var(--color-text-primary,var(--ink,#24231f));--g-muted:var(--color-text-secondary,var(--muted,#6d6a63));--g-line:var(--color-border-primary,var(--line,#dedbd4));--g-accent:var(--accent,#a82646);--g-tint:var(--tint,#f6e9ed);--g-soft:var(--soft,#eeece6);--g-radius:10px;--g-focus:var(--accent,#a82646);font-family:var(--font-sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",sans-serif);color:var(--g-ink);font-size:14px;line-height:1.5;accent-color:var(--g-accent)}.ds-kit :focus-visible{outline:2px solid var(--g-focus);outline-offset:3px}.ds-kit button,.ds-kit input,.ds-kit select{font:inherit}.ds-kit button{letter-spacing:normal;cursor:pointer}.ds-kit button:disabled{cursor:default;opacity:.42}.ds-kit h1,.ds-kit h2,.ds-kit p{margin:0}.ds-kit svg{flex-shrink:0;vertical-align:middle}.ds-kit .ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;border:1px solid var(--g-line);border-radius:8px;padding:8px 13px;background:var(--g-surface);color:var(--g-ink);font-size:13px;font-weight:650;white-space:nowrap;transition:background .12s ease,transform .12s ease}.ds-kit .ds-button:hover:not(:disabled){background:var(--g-soft)}.ds-kit .ds-button:active:not(:disabled){transform:translateY(1px)}.ds-kit .ds-icon-button{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;min-width:36px;padding:0;border:0;border-radius:7px;background:transparent;color:var(--g-muted);transition:background .12s ease,color .12s ease}.ds-kit .ds-icon-button:hover:not(:disabled){background:var(--g-soft);color:var(--g-ink)}.ds-kit .ds-icon-button[aria-pressed=true]{background:var(--g-tint);color:var(--g-accent)}.ds-view-toggle .ds-icon-button{height:32px;width:32px;min-width:32px}.ds-read-error .ds-button{margin-top:10px}.ds-queue-dialog{background:var(--g-bg);color:var(--g-ink);border:0;border-radius:12px;width:min(560px,calc(100% - 28px));max-height:80dvh;padding:24px}.ds-queue-dialog::backdrop{background:rgb(0 0 0/.45)}.ds-queue-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.ds-queue-heading h2{display:flex;align-items:center;gap:10px}.ds-queue-dialog>p{color:var(--g-muted);font-size:13px;margin:12px 0}.ds-queue-dialog>.ds-button{margin-top:18px}@media(max-width:680px){.ds-selection-tray .ds-button{padding:8px 10px}.ds-kit .ds-icon-button{min-width:40px;width:40px;height:40px}.ds-view-toggle .ds-icon-button{min-width:32px;width:32px;height:32px}.ds-transport .ds-icon-button{width:32px;min-width:32px}.ds-player-tools .ds-icon-button{height:30px;width:30px;min-width:30px}.ds-queue-dialog{padding:20px 16px}}@media(prefers-reduced-motion:reduce){.ds-kit *,.ds-kit *::before,.ds-kit *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}.ds-queue-dialog{position:relative;margin:0}.ds-kit h2{font-size:20px;line-height:1.25;letter-spacing:-.02em}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A collection becomes material for a mixtape",
+    "overview": "Groovectl’s app kit makes exact recordings easy to inspect, select and carry into Studio. It inherits the compact wordmark, raspberry selection and host-aware neutral surfaces already used by the app. System UI type, Lucide line icons, square artwork and aligned rows keep a music collection readable at desktop, panel and phone widths.\n\nThis document records the implemented Svelte slice in ui/components, CollectionBrowser.svelte, QueuePanel.svelte and kit.css. It does not replace the website system in the repository-root DESIGN.md. Studio’s existing imperative forms remain outside this migration; their older eyebrow styling and larger heading scale are not reusable kit rules. The account-free gallery uses the same components with synthetic music and actions.",
+    "keyCharacteristics": [
+      "Raspberry marks selection, focus and the primary handoff action.",
+      "Neutral surfaces, fine dividers and spacing organize content without raised cards.",
+      "Recording source identity, selection and playback remain separate.",
+      "The optional inspector and persistent player adapt to available width and capabilities."
+    ],
+    "rules": [
+      {
+        "name": "The Selection Rule",
+        "body": "Selection uses the accent and tint together, with a check, current-state attribute or outline as an additional cue. Color alone does not carry the selected state.",
+        "section": "colors"
+      },
+      {
+        "name": "The Measured Footer Rule",
+        "body": "Reserve space from the observed footer height. Keep the selection tray above the player and keep keyboard targets clear of the sticky header and fixed footer.",
+        "section": "layout"
+      },
+      {
+        "name": "The Exact Recording Rule",
+        "body": "Keep source plus ID intact when a recording moves to Studio. Browsing, opening details and selecting a recording do not request playback or an Apple Music write.",
+        "section": "components"
+      },
+      {
+        "name": "The Capability Rule",
+        "body": "Render actionable controls from the current player and tool capabilities. Missing metadata, time, volume or resource relationships remain explicit unavailable states.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do reuse the Svelte controls and scoped kit styles for new app surfaces.",
+      "Do keep the reading source, recording identity and controlled player visible in their appropriate contexts.",
+      "Do keep selection and targeted playback as separate labeled actions.",
+      "Do preserve keyboard focus, reduced motion and measured player clearance at narrow widths.",
+      "Do use the original gallery cover with its existing provenance and label synthetic data and actions.",
+      "Do qualify the actual MCP App host and real player paths separately from source checks and the synthetic gallery."
+    ],
+    "donts": [
+      "Don’t import the website’s display typography or Studio’s legacy eyebrows into the kit.",
+      "Don’t replace a library-only recording with a catalog candidate to make a control available.",
+      "Don’t invent artwork, metadata, duration, volume, connected status or a completed account action.",
+      "Don’t expose Cider queue access when the current profile lacks the queue tool.",
+      "Don’t claim a QUALITY BAR comparison, actual-host qualification or release readiness from this documentation."
+    ]
+  }
+}

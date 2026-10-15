@@ -1,6 +1,6 @@
 # Library and player dashboard: proposed next cycle
 
-Planning brief, October 15, 2026. The user confirmed **polished Music.app/Cider control first**, keeping Playlist Studio central and Library a first-class destination. This is a proposal for the next UI build, not an implemented dashboard, an approved visual comp or a release receipt.
+Working brief, October 15, 2026. The user confirmed **polished Music.app/Cider control first**, then selected the **Collection browser** structure. Its first Svelte Library/player slice is implemented in source; the installed/public prerelease remains 0.5.2. This document also contains later scope, not a claim that every screen or live path is qualified. See [UI kit](../ui-kit.md) for implemented boundaries.
 
 ## Job, audience and outcome
 
@@ -18,7 +18,7 @@ Success means finding an album/playlist, seeing the exact recording and its sour
 - “Ask about this” passes selected resource identities, visible selection scope and a short request to the existing chat. “Use in Studio” updates a local draft/selection; it does not silently create a playlist or start a conversation.
 - Global opening restores the last relevant app route; a fresh conversation opens Studio. An explicit deep link wins. Device/player selection must reflect real backend routing; the current server binds its selected player at startup, so a decorative device switcher would be misleading.
 
-## Library composition options to confirm
+## Confirmed Library composition
 
 These share the same product identity and component system. They vary structure, not palette.
 
@@ -26,7 +26,7 @@ These share the same product identity and component system. They vary structure,
 2. **Listening desk:** selected album/playlist and its tracks lead; a compact collection browser sits alongside. Strong for focused listening, less efficient for scanning a large library.
 3. **Cover shelves:** recently added and selected collection shelves lead into full detail routes; library categories stay compact. Strong for casual rediscovery, but needs a clear all-items path and truthful pagination.
 
-The recommendation is the collection browser. We have not selected a visual comp or replaced the current app in this planning checkpoint. Preserve Groovectl's recognizable wordmark, raspberry selection/action role and host-aware light/dark surfaces. Use artwork as content, not a generic animated backdrop. Familiar music controls should work before decorative motion.
+Justin selected option 1, the collection browser, through the structured question. The implementation extends the existing app with code-led components and preserves Studio. Preserve Groovectl's recognizable wordmark, raspberry selection/action role and host-aware light/dark surfaces. Use artwork as content. Familiar music controls should work before decorative motion.
 
 ## Screens and existing tool coverage
 

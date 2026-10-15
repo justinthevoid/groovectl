@@ -5,6 +5,7 @@ Groovectl has no hosted music-account backend, built-in usage analytics or telem
 ## Data flows
 
 - Apple receives the catalog/account API requests needed for tools you call. Native Music.app and Windows media-session operations use the local player. Cider receives authenticated requests on loopback.
+- The collection browser keeps at most 1,000 loaded items and a 200-recording selection in its app session. Supported playback state refreshes every 15 seconds while the document is visible, with one read in flight. Artwork loads directly from Apple's mzstatic.com CDN with no referrer; arbitrary metadata URLs are refused. Browsing, selecting and filtering do not start music or write to the library.
 - Your agent/MCP client receives requested tool results, potentially including library, Replay, preference and playlist data. Its own privacy and retention rules apply.
 - The explicitly selected image provider receives the creative prompt. CLI routes use the CLI's local account; BYOK routes use the configured provider API. Groovectl does not send the whole library to an image provider or automatically switch to another provider.
 

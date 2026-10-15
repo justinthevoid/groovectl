@@ -1,6 +1,16 @@
-# Groovectl UI kit plan
+# Groovectl UI kit
 
-Proposed implementation scope, October 15, 2026. There is not yet a shipped reusable component kit. The current app is a bundled TypeScript MCP App; the website has a separate observed design system. This plan makes their shared identity reusable without pretending that the website's editorial layout is a music-application shell.
+Source implementation, October 15, 2026. The first reusable Svelte 5 slice now powers Library and the player inside the existing TypeScript MCP App. The installed/public prerelease remains 0.5.2 until a separate release checkpoint. The website retains its separate design system; Studio's existing forms and write flows are preserved.
+
+## Implemented slice
+
+`ui/components/` owns Button, IconButton, Artwork, CollectionTile, TrackRow, ConnectionStatus and PlayerBar. `CollectionBrowser.svelte` combines them into the selected collection-browser structure; `QueuePanel.svelte` provides a read-only Cider queue dialog with native focus handling. Pure recording normalization and collection/playback controllers remain independent of Svelte.
+
+Library reads API playlists, songs, albums, artists and recently added pages, or Music.app playlists when that adapter is selected. Grid/list, loaded-item filter/sort and selection persist across destination changes. It loads 100 API resources at a time, up to 1,000 per app session; playlist detail reads at most 2,000 recordings and initially renders 100 rows. Selection carries at most 200 exact source/ID pairs into the existing Studio, preserving the brief and refusing to alter a sequence with listening-story constraints. It does not create a playlist or start playback.
+
+The persistent player consumes observed state and live capabilities. Previous/next, one play/pause action, time/seek and volume are enabled only when supported. Missing time/volume stay unknown. Commands use adapter readback, with no automatic command retry. Visible documents refresh status every 15 seconds; full workspace histories are not polled. Queue availability follows the negotiated tool profile. Artwork URLs are restricted to Apple's CDN, with named fallbacks.
+
+Build the account-free gallery with `bun run build:gallery /absolute/output-directory`, after `bun install --frozen-lockfile`. Open the generated `gallery.html` through an isolated static server. It uses the actual components, synthetic recordings and an original example cover; it has no account connection. `node ui/build-harness.mjs /absolute/output-directory` additionally builds the synthetic MCP Apps host after `bun run build`. These previews do not qualify the real ChatGPT/Codex host.
 
 ## Implementation recommendation
 
@@ -10,7 +20,7 @@ Use native buttons/inputs where they suffice, and selectively adopt [Bits UI](ht
 
 Use a small, explicitly imported subset of [Lucide's Svelte icons](https://lucide.dev/guide/svelte). The current official package is `@lucide/svelte`; pin its reviewed version during implementation rather than installing an old package name from memory. Preserve its [ISC notices](https://lucide.dev/license). The OpenAI [UI guidelines](https://developers.openai.com/plugins/concepts/ui-guidelines) provide an optional host UI kit and Figma library as reference; the Groovectl kit is our own music-specific implementation.
 
-No dependencies or framework migration are introduced by this planning document.
+The source pins Svelte 5.57.2 and `@lucide/svelte` 1.57.0, with bundled MIT/ISC notices. Native controls suffice for this slice; Bits UI remains an option when a concrete menu/combobox interaction needs it. The broader component tables below are target coverage, not a claim that all variants or Studio components have migrated.
 
 ## Layers
 

@@ -43,7 +43,7 @@ export function buildServer(
 		},
 	);
 	const resourceMeta = {
-		ui: { csp: { connectDomains: [], resourceDomains: [] } },
+		ui: { csp: { connectDomains: [], resourceDomains: ["https://*.mzstatic.com"] } },
 		"openai/ui": {
 			preferredDisplayMode: "fullscreen",
 			availableDisplayModes: ["inline", "fullscreen"],

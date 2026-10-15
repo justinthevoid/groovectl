@@ -28,6 +28,7 @@ jobs:
       - run: bun run check
       - run: bun run build
       - run: bun run test
+      - run: node scripts/build-gallery.mjs "${{ runner.temp }}/groovectl-gallery"
       - run: bun run package:plugin -- --archive ${{ runner.temp }}/groovectl-plugin.zip
       - run: npm pack --ignore-scripts --pack-destination ${{ runner.temp }}
       - run: bun run preflight

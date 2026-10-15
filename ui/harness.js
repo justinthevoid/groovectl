@@ -66,9 +66,12 @@ const state = {
 		running: true,
 		state: "paused",
 		volume: 30,
-		selected_player: "native",
+		selected_player: "cider",
+ position: 42,
+ capabilities: { available: true, actions: ["play", "pause", "previous", "next", "volume", "seek"] },
 		track: {
-			name: "A House in the Trees",
+			duration_ms: 220000,
+ name: "A House in the Trees",
 			artist: "Mara Vale",
 			album: "Afternoon Light",
 		},
@@ -166,6 +169,11 @@ if (parameters.get("profile") === "catalog") {
 		capabilities: { available: false, actions: [] },
 	};
 }
+if (parameters.get("profile") === "curator") {
+ state.tool_profile = "curator";
+ state.available_tools = ["open_music", "get_music_workspace", "get_playlist_studio", "browse_api_library", "get_playlist", "search_catalog", "save_listening_brief", "inspect_playlist_plan"];
+ state.player = { running:false, state:"profile-limited", selected_player:"cider", capabilities:{available:false,actions:[]} };
+}
 if (parameters.get("player") === "windows-empty") {
 	state.player = {
 		running: true,
@@ -220,12 +228,24 @@ const workspace = () => ({
 		.map(summarizePlan),
 	studio: { ...state.studio, drafts: state.studio.drafts.map(summarizeDraft) },
 });
+const callHistory = [];
 bridge.oncalltool = async ({ name, arguments: args }) => {
+	callHistory.push({ name, arguments: args });
+	document.querySelector("#calls").dataset.history = JSON.stringify(callHistory);
 	document.querySelector("#calls").textContent =
 		`${name} ${JSON.stringify(args)}`;
 	let result = state,
 		meta;
-	if (name === "inspect_playlist_plan") {
+	if (name === "get_playback_state") { result = state.player;
+ } else if (name === "get_playback_queue") { result = { player: "cider", tracks: songs, truncated: false };
+ } else if (name === "browse_api_library") {
+  if (parameters.get("collection") === "error") return { isError:true, content:[{type:"text", text:"Synthetic library read failed. Refresh to try again."}] };
+  if (parameters.get("collection") === "slow") await new Promise(resolve => setTimeout(resolve, 2500));
+  const names = ["Open Windows", "Between Stations", "An Evening, Unhurried", "Small Hours", "Field Notes", "The Scenic Route", "風の中の手紙", "Sunday, Elsewhere"];
+  result = { data: parameters.get("collection") === "empty" ? [] : args.type === "songs" ? songs.map(t => ({ id: `i.${t.id}`, type:"library-songs", attributes:{name:t.name, artistName:t.artist, albumName:t.album, durationInMillis:t.duration_ms, playParams:{catalogId:t.id}} })) : names.map((name,i) => ({id:`p.fixture${i}`, type:`library-${args.type === "recently-added" ? "playlists" : args.type}`, attributes:{name, artistName:i % 3 === 0 ? "Mara Vale" : ""} })), ...(args.offset === 0 && parameters.get("collection") === "pages" ? {next:"/v1/me/library/playlists?offset=100"} : {}) };
+ } else if (name === "list_playlists") { result = { playlists: [{id:"0123456789ABCDEF",name:"Local fixture"}] };
+ } else if (name === "get_playlist") { result = { id:args.playlist_id, name:"Open Windows", source:args.source, tracks:songs };
+ } else if (name === "inspect_playlist_plan") {
 		result = state.plans.find((p) => p.plan_id === args.plan_id);
 	} else if (name === "get_playlist_studio") {
 		if (parameters.has("slow-draft"))
@@ -242,8 +262,10 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 		};
 	} else if (name === "control_playback") {
 		if (args.action === "volume") state.player.volume = args.value;
+ else if (args.action === "seek") state.player.position = args.value;
 		else if (args.action === "play") state.player.state = "playing";
 		else if (args.action === "pause") state.player.state = "paused";
+		result = state.player;
 	} else if (name === "apply_music_change")
 		state.plans.find((p) => p.plan_id === args.plan_id).state = "accepted";
 	else if (name === "apply_playlist_plan") {

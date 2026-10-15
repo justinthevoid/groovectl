@@ -1,6 +1,6 @@
 # Architecture and safety contracts
 
-`src/` contains the TypeScript CLI, MCP SDK 2 server, Apple API client, player adapters and curation tools. `native/` contains the optional macOS Swift helper and the Windows media-session script. `ui/workspace.ts` is a TypeScript MCP App using the official OpenAI Extensions SDK. Build output is bundled so a release CLI needs Node 24+ and no Python or npm runtime dependency tree.
+`src/` contains the TypeScript CLI, MCP SDK 2 server, Apple API client, player adapters and curation tools. `native/` contains the optional macOS Swift helper and the Windows media-session script. `ui/workspace.ts` owns the MCP App bridge using the official OpenAI Extensions SDK. Its existing Studio mounts reusable Svelte collection/player components through one connection; the framework-independent controllers preserve typed recording identities and ignore stale reads. App and account-free gallery share `ui/theme.css`. Build output is bundled so a release CLI needs Node 24+ and no Python or npm runtime dependency tree.
 
 The host agent interprets the listening brief and chooses music. Groovectl supplies verified recording metadata, explicit constraints, durable write plans and playback. It makes no second LLM call, invents no BPM/key/energy measurements and does not send library metadata to an audio-feature service.
 
@@ -31,6 +31,10 @@ Story metadata is local, not an Apple playlist feature. A verified write saves i
 Catalog, API-library, native-library and playback namespaces stay explicit. Windows SMTC exposes fewer operations than Music.app or Cider. Unsupported operations fail before a command is sent. Cider’s toggle-only shuffle/repeat endpoints use bounded, serialized read/toggle/read steps. Local players can still be changed by their UI or other software, so concurrent external edits may require inspection.
 
 `get_capabilities` describes the selected player. Profiles (`full`, `catalog`, `curator`, `player`) reduce tool exposure. Linux defaults to the `none` player, an API-only mode that omits playback tools; other hosts can explicitly select it. All tools carry read/write/destructive/network annotations. The UI receives structured results and a restrictive CSP; ordinary MCP clients receive text plus structured data.
+
+Playback read/command results add `selected_player` and `player_capabilities` without replacing raw platform fields. The app uses the adapter's observed command result rather than reading the device twice. Visible app documents poll the small state tool every 15 seconds; simultaneous refreshes are coalesced and stale reads cannot overwrite a later command result. Queue availability follows negotiated tools, independently of the selected player name. Playback failures retain the last observation with an explicit error and no automatic retry.
+
+The collection controller reads 100-item API pages, retains at most 1,000 loaded resources, and initially renders 100 of a playlist's at-most-2,000 recordings. Grid/list, loaded-item sorting/filtering and source-qualified selection stay in the app session. Carrying up to 200 recordings into Studio preserves the brief and existing constraint guards. Library album/artist relationship detail remains a typed backend gap; the UI states that limit instead of substituting catalog IDs. Artwork uses allowlisted Apple CDN URLs; API calls stay on the MCP server.
 
 The local app and configuration are trusted execution surfaces for processes running as the same user. Socket ownership and file modes do not sandbox untrusted code already running under that account. Playlist and song metadata remain untrusted content for the host agent.
 
