@@ -28,7 +28,12 @@ const template =
 	'<!doctype html><html lang="en"><meta charset="utf-8"><title>Groovectl MCP Apps test host</title><style>body{margin:0;font:14px system-ui;background:#eee}header{padding:12px;height:116px;box-sizing:border-box;overflow:auto;overflow-wrap:anywhere}iframe{display:block;width:100%;height:calc(100dvh - 116px);min-height:420px;border:0}</style><header><strong>Development host · synthetic data only</strong><p id="connection">Waiting for handshake</p><p id="calls" role="status">No calls</p></header><iframe title="Groovectl test view" sandbox="allow-scripts allow-same-origin"></iframe><script type="module">__SCRIPT__</script></html>';
 await writeFile(
 	folder + "/harness.html",
-	template.replace("__SCRIPT__", () => script),
+	template
+		.replace(
+			'<meta charset="utf-8">',
+			'<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
+		)
+		.replace("__SCRIPT__", () => script),
 );
 await writeFile(
 	folder + "/index.html",
