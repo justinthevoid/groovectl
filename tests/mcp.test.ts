@@ -52,7 +52,14 @@ for (const modern of [false, true])
 		try {
 			await client.connect(transport);
 			const tools = await client.listTools();
-			assert.equal(tools.tools.length, 51);
+			assert.equal(tools.tools.length, 52);
+			const libraryReader = tools.tools.find((t) => t.name === "inspect_api_library");
+			assert.equal(libraryReader?.annotations?.readOnlyHint, true);
+			const invalidLibrary = await client.callTool({
+				name: "inspect_api_library",
+				arguments: { type: "playlists", id: "p.fixture" },
+			});
+			assert.equal(invalidLibrary.isError, true);
 			assert.ok(tools.tools.some((t) => t.name === "preview_music_change"));
 			assert.ok(tools.tools.some((t) => t.name === "preview_playlist"));
 			const result = await client.callTool({

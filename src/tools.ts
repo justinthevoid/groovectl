@@ -595,6 +595,13 @@ export function createTools(
 		(r) => music.catalog.library(r.type, r.offset),
 	);
 	add(
+		"inspect_api_library",
+		"Read a library album's exact songs or a library artist's albums, 100 per page. Follow next_page only for the same type and ID. Library IDs stay library IDs; this never plays music or writes to your account.",
+		"library",
+		{ type: z.enum(["albums", "artists"]), id, page: z.string().max(2048).optional() },
+		(r) => music.catalog.libraryDetails(r.type, r.id, r.page),
+	);
+	add(
 		"browse_library_folders",
 		"Browse the root or a named library playlist folder, its children or parent. Follow next_page only for that same folder/view. No library writes.",
 		"library",

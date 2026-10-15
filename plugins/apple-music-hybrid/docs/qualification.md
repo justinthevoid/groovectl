@@ -2,6 +2,16 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## 0.6.0-rc.1 collection detail candidate — October 15, 2026
+
+One read-only `inspect_api_library` tool now reads personal-library artist albums and album tracks using Apple's documented relationships. Each request validates resource type, personal authorization and same-resource pagination, returning at most 100 resources. UI details retain library IDs, loaded history and selection; stale responses cannot replace a later detail. No new write or playback operation is introduced.
+
+- VPS Node 24: TypeScript/Svelte checks passed with zero errors/warnings and app/gallery builds passed. The initial 120-test pass used the previous bundle for its two stdio integration cases, so those cases did not qualify this candidate. CI exposed their stale 51-tool inventory assertion; it now requires all 52 tools plus the new reader's read-only annotation and argument validation. Final qualification runs build before tests. Added regressions cover endpoint boundaries, response type/identity, pagination confinement and interrupted nested navigation/retry behavior.
+- Synthetic browser: artist → album → select → back → Studio retained the listening brief and exact library song. Desktop 1280×900, panel 640×900 and phone 390×844 views were inspected; phone width equaled content width. These are development-host receipts, separate from live account and installed-host qualification.
+- Live read-only account check: the candidate loaded nonempty album/artist pages, read a library album's songs and an artist's library albums, and confirmed the expected library resource types. The private receipt contains counts without music titles or IDs. No playback command, personal playlist write or preference change was performed. Multi-page relationship reads remain contract-tested rather than live-qualified.
+- The current chat's expanded-app controller still exposes no app tabs. Actual ChatGPT/Codex interaction remains pending; no repeated restart was requested for the old connection. Candidate package installation, CI and independent finish review are recorded separately when complete.
+- Independent finish review scored two fixes resolved: abandoned parent pagination now restores a settled, retryable artist page, and the direction contract records the authorized extension. The focused seven-case controller suite passed after that correction. Disposition ship covers those fixes; a scrolled artist desktop capture does not establish top-of-page correctness. No card/comp comparison or actual-host qualification is claimed.
+
 ## Collection browser and shared player — unreleased source, October 15, 2026
 
 Justin selected the Collection browser structure. The first Svelte slice implements category browsing, grid/list, playlist inspection, exact-recording selection into the preserved Studio, and the shared player/Cider queue. Its account-free gallery uses the real components with synthetic recordings and an original cover. Public/installed 0.5.2 remains the prior checkpoint.

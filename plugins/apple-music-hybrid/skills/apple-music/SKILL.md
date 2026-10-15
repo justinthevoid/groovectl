@@ -31,6 +31,12 @@ Open_music presents brief → recordings → sequence → cover with a compact p
 The agent can curate from a saved brief, preview the selection, and the user can load
 that plan's sequence from Activity. The dashboard does not autonomously invent music.
 
+Library offers loaded-item filtering, grid/list, and exact-recording selection into
+Studio. Use browse_api_library to find personal-library albums or artists, then
+inspect_api_library with their type and exact ID for album songs or artist albums.
+Follow next_page only for that same resource; each detail page contains at most 100
+items. These reads and selections never start playback or change the account.
+
 Workspace and studio lists contain compact summaries. Use inspect_playlist_plan
 with the selected plan_id for complete recordings, audits and durable write receipts;
 use get_playlist_studio with draft_id for the full saved brief, exclusions, locks and

@@ -1,6 +1,6 @@
 # Groovectl public-release development cycle
 
-This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The user selected the Collection browser. Its first Svelte Library/player slice is implemented in source, prioritizing Music.app/Cider control; installed 0.5.2 remains separate. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
+This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The 0.6.0-rc.1 candidate extends the selected Collection browser with artist/album drill-downs, prioritizing Music.app/Cider control. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
 
 ## Product outcome
 

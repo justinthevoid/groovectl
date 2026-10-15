@@ -86,3 +86,50 @@ test("a failed player write is not replayed or presented as observed success", a
 	await controller.command("seek", 10); assert.equal(writes, 1);
 	assert.match(state.error!, /unavailable/);
 });
+
+test("artist to album drill-down preserves pages, selection, and history across failures and stale reads", async () => {
+	const pending = deferred<unknown>(); let fail = true;
+	const calls: string[] = [];
+	const artist = resourceItem({ id: "r.artist", type: "library-artists", attributes: { name: "Artist" } });
+	const album = { id: "l.album", type: "library-albums", attributes: { name: "Album" } };
+	const controller = new CollectionController(async (name, args) => {
+		calls.push(name);
+		if (args?.type === "artists") return { items: [album], next_page: "artist-next" };
+		if (args?.page) return pending.promise;
+		if (fail) throw new Error("Temporary read failure");
+		return { items: [{ id: "i.library", type: "library-songs", attributes: { name: "Upload", playParams: { catalogId: "123" } } }], next_page: "album-next" };
+	});
+	let state!: CollectionState; controller.subscribe(s => { state = s; });
+	await controller.open(artist); const child = state.detail!.children[0]!;
+	await controller.open(child, true); assert.match(state.detail!.error!, /Temporary/);
+	fail = false; await controller.retryDetail();
+	assert.deepEqual(state.detail!.parents.map(p => p.id), ["r.artist"]);
+	const exact = state.detail!.tracks[0]!; controller.toggle(exact);
+	assert.equal(exact.source, "library-api"); assert.equal(exact.id, "i.library");
+	const next = controller.moreDetail(); controller.back();
+	assert.equal(state.detail!.item.id, "r.artist"); assert.equal(state.detail!.children.length, 1);
+	assert.equal(state.detail!.nextPage, "artist-next");
+	pending.resolve({ items: [], next_page: null }); await next;
+	assert.equal(state.detail!.item.id, "r.artist"); assert.equal(state.selected[0]?.id, "i.library");
+	assert.ok(calls.every(name => name === "inspect_api_library"));
+});
+
+test("opening an album during artist pagination restores a settled parent that can load its next page", async () => {
+	const abandoned = deferred<unknown>(); let pageReads = 0;
+	const artist = resourceItem({ id: "r.artist", type: "library-artists", attributes: { name: "Artist" } });
+	const album = { id: "l.album", type: "library-albums", attributes: { name: "Album" } };
+	const controller = new CollectionController(async (_name, args) => {
+		if (args?.type === "albums") return { items: [], next_page: null };
+		if (!args?.page) return { items: [album], next_page: "artist-next" };
+		return ++pageReads === 1 ? abandoned.promise : { items: [album, { ...album, id: "l.second" }], next_page: null };
+	});
+	let state!: CollectionState; controller.subscribe(s => { state = s; });
+	await controller.open(artist); const child = state.detail!.children[0]!;
+	const oldPage = controller.moreDetail(); assert.equal(state.detail!.loading, true);
+	await controller.open(child, true); controller.back();
+	assert.equal(state.detail!.item.id, artist.id); assert.equal(state.detail!.loading, false);
+	assert.equal(state.detail!.nextPage, "artist-next");
+	await controller.moreDetail(); assert.equal(pageReads, 2); assert.equal(state.detail!.children.length, 2);
+	abandoned.resolve({ items: [], next_page: "obsolete" }); await oldPage;
+	assert.equal(state.detail!.children.length, 2); assert.equal(state.detail!.nextPage, undefined);
+});

@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.6.0-rc.1 — collection browser candidate
 
+- Drill into library artists → albums → exact library songs with one read-only `inspect_api_library` tool. Bound each request to 100 related items and the same resource's validated pagination URL; preserve library-only recordings and loaded back-navigation state.
 - Distinguish unavailable track metadata from stopped playback, name the actual output player and separate catalog/library configuration from player connectivity.
 - Add the first reusable Svelte collection browser and player: paginated Library categories, grid/list, playlist inspector, typed recording selection for Studio, capability-driven playback and a read-only Cider queue. Preserve Studio and existing reviewed writes. Include an account-free component gallery with original example artwork.
 - Preserve raw session fields while adding a shared capability projection to playback reads/commands. Use adapter readback instead of a duplicate state read after each command; respect negotiated queue access.

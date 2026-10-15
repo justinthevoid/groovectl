@@ -41,13 +41,14 @@
  });
  function change(category: Category, source = $controller.source) { query = ''; feedback = ''; loaded = true; void controller.load(category, source); }
  function toggle(track: Recording) { try { controller.toggle(track); feedback = ''; } catch(e) { feedback = e instanceof Error ? e.message : 'Selection failed.'; } }
- async function openItem(item: CollectionItem, target?: EventTarget | null) {
-  returnFocus = target instanceof HTMLElement ? target : undefined;
+ async function openItem(item: CollectionItem, target?: EventTarget | null, nested = false) {
+  if (!nested) returnFocus = target instanceof HTMLElement ? target : undefined;
   detailLimit = 100;
-  const read = controller.open(item);
+  const read = controller.open(item, nested);
   requestAnimationFrame(() => detailHeading?.focus());
   await read;
  }
+ function backDetail() { controller.back(); detailLimit = 100; requestAnimationFrame(() => detailHeading?.focus()); }
  function closeDetail() { controller.close(); requestAnimationFrame(() => returnFocus?.isConnected ? returnFocus.focus() : searchControl?.focus()); }
  function useInStudio() { try { onstudio($controller.selected); controller.clear(); feedback = ''; } catch(e) { feedback = e instanceof Error ? e.message : 'Studio selection could not be added.'; } }
 </script>
@@ -79,9 +80,14 @@
  {#if $controller.detail}
   {@const detail = $controller.detail}
   <aside class="g-collection-detail" aria-label={`${detail.item.name} details`}>
-   <div class="g-detail-top"><Button variant="quiet" onclick={closeDetail}><ArrowLeft size={16}/>Collection</Button><IconButton label="Close collection details" onclick={closeDetail}><X size={19}/></IconButton></div>
-   <div class="g-playlist-header"><Artwork src={detail.item.artwork} name={detail.item.name}/><div><h2 bind:this={detailHeading} tabindex="-1">{detail.item.name}</h2><p>{detail.item.artist || 'Your playlist'}</p><span>{detail.item.source === 'native' ? 'Music.app persistent IDs' : 'Apple Music library'} · {detail.tracks.length} recordings</span></div></div>
-   {#if detail.loading}<p class="g-detail-state" role="status">Reading exact recordings…</p>{:else if detail.error}<p class="g-read-error" role="status">{detail.error}</p>{:else if !detail.tracks.length}<p class="g-detail-state">This playlist returned no recordings.</p>{:else}<p class="g-detail-state">Select recordings for Studio. Play controls appear only for IDs this player accepts.</p><ol class="g-recording-list">{#each detail.tracks.slice(0, detailLimit) as track, index (`${recordingKey(track)}:${index}`)}<TrackRow {track} {index} selected={selectedKeys.has(recordingKey(track))} onselect={() => toggle(track)} disabled={$playback.pending} onplay={targetFor(track, $playback.player.selected_player) && $playback.player.capabilities?.actions.includes('play') ? () => void playback.command('play', undefined, targetFor(track, $playback.player.selected_player)) : undefined}/>{/each}</ol>{#if detailLimit < detail.tracks.length}<div class="g-load-more"><Button onclick={() => detailLimit += 100}>Show next 100 recordings</Button><span>{Math.min(detailLimit, detail.tracks.length)} of {detail.tracks.length} shown</span></div>{/if}{/if}
+   <div class="g-detail-top"><Button variant="quiet" onclick={detail.parents.length ? backDetail : closeDetail}><ArrowLeft size={16}/>{detail.parents.at(-1)?.name || 'Collection'}</Button><IconButton label="Close collection details" onclick={closeDetail}><X size={19}/></IconButton></div>
+   <div class="g-playlist-header"><Artwork src={detail.item.artwork} name={detail.item.name}/><div><h2 bind:this={detailHeading} tabindex="-1">{detail.item.name}</h2><p>{detail.item.artist || (detail.item.kind === 'library-artists' ? 'Library artist' : detail.item.kind === 'library-albums' ? 'Library album' : 'Your playlist')}</p><span>{detail.item.source === 'native' ? 'Music.app persistent IDs' : 'Apple Music library'}{#if detail.tracks.length || detail.children.length} · {detail.item.kind === 'library-artists' ? `${detail.children.length} albums loaded` : `${detail.tracks.length} recordings loaded`}{/if}</span></div></div>
+   {#if detail.loading}<p class="g-detail-state" role="status">Reading {detail.item.kind === 'library-artists' ? 'library albums' : 'exact recordings'}…</p>{/if}
+   {#if detail.error}<div class="g-read-error" role="alert"><p>{detail.error}</p><Button onclick={() => void controller.retryDetail()}>Try details again</Button></div>{/if}
+   {#if !detail.loading && !detail.error && !detail.tracks.length && !detail.children.length}<p class="g-detail-state">Apple returned no {detail.item.kind === 'library-artists' ? 'library albums' : 'recordings'} for this item.</p>{/if}
+   {#if detail.children.length}<p class="g-detail-state">Albums in your library. Open one to choose its exact recordings.</p><ul class="g-collection-list" aria-label="Artist library albums">{#each detail.children as album (`${album.source}:${album.kind}:${album.id}`)}<li><button class="g-collection-list-item" type="button" onclick={event => void openItem(album, event.currentTarget, true)}><Artwork src={album.artwork} name={album.name} size="row"/><span><strong>{album.name}</strong><small>{album.artist || 'Library album'}</small></span><ArrowRight size={17}/></button></li>{/each}</ul>{/if}
+   {#if detail.tracks.length}<p class="g-detail-state">Select recordings for Studio. Play controls appear only for IDs this player accepts.</p><ol class="g-recording-list">{#each detail.tracks.slice(0, detailLimit) as track, index (`${recordingKey(track)}:${index}`)}<TrackRow {track} {index} selected={selectedKeys.has(recordingKey(track))} onselect={() => toggle(track)} disabled={$playback.pending} onplay={targetFor(track, $playback.player.selected_player) && $playback.player.capabilities?.actions.includes('play') ? () => void playback.command('play', undefined, targetFor(track, $playback.player.selected_player)) : undefined}/>{/each}</ol>{#if detailLimit < detail.tracks.length}<div class="g-load-more"><Button onclick={() => detailLimit += 100}>Show next 100 recordings</Button><span>{Math.min(detailLimit, detail.tracks.length)} of {detail.tracks.length} shown</span></div>{/if}{/if}
+   {#if detail.nextPage && detail.tracks.length + detail.children.length < 1000}<div class="g-load-more"><Button pending={detail.loading} onclick={() => { detailLimit += 100; void controller.moreDetail(); }}>Load next detail page</Button></div>{:else if detail.nextPage}<p class="g-detail-state">Showing the first 1,000 related items. Explore the rest in Apple Music.</p>{/if}
   </aside>
  {/if}
  {#if $controller.selected.length}<div class="g-selection-tray" role="region" aria-label="Recordings selected for Studio"><span><Check size={17}/><strong>{$controller.selected.length} selected</strong><small>Exact versions, ready to shape.</small></span><Button variant="quiet" onclick={() => controller.clear()}>Clear</Button><Button variant="primary" onclick={useInStudio}>Use in Studio<ArrowRight size={16}/></Button></div>{/if}
