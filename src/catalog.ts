@@ -440,6 +440,34 @@ export class AppleCatalog implements PlaylistBackend {
 			},
 		});
 	}
+	async libraryDetails(kind: "albums" | "artists", id: string, page?: string) {
+		z.enum(["albums", "artists"]).parse(kind);
+		const relationship = kind === "albums" ? "tracks" : "albums";
+		const expectedType = kind === "albums" ? "library-songs" : "library-albums";
+		const path = `/v1/me/library/${kind}/${apiId(id)}/${relationship}`;
+		const pagination = (value: string) => {
+			const url = new URL(value, "https://api.music.apple.com");
+			if (value.length > 2048 || url.origin !== "https://api.music.apple.com" ||
+				url.pathname !== path || url.username || url.password || url.hash ||
+				[...url.searchParams.keys()].some(key => !["limit", "offset"].includes(key)) ||
+				url.searchParams.getAll("limit").length > 1 || url.searchParams.getAll("offset").length !== 1 ||
+				(url.searchParams.has("limit") && url.searchParams.get("limit") !== "100") ||
+				!/^\d{1,6}$/.test(url.searchParams.get("offset") ?? "") ||
+				Number(url.searchParams.get("offset")) > 100000)
+				throw new Error("Unexpected Apple library detail pagination URL.");
+			return Number(url.searchParams.get("offset"));
+		};
+		const offset = page === undefined ? 0 : pagination(page);
+		const result = await this.request("GET", path, {
+			personal: true, params: { limit: "100", offset: String(offset) },
+		});
+		const items = z.array(Resource).max(100).parse(result.data);
+		if (items.some(item => item.type !== expectedType))
+			throw new Error("Apple returned a different library relationship type.");
+		if (result.next && pagination(result.next) <= offset)
+			throw new Error("Apple library detail pagination did not advance.");
+		return { items, next_page: result.next ?? null, relationship, complete: !result.next };
+	}
 	async recommendations() {
 		return this.request("GET", "/v1/me/recommendations", {
 			personal: true,

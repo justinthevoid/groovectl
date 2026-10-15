@@ -40,7 +40,7 @@ Mutations need preview, target identity/fingerprint, a durable claim before IO, 
 
 ## Tool budget and next implementation
 
-0.4 extended existing brief/studio/artwork schemas and added three cohesive preference/library tools: read preferences, preview a change, apply that plan. It had 50 tools; 0.5.x full source adds one cohesive folder-browser tool, for 51. API-only mode omits playback tools. No separate tool per interview question, reroll, image provider or rating endpoint. Existing names remain compatible. No generic HTTP, raw script, shell, cookie scraping or arbitrary executable tool is exposed.
+0.4 extended existing brief/studio/artwork schemas and added three cohesive preference/library tools: read preferences, preview a change, apply that plan. It had 50 tools; 0.5.x adds a folder browser. The 0.6 candidate adds one read-only `inspect_api_library` operation for [album tracks](https://developer.apple.com/documentation/applemusicapi/fetch-a-relationship-on-this-resource-by-name-165fz) and [artist albums](https://developer.apple.com/documentation/applemusicapi/fetch-a-relationship-on-this-resource-by-name-9dsoc), bringing the full profile to 52 tools. Both require personal authorization, retain library IDs and return at most 100 resources per validated page. API-only mode omits playback tools. No separate tool per interview question, reroll, image provider or rating endpoint. Existing names remain compatible. No generic HTTP, raw script, shell, cookie scraping or arbitrary executable tool is exposed.
 
 Priorities:
 

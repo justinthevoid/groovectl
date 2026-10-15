@@ -213,7 +213,9 @@ Search is a native search input with a decorative inset icon and a screen-reader
 
 Artwork is content, not decorative interface illustration. It loads an approved Apple artwork URL when available; failed or absent images use a disc icon and initial on the soft surface. Images are decorative beside the named tile or row and avoid redundant spoken labels. The player currently uses this fallback rather than claiming returned cover art.
 
-The collection tile is one opening action with a square image, name and muted subtitle. Active artwork gains an accent outline. Opening a tile reads recordings; hover does not expose an implicit play action. List mode uses compact artwork, metadata and a forward arrow in a full-width row.
+The collection tile is one opening action with a square image, name and muted subtitle. Active artwork gains an accent outline. Opening a playlist or library album reads exact recordings; opening a library artist reads its albums. Hover does not expose an implicit play action. List mode uses compact artwork, metadata and a forward arrow in a full-width row.
+
+Artist albums reuse compact list rows inside the inspector; opening one shows its exact library songs. Back restores the loaded artist details and moves focus to the heading, preserving selection. Relationship pages load explicitly, 100 items at a time up to 1,000 related items. Read errors keep loaded rows and selection available, and retry preserves detail history.
 
 The gallery imports the original Between Stations cover. Its fictional example status and generation provenance are recorded in [PROVENANCE.md](../assets/examples/PROVENANCE.md); it is not catalog artwork or a completed account playlist. No new raster is introduced by this system record.
 
