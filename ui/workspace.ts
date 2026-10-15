@@ -8,6 +8,7 @@ import { z } from "zod";
 import { ListeningStory } from "../src/listening-story.js";
 import { VERSION } from "../src/version.js";
 import { PlanSummary, DraftSummary } from "../src/workspace-models.js";
+import { playerPresentation, catalogConnectionLabel } from "./player-state.js";
 import {
 	InterviewField,
 	questionOptions,
@@ -624,27 +625,10 @@ async function render(value: unknown) {
 		"load-library": "browse_api_library",
 	}))
 		button(id).disabled = !can(tool);
-	text("song", p.track?.name || p.media?.title || "Nothing playing");
-	text(
-		"artist",
-		p.track
-			? [p.track.artist, p.track.album].filter(Boolean).join(" · ")
-			: p.media
-				? [p.media.artist, p.media.album].filter(Boolean).join(" · ")
-				: `Player: ${p.selected_player ?? "native"}`,
-	);
-	text(
-		"state",
-		p.state === "api-only"
-			? "API-only · no player selected"
-			: p.state === "profile-limited"
-				? "Playback excluded by this profile"
-				: p.state === "unavailable"
-					? "Player unavailable"
-					: p.running
-						? p.state
-						: "Player is closed",
-	);
+	const playback = playerPresentation(p);
+	text("song", playback.title);
+	text("artist", playback.subtitle);
+	text("state", playback.status);
 	field("volume").value = String(p.volume ?? 50);
 	field("volume").disabled = p.volume == null || p.state === "unavailable";
 	text(
@@ -658,14 +642,7 @@ async function render(value: unknown) {
 			(p.capabilities
 				? !p.capabilities.actions.includes(b.dataset.action ?? "")
 				: false);
-	text(
-		"auth",
-		data.auth.user_authorized
-			? "Apple Music connected"
-			: data.auth.developer_key_configured
-				? "Catalog ready · Library sign-in pending"
-				: "MusicKit setup pending",
-	);
+	text("auth", catalogConnectionLabel(data.auth));
 	el("plans").replaceChildren(...data.plans.map(planSummaryCard));
 	el("empty").hidden = !!data.plans.length;
 	if (activePlan) {

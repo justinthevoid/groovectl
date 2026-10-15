@@ -1,6 +1,6 @@
 # Groovectl public-release development cycle
 
-This is an active implementation plan, not a release claim. The 0.5.0 public preview is released; 0.5.1 was installed as a private response-size checkpoint and 0.5.2 addresses defects found during host/player qualification. Installation receipts are kept separately from the distributable source. Work proceeds in reviewable checkpoints. Feature work is frozen while browser, archive, installation, platform and publication checks finish. Add further features only when a qualification failure or concrete release requirement justifies them.
+This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The next user-requested cycle plans the library dashboard and UI kit, prioritizing polished Music.app/Cider control. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
 
 ## Product outcome
 
@@ -84,7 +84,7 @@ Continue with the first unfinished checkpoint that can make meaningful progress.
 
 ## Next focused cycle
 
-1. Compact workspace responses are implemented and privately installed: selected plan/draft inspectors retain full detail, with a measured 98.4% response reduction. Finish final 0.5.2 CI/package/host qualification.
+1. Compact workspace responses are released in 0.5.2: selected plan/draft inspectors retain full detail, with a measured 98.4% response reduction. The restarted desktop connection returns the compact shape. Correct the reported player metadata/setup labels and gather read-only host evidence for the next UI cycle.
 2. Refresh and qualify the actual expanded MCP App host. Windows play/pause and Cider basic controls now have live receipts, including unsupported/authentication paths; remaining targeted play, enqueue and additional session controls need their own bounded scope. Installed apps and synthetic hosts are separate evidence.
 3. Exercise mixed catalog/library and folder writes when a suitable requested playlist exists. Keep preferences and uncertain writes out of incidental testing.
 4. Improve first-run setup and distribution: inspectable installer paths, an available npm package, signed/notarized helper distribution and a public docs hostname. Preserve source/release-tarball installation until each route is actually published.

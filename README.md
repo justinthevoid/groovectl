@@ -122,6 +122,8 @@ The independent **Astro 7 + Svelte 5 + Starlight** website includes an account-f
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), the [development plan](docs/development-plan.md) and [release procedure](docs/releasing.md). Report reproducible bugs with synthetic evidence; never attach your private data directory or raw logs. [Support](SUPPORT.md) · [Code of conduct](CODE_OF_CONDUCT.md)
 
+The proposed [library/player dashboard](docs/design/library-player-brief.md), [UI kit](docs/ui-kit.md) and [ChatGPT Extensions capability map](docs/extensions-capabilities.md) describe the next cycle. They distinguish planned UI from released features and local-player control from embedded streaming.
+
 ## Credits
 
 MIT licensed. Matching, sequencing and automation foundations retain notices from [Z-Han-Z/apple-music-playlists](https://github.com/Z-Han-Z/apple-music-playlists) and [epheterson/applemusic-mcp](https://github.com/epheterson/applemusic-mcp). See [third-party notices](THIRD_PARTY_NOTICES.md). Original branding/artwork has [recorded provenance](assets/brand/PROVENANCE.md). Groovectl is independent of Apple and Cider.

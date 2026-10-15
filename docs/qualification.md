@@ -2,6 +2,16 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## Player presentation and dashboard planning — October 15, 2026
+
+The 0.5.2 prerelease was published from f2d883a, with all seven merged-main CI jobs passing and all five uploaded asset digests verified. The next development branch corrects the supplied screenshot's contradictory player/setup labels and adds a proposed dashboard/kit/capability plan; it does not implement that dashboard or migrate UI frameworks.
+
+- Fresh read-only checks in the actual Windows desktop session found Apple Music reporting playing with no title metadata and only pause/stop enabled. Cider's authenticated adapter returned paused state and track metadata. Both workspace reads reported no local MusicKit configuration or saved library authorization. No playback commands, queue edits, credentials transfer or account changes were performed. The temporary read-only task was removed and its private receipt retained.
+- The UI now represents missing metadata separately from playback state and names the output player. Catalog/library configuration has a separate label. Regression cases cover blank Windows metadata, ordinary native metadata, unavailable/closed/API-only/profile-limited states and independent API setup. Linux checks/build and all 110 tests passed; the final presentation-only copy/format update passed checks/build and both focused cases.
+- The synthetic app showed the corrected footer at 1280 × 900 and 390 × 844, with no horizontal overflow at the phone width. This verifies development-host rendering, not the installed plugin. The user's supplied Windows capture establishes that a Groovectl view rendered; it does not identify its source revision or qualify its interactions. The current chat's app controller still exposes no expanded app tab.
+
+The installed/released plugin remains 0.5.2 until a separate update. Proposed Svelte components, icons, inline/PiP renderers, real library screens and host-specific conveniences are not shipped by this development checkpoint. See [the brief](design/library-player-brief.md).
+
 ## 0.5.2 player and host checkpoint — October 15, 2026
 
 The compact-response patch was privately installed as 0.5.1. Its Node 24 CLI workspace measured 3,338 UTF-8 bytes against 205,059 bytes before the patch, a 98.4% reduction for the same saved-plan inventory. Full details remain inspectable and journals were not migrated. 0.5.2 adds fixes found during qualification; Linux type/UI checks, build and all 108 tests passed. The first public patch CI run caught a headless smoke that still assumed full drafts in list responses. The smoke now checks both summary and full selected brief across process replacement; the corrected two-process check passed.
