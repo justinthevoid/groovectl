@@ -47,6 +47,8 @@ The rc.2 follow-up again observed play/pause state changes, but Apple Music supp
 
 The rc.4 actual Windows app check recovered title/artist metadata after loading a recording through Apple Music's UI. Groovectl's footer then controlled Play/Pause for that recording. The timeline remained zero/unknown. This qualifies that loaded session and corrects the assumption that Windows metadata is permanently unavailable; it does not add targeted playback through SMTC.
 
+The rc.5 follow-up separately verified MusicKit catalog/library reads on Windows and actual Library navigation in the local extension. This enables browsing albums, artists and their songs; Apple's REST API still does not transport-control the Windows player. See [Windows installation and MusicKit setup](musickit.md#windows-setup).
+
 ## Connect the Windows extension
 
 The player runs on the MCP execution host. Opening a Mac-backed chat on a Windows screen does not move its tool connection. Open Groovectl from the Windows-local plugin context to control the PC; keep unrelated project checkouts on their existing host.
@@ -71,5 +73,9 @@ Windows Store Cider 4.0.27.0 passed authenticated state/queue reads and play/pau
 The rc.2 desktop follow-up additionally verified next/previous against exact recordings, the new shuffle/repeat projections, and seek against an observed timestamp. Track, timestamp, volume and modes were restored. The returned queue's ID order differed after the navigation roundtrip despite retaining 186 items, so full queue restoration is not established. Targeted play, enqueue and stop remain pending a disposable queue test. See the [qualification ledger](https://github.com/justinthevoid/groovectl/blob/main/docs/qualification.md) for the narrower scope and retained early failures.
 
 The rc.4 Windows app check controlled Cider through the actual footer and observed an advancing recording. Its immediate Pause readback lagged the command; rc.5 observes up to four states with brief delays after untargeted Play/Pause, without replaying the command. An unconfirmed state or read failure requires inspection.
+
+The rc.5 disposable-queue follow-up verified targeted song playback, Play Later, and Play Next ahead of an existing upcoming song through the installed MCP server. Exact queue IDs and Cider's own UI agreed. Targeted playback can buffer after the RPC acknowledgment; read state again and check the requested catalog ID before claiming the song started. Queue reads include history and the current recording as well as upcoming songs, so they are not a pure Up Next list.
+
+On Windows Store Cider 4.0.27.0, the Stop trial became non-playing but retained the last recording, timestamp and queue. The documented removal of the current item was not observed. Groovectl sends the documented Stop once and returns actual state; it does not claim that the queue was cleared. No queue-removal/restoration endpoint is exposed by the reviewed RPC contract. Use a disposable queue for mutation tests: restoring the current recording and modes does not restore the original history/queue.
 
 Select another player with `groovectl select-player native|windows|cider`, or set `GROOVECTL_PLAYER`. Player selection affects playback, while a playlist plan’s `source` selects its ID namespace and write backend.
