@@ -7,6 +7,7 @@ import { OpenAIExtensions } from "@openai/mcp-extensions/app";
 import { z } from "zod";
 import { ListeningStory } from "../src/listening-story.js";
 import { VERSION } from "../src/version.js";
+import { PlanSummary, DraftSummary } from "../src/workspace-models.js";
 import {
 	InterviewField,
 	questionOptions,
@@ -28,6 +29,7 @@ type Song = z.infer<typeof Song>;
 const Plan = z.object({
 	plan_id: z.string(),
 	state: z.string(),
+	result: z.record(z.string(), z.unknown()).nullish(),
 	payload: z.object({
 		name: z.string(),
 		operation: z.string(),
@@ -68,6 +70,7 @@ const Brief = z.object({
 });
 const Draft = z.object({
 	draft_id: z.string(),
+	updated_at: z.string().optional(),
 	mode: z.string(),
 	brief: Brief,
 	locked: z.array(InterviewField).default([]),
@@ -104,10 +107,10 @@ const Workspace = z.object({
 		developer_key_configured: z.boolean(),
 		user_authorized: z.boolean(),
 	}),
-	plans: z.array(Plan),
+	plans: z.array(PlanSummary),
 	studio: z
 		.object({
-			drafts: z.array(Draft),
+			drafts: z.array(DraftSummary),
 			artwork: z.array(Art),
 			provider: z.object({
 				enabled: z.boolean(),
@@ -138,6 +141,7 @@ let selected: Song[] = [],
 	activePlan: Plan | undefined,
 	providerEnabled = false;
 let initializedDraft = false;
+let selectedDraftUpdatedAt: string | undefined;
 let currentIdeas: ReturnType<typeof questionOptions> | undefined;
 let locked = new Set<InterviewField>(),
 	customSuggestions: Suggestions = {},
@@ -383,6 +387,15 @@ function planCard(plan: Plan) {
 		);
 	details.append(list);
 	card.append(details);
+	if (plan.result) {
+		const receipt = node("details");
+		receipt.append(node("summary", "Saved write receipt"));
+		receipt.ontoggle = () => {
+			if (receipt.open && !receipt.querySelector("pre"))
+				receipt.append(node("pre", JSON.stringify(plan.result, null, 2)));
+		};
+		card.append(receipt);
+	}
 	const actions = node("div");
 	actions.className = "actions";
 	if (
@@ -457,6 +470,57 @@ function renderActive() {
 	root.replaceChildren();
 	if (activePlan) root.append(planCard(activePlan));
 }
+function planSummaryCard(plan: z.infer<typeof PlanSummary>) {
+	const card = node("section");
+	card.className = "plan";
+	card.append(
+		node("h3", plan.name),
+		node(
+			"p",
+			[
+				plan.operation === "change"
+					? `${plan.target_count} affected items`
+					: `${plan.track_count} tracks`,
+				plan.operation !== "change" && plan.duration_minutes !== null
+					? `${plan.duration_minutes} min`
+					: "",
+				plan.state.replaceAll("_", " "),
+				plan.has_story ? "Listening story saved" : "",
+			]
+				.filter(Boolean)
+				.join(" · "),
+		),
+	);
+	if (
+		["unknown", "needs_review", "applying", "deleting"].includes(plan.state)
+	) {
+		const warning = node(
+			"p",
+			"This write needs inspection. It will not be automatically retried.",
+		);
+		warning.className = "warning";
+		card.append(warning);
+	}
+	card.append(
+		action(
+			plan.has_result ? "Inspect saved result" : "Review preview",
+			() =>
+				void task(async () => {
+					const full = Plan.parse(
+						await call("inspect_playlist_plan", { plan_id: plan.plan_id }),
+					);
+					card.replaceWith(planCard(full));
+				}, "Plan details loaded. Apple Music is unchanged."),
+		),
+	);
+	return card;
+}
+async function restoreDraft(id: string) {
+	const result = z
+		.object({ draft: Draft })
+		.parse(await call("get_playlist_studio", { draft_id: id }));
+	loadDraft(result.draft);
+}
 function loadDraft(draft: Draft) {
 	if (draftId && draftId !== draft.draft_id) {
 		selected = [];
@@ -465,6 +529,7 @@ function loadDraft(draft: Draft) {
 		renderSelection();
 	}
 	draftId = draft.draft_id;
+	selectedDraftUpdatedAt = draft.updated_at;
 	const b = draft.brief;
 	locked = new Set(draft.locked);
 	customSuggestions = draft.suggestions as Suggestions;
@@ -520,7 +585,7 @@ function loadDraft(draft: Draft) {
 				: "Choose a configured image provider to generate.",
 	);
 }
-function render(value: unknown) {
+async function render(value: unknown) {
 	const result = Workspace.safeParse(value);
 	if (!result.success) {
 		notice(
@@ -588,10 +653,18 @@ function render(value: unknown) {
 				? "Catalog ready · Library sign-in pending"
 				: "MusicKit setup pending",
 	);
-	el("plans").replaceChildren(...data.plans.map(planCard));
+	el("plans").replaceChildren(...data.plans.map(planSummaryCard));
 	el("empty").hidden = !!data.plans.length;
 	if (activePlan) {
-		activePlan = data.plans.find((p) => p.plan_id === activePlan!.plan_id);
+		const previousId = activePlan.plan_id;
+		const summary = data.plans.find((p) => p.plan_id === previousId);
+		if (!summary) activePlan = undefined;
+		else if (summary.state !== activePlan.state) {
+			const updated = Plan.parse(
+				await call("inspect_playlist_plan", { plan_id: previousId }),
+			);
+			if (activePlan?.plan_id === previousId) activePlan = updated;
+		}
 		renderActive();
 	}
 	if (data.studio) {
@@ -629,11 +702,13 @@ function render(value: unknown) {
 		picker.dataset.providers = JSON.stringify(providers);
 		artworks = data.studio.artwork;
 		const saved = data.studio.drafts.find((d) => d.draft_id === draftId);
-		if (
-			saved &&
-			JSON.stringify(saved.suggestions) !== JSON.stringify(customSuggestions)
-		) {
-			customSuggestions = saved.suggestions as Suggestions;
+		// Fresh agent suggestions are fetched for the selected draft only.
+		if (saved && saved.updated_at !== selectedDraftUpdatedAt) {
+			const result = z
+				.object({ draft: Draft })
+				.parse(await call("get_playlist_studio", { draft_id: saved.draft_id }));
+			customSuggestions = result.draft.suggestions as Suggestions;
+			selectedDraftUpdatedAt = saved.updated_at;
 			renderIdeas(true);
 		}
 		if (draftId && !artworkId) {
@@ -643,12 +718,17 @@ function render(value: unknown) {
 		el("saved-drafts").replaceChildren(
 			...data.studio.drafts
 				.slice(0, 5)
-				.map((d) => action(d.brief.title, () => loadDraft(d))),
+				.map((d) =>
+					action(
+						d.title,
+						() => void task(() => restoreDraft(d.draft_id), "Brief loaded."),
+					),
+				),
 		);
 		if (!initializedDraft) {
 			initializedDraft = true;
 			if (!draftId && data.studio.drafts.length && !field("intent").value)
-				loadDraft(data.studio.drafts[0]);
+				await restoreDraft(data.studio.drafts[0].draft_id);
 		}
 		button("generate-cover").disabled =
 			!draftId || !providerEnabled || !can("generate_playlist_artwork");
@@ -678,7 +758,7 @@ async function call(name: string, args: Record<string, unknown> = {}) {
 	return (await rawCall(name, args)).structuredContent;
 }
 async function refresh() {
-	render(await call("get_music_workspace"));
+	await render(await call("get_music_workspace"));
 }
 async function task(run: () => Promise<void>, success = "Updated.") {
 	if (busy) return;
@@ -1155,9 +1235,9 @@ function theme(context: ReturnType<App["getHostContext"]>) {
 		applyHostStyleVariables(context.styles.variables);
 }
 app.addEventListener("hostcontextchanged", theme);
-app.ontoolresult = (result) => {
+app.ontoolresult = async (result) => {
 	if (Workspace.safeParse(result.structuredContent).success)
-		render(result.structuredContent);
+		await render(result.structuredContent);
 };
 renderSelection();
 renderIdeas();

@@ -2,6 +2,12 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## 0.5.1 response-size checkpoint — October 15, 2026
+
+Workspace and studio refreshes now project compact plan/draft summaries. Selected plan recordings/receipts and saved brief constraints/suggestions remain available through existing inspectors; no journal rewrite or music mutation is involved. Linux type/UI checks and build passed with all 106 tests. A 20-plan × 200-recording regression checks a response below 20 KB and at least a 50-fold reduction relative to the full history, while complete receipts round-trip unchanged. A separate 20-draft case checks that unselected intents, exclusions, cover directions and suggestions are absent from list responses and preserved in the selected draft.
+
+The dashboard loads selected details on demand. Final portable package checks, installed-plugin readback, live host rendering and interactive Windows/Cider receipts remain pending for this source checkpoint. The published 0.5.0 artifacts and successful merged-main CI are recorded in its [GitHub release](https://github.com/justinthevoid/groovectl/releases/tag/v0.5.0).
+
 ## First public CI qualification — October 15, 2026
 
 The [public repository](https://github.com/justinthevoid/groovectl) is available. [PR #7's full CI run](https://github.com/justinthevoid/groovectl/actions/runs/38728497948), for head de78360, passed all seven jobs: TypeScript on Linux/macOS/Windows, retained Python regressions, native Swift packaging, website, and hardened headless sessions. The first failures were corrected rather than waived: uv now selects the declared dev group, license aggregation is deterministic across dependency layouts, and the Python fingerprint oracle reads its Unicode fixture as UTF-8 on Windows. The runtime fingerprint format did not change.

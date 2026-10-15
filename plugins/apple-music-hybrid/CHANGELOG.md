@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1 — qualification in progress
+
+- Keep studio/workspace refreshes compact: plan and draft summaries omit complete recording lists, repeated write receipts and interview histories. Existing inspectors retain the full saved data; journals and write semantics are unchanged.
+- Load selected Activity plans and saved briefs on demand. Preserve exact recording review, uncertainty warnings, saved receipts, chapter restoration and fresh agent suggestions.
+- Add large-history regression coverage and retain text/structured MCP results for ordinary clients.
+
 ## 0.5.0 preview — 2026-10-15
 
 - Listening stories with contiguous chapters, pinned recordings, preserved album runs, six reusable recipes and honest runtime budgets. Keep current stories through verified writes, snapshots and JSON exports; mark externally changed playlists stale.

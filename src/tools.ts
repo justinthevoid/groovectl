@@ -31,6 +31,7 @@ import { join } from "node:path";
 import { packageRoot } from "./players.js";
 import { LibraryFolders } from "./organization.js";
 import { ListeningStory, recipes } from "./mixtape.js";
+import { summarizePlan, summarizeDraft } from "./workspace-models.js";
 
 type Group = "common" | "catalog" | "library" | "curation" | "playback";
 export type Profile = "full" | "catalog" | "curator" | "player";
@@ -136,10 +137,19 @@ export function createTools(
 			auth: music.catalog.readiness(),
 			plans: music.plans
 				.recent()
-				.filter((p) => !["deleted", "cancelled"].includes(p.state)),
+				.filter((p) => !["deleted", "cancelled"].includes(p.state))
+				.map(summarizePlan),
+			plan_details_tool: "inspect_playlist_plan",
 			studio: {
-				drafts: studio.list(),
-				artwork: artwork.list(),
+				drafts: studio.list().map(summarizeDraft),
+				artwork: artwork
+					.list()
+					.map(({ artwork_id, state, draft_id, request_id }) => ({
+						artwork_id,
+						state,
+						draft_id,
+						request_id,
+					})),
 				provider: artwork.readiness(),
 			},
 		};
@@ -155,7 +165,7 @@ export function createTools(
 	);
 	add(
 		"get_music_workspace",
-		"Refresh the selected player, authorization readiness and the last 20 playlist plans.",
+		"Refresh player/readiness and compact summaries of the last 20 plans/drafts. Use inspect_playlist_plan for full recordings/receipts or get_playlist_studio with draft_id for a full brief.",
 		"common",
 		{},
 		workspace,
@@ -249,7 +259,7 @@ export function createTools(
 	);
 	add(
 		"get_playlist_studio",
-		"Read private drafts, cover jobs and provider readiness. Supply a field for six inspiration choices from 200+ starting points plus saved agent ideas; pass seen IDs and a new seed to browse without immediate repeats. include_questions returns form topics; include_recipes returns six listening-story starting points. Interviews remain optional in every host.",
+		"Read compact private draft/cover summaries and provider readiness; draft_id returns that full draft. Supply a field for six inspiration choices from 200+ starting points plus saved agent ideas; pass seen IDs and a new seed to browse without immediate repeats. include_questions returns form topics; include_recipes returns six listening-story starting points. Interviews remain optional.",
 		"common",
 		{
 			draft_id: z.string().uuid().optional(),
@@ -260,9 +270,17 @@ export function createTools(
 			include_recipes: z.boolean().default(false),
 		},
 		(r) => ({
-			drafts: studio.list(),
-			artwork: artwork.list(),
+			drafts: studio.list().map(summarizeDraft),
+			artwork: artwork
+				.list()
+				.map(({ artwork_id, state, draft_id, request_id }) => ({
+					artwork_id,
+					state,
+					draft_id,
+					request_id,
+				})),
 			provider: artwork.readiness(),
+			...(r.draft_id ? { draft: studio.get(r.draft_id) } : {}),
 			...(r.include_recipes
 				? {
 						recipes,

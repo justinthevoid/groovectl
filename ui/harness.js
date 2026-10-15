@@ -4,6 +4,7 @@ import {
 	PostMessageTransport,
 } from "@modelcontextprotocol/ext-apps/app-bridge";
 import { VERSION } from "../src/version.ts";
+import { summarizePlan, summarizeDraft } from "../src/workspace-models.ts";
 const iframe = document.querySelector("iframe");
 const id = "11111111-1111-4111-8111-111111111111",
 	artId = "22222222-2222-4222-8222-222222222222";
@@ -194,12 +195,38 @@ state.plans.push({
 		audit: { duration_minutes: 0, version_qualifiers: [] },
 	},
 });
+for (const plan of state.plans) {
+	plan.expires_at = Date.now() / 1000 + 7200;
+	plan.payload.source = "catalog";
+}
+for (const draft of state.studio.drafts)
+	draft.updated_at = new Date().toISOString();
+const workspace = () => ({
+	...state,
+	plans: state.plans
+		.filter((p) => !["cancelled", "deleted"].includes(p.state))
+		.map(summarizePlan),
+	studio: { ...state.studio, drafts: state.studio.drafts.map(summarizeDraft) },
+});
 bridge.oncalltool = async ({ name, arguments: args }) => {
 	document.querySelector("#calls").textContent =
 		`${name} ${JSON.stringify(args)}`;
 	let result = state,
 		meta;
-	if (name === "control_playback") {
+	if (name === "inspect_playlist_plan") {
+		result = state.plans.find((p) => p.plan_id === args.plan_id);
+	} else if (name === "get_playlist_studio") {
+		result = {
+			...workspace().studio,
+			...(args.draft_id
+				? {
+						draft: state.studio.drafts.find(
+							(d) => d.draft_id === args.draft_id,
+						),
+					}
+				: {}),
+		};
+	} else if (name === "control_playback") {
 		if (args.action === "volume") state.player.volume = args.value;
 		else if (args.action === "play") state.player.state = "playing";
 		else if (args.action === "pause") state.player.state = "paused";
@@ -221,6 +248,7 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 				: { ...state.studio.drafts[0].brief, ...args.brief };
 		const draft = {
 			draft_id: args.draft_id || id,
+			updated_at: new Date().toISOString(),
 			mode: args.mode,
 			brief,
 			locked: args.locked ?? [],
@@ -257,8 +285,10 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 	} else if (name === "preview_playlist") {
 		result = {
 			plan_id: "fixture-new-plan",
+			expires_at: Date.now() / 1000 + 7200,
 			state: "ready",
 			payload: {
+				source: "catalog",
 				name: args.name,
 				operation: "create",
 				tracks: args.tracks.map((t) => catalogSongs.find((s) => s.id === t.id)),
@@ -309,6 +339,7 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 		};
 	else if (name !== "get_music_workspace")
 		throw new Error("Unexpected synthetic tool");
+	if (result === state) result = workspace();
 	return {
 		content: [{ type: "text", text: JSON.stringify(result) }],
 		structuredContent: result,
@@ -334,6 +365,7 @@ bridge.onmessage = async ({ content }) => {
 				},
 			],
 		};
+		state.studio.drafts[0].updated_at = new Date().toISOString();
 	}
 	document.querySelector("#calls").textContent = "User clicked Ask my agent";
 	return {};
@@ -344,7 +376,7 @@ bridge.oninitialized = async () => {
 	await bridge.sendToolInput({ arguments: {} });
 	await bridge.sendToolResult({
 		content: [{ type: "text", text: "Synthetic workspace fixture" }],
-		structuredContent: state,
+		structuredContent: workspace(),
 	});
 };
 await bridge.connect(

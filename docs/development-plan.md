@@ -1,6 +1,6 @@
 # Groovectl public-release development cycle
 
-This is an active implementation plan, not a release claim. The installed baseline at the start of this cycle was 0.4.0; source is now a 0.5.0 candidate. Installation receipts are kept separately from the distributable source. Work proceeds in reviewable checkpoints. Feature work is frozen while browser, archive, installation, platform and publication checks finish. Add further features only when a qualification failure or concrete release requirement justifies them.
+This is an active implementation plan, not a release claim. The 0.5.0 public preview is released; 0.5.1 is working through response-size, extension-host and player qualification. Installation receipts are kept separately from the distributable source. Work proceeds in reviewable checkpoints. Feature work is frozen while browser, archive, installation, platform and publication checks finish. Add further features only when a qualification failure or concrete release requirement justifies them.
 
 ## Product outcome
 
