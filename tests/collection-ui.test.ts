@@ -84,7 +84,57 @@ test("a failed player write is not replayed or presented as observed success", a
 	assert.equal(writes, 1); assert.equal(state.player.state, "paused");
 	assert.match(state.error!, /Refresh the player/);
 	await controller.command("seek", 10); assert.equal(writes, 1);
-	assert.match(state.error!, /unavailable/);
+	assert.equal(state.needsRefresh, true);
+	assert.match(state.error!, /Refresh the player/);
+});
+
+test("player requires a fresh observation after uncertain IO and retains mode readbacks", async () => {
+	let writes = 0, fail = true;
+	const modes = { ...paused, shuffle: false, repeat: "off", capabilities: { available: true, actions: ["shuffle", "repeat"] } };
+	const controller = new PlaybackController(async (name, args) => {
+		if (name === "get_playback_state") return modes;
+		writes++;
+		if (fail) throw new Error("Response lost");
+		return { ...modes, shuffle: args?.action === "shuffle", repeat: "one" };
+	});
+	let state!: PlayerState; controller.subscribe(s => { state = s; }); controller.observe(modes);
+	assert.equal(state.player.shuffle, false); assert.equal(state.player.repeat, "off");
+	await controller.command("shuffle", 1); await controller.command("shuffle", 1);
+	assert.equal(writes, 1); assert.equal(state.needsRefresh, true); assert.equal(state.player.shuffle, false);
+	fail = false; await controller.refresh(); assert.equal(state.needsRefresh, false);
+	await controller.command("repeat", 1); assert.equal(writes, 2); assert.equal(state.player.repeat, "one");
+	controller.observe({ ...modes, capabilities: { available: false, actions: ["shuffle"] } });
+	await controller.command("shuffle", 1); assert.equal(writes, 2);
+});
+
+test("a late command cannot replace a newer player observation", async () => {
+	const pending = deferred<unknown>();
+	const controller = new PlaybackController(async () => pending.promise);
+	let state!: PlayerState; controller.subscribe(s => { state = s; }); controller.observe(paused);
+	const command = controller.command("play");
+	controller.observe({ running: true, state: "paused", selected_player: "windows", capabilities: { available: true, actions: ["play"] } });
+	pending.resolve({ ...paused, state: "playing" }); await command;
+	assert.equal(state.player.selected_player, "windows"); assert.equal(state.player.state, "paused");
+	assert.equal(state.pending, false);
+});
+
+test("collection retry repeats the failed page and preserves detail and selection", async () => {
+	const offsets: number[] = []; let fail = true;
+	const controller = new CollectionController(async (name, args) => {
+		if (name === "get_playlist") return { tracks: [track] };
+		offsets.push(Number(args?.offset));
+		if (args?.offset === 100 && fail) { fail = false; throw new Error("Page interrupted"); }
+		return { data: [{ id: `p.${args?.offset}`, type: "library-playlists", attributes: { name: "Playlist" } }], next: "more" };
+	});
+	let state!: CollectionState; controller.subscribe(s => { state = s; });
+	await controller.load(); await controller.open(state.items[0]!); controller.toggle(track);
+	await controller.load("playlists", "catalog", true);
+	assert.match(state.error!, /interrupted/); assert.equal(state.items.length, 1);
+	assert.equal(state.detail?.item.id, "p.0"); assert.equal(state.selected.length, 1);
+	await controller.retryLoad();
+	assert.deepEqual(offsets, [0, 100, 100]); assert.equal(state.offset, 100);
+	assert.equal(state.items.length, 2); assert.equal(state.detail?.tracks[0]?.id, track.id);
+	assert.equal(state.selected.length, 1); assert.equal(state.error, undefined);
 });
 
 test("artist to album drill-down preserves pages, selection, and history across failures and stale reads", async () => {

@@ -15,15 +15,15 @@
  const track: Recording = { source:'catalog', id:'101', name:'A House in the Trees', artist:'Mara Vale', album:'Afternoon Light', duration_ms:220000, explicit:true };
  const long: Recording = { source:'library-api', id:'i.synthetic', name:'風の中の手紙 — a very long recording title that should remain readable', artist:'架空のアーティスト · Synthetic artist', album:'Field recordings / alternate version', duration_ms:0 };
  const tile: CollectionItem = { source:'library-api', id:'p.synthetic', kind:'library-playlists', name:'Between Stations', artist:'Original Groovectl example cover', artwork:exampleCover };
- let playerData: Player = { running:true, state:'paused', selected_player:'cider', position:42, volume:30, track, capabilities:{ available:true, actions:['play','pause','previous','next','seek','volume'] } };
+ let playerData: Player = { running:true, state:'paused', selected_player:'cider', position:42, volume:30, shuffle:false, repeat:'off', track, capabilities:{ available:true, actions:['play','pause','previous','next','seek','volume','shuffle','repeat'] } };
  const controller = new PlaybackController(async (name, args) => {
-  if (name === 'control_playback') { events = `Synthetic ${args?.action} requested. No real player is connected.`; playerData = { ...playerData, ...(args?.action === 'play' ? { state:'playing' } : args?.action === 'pause' ? { state:'paused' } : args?.action === 'volume' ? { volume:Number(args.value) } : args?.action === 'seek' ? { position:Number(args.value) } : {}) }; }
+  if (name === 'control_playback') { events = `Synthetic ${args?.action} requested. No real player is connected.`; playerData = { ...playerData, ...(args?.action === 'play' ? { state:'playing' } : args?.action === 'pause' ? { state:'paused' } : args?.action === 'volume' ? { volume:Number(args.value) } : args?.action === 'seek' ? { position:Number(args.value) } : args?.action === 'shuffle' ? { shuffle:args.value === 1 } : args?.action === 'repeat' ? { repeat:args.value === 1 ? 'one' : args.value === 2 ? 'all' : 'off' } : {}) }; }
   return playerData;
  });
  $effect(() => { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; });
  $effect(() => {
-  playerData = playerMode === 'windows' ? { running:true, state:'playing', selected_player:'windows', media:{title:'',artist:'',album:''}, capabilities:{available:true,actions:['pause','stop']} } : playerMode === 'closed' ? { running:false, state:'stopped', selected_player:'native', capabilities:{available:true,actions:[]} } : { running:true, state:'paused', selected_player:'cider', position:42, volume:30, track, capabilities:{available:true,actions:['play','pause','previous','next','seek','volume']} };
-  controller.observe(playerData);
+  const next: Player = playerMode === 'windows' ? { running:true, state:'playing', selected_player:'windows', media:{title:'',artist:'',album:''}, capabilities:{available:true,actions:['pause','stop']} } : playerMode === 'closed' ? { running:false, state:'stopped', selected_player:'native', capabilities:{available:true,actions:[]} } : { running:true, state:'paused', selected_player:'cider', position:42, volume:30, shuffle:false, repeat:'off', track, capabilities:{available:true,actions:['play','pause','previous','next','seek','volume','shuffle','repeat']} };
+  playerData = next; controller.observe(next);
  });
 </script>
 <div class="g-kit g-gallery">

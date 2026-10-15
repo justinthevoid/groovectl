@@ -111,6 +111,21 @@ test("Cider HTTP failure cannot retry a command or expose a token-bearing body",
 	);
 	assert.equal(calls, 1);
 });
+
+test("Cider returns documented now-playing modes without extra requests or invented defaults", async () => {
+	for (const mode of [0, 1, 2, undefined, 9, "1"]) {
+		let reads = 0;
+		const cider = new Cider("http://127.0.0.1:10767", "synthetic", async url => {
+			reads++;
+			const path = new URL(String(url)).pathname.split("/").at(-1);
+			return Response.json(path === "is-playing" ? { is_playing: false } : path === "volume" ? { volume: 0 } : { info: { name: "Fixture", playParams: { id: "101" }, shuffleMode: mode, repeatMode: mode } });
+		});
+		const result = await cider.status();
+		assert.equal(reads, 3); assert.equal(result.volume, 0);
+		assert.equal(result.shuffle, mode === 0 ? false : mode === 1 ? true : undefined);
+		assert.equal(result.repeat, mode === 0 ? "off" : mode === 1 ? "one" : mode === 2 ? "all" : undefined);
+	}
+});
 test("Cider accepts documented empty seek responses without inventing a playback timestamp", async () => {
 	let seeks = 0;
 	const cider = new Cider(

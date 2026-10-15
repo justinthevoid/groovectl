@@ -2,6 +2,16 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## 0.6.0-rc.2 player/recovery candidate — October 15, 2026
+
+This candidate adds observed shuffle/repeat controls and a phone timeline to the shared player. Unknown modes remain unavailable; Cider mode projection uses its documented now-playing fields without extra polling requests. Failed UI commands require a fresh observation, late command responses cannot replace a newer player, and collection-page retries preserve rows, selection and the open inspector.
+
+- VPS Node 24: checks/build and all 125 tests passed. A later capability-guard preservation adjustment passed checks/build and the focused ten-case collection/player suite. CI and standalone archive checks qualify the final source/artifacts separately.
+- Synthetic MCP Apps host: a lost shuffle response disabled further commands, retained the last observation and recovered through a state read without replay. Repeat-all used the existing numeric control contract and displayed its readback. Collection reads used offsets 0, 100 (failed), 100 (retry), retaining 16 fixture rows. Top-of-document 1280×900, 640×900 and 390×844 captures and a desktop error capture were inspected. These are synthetic browser receipts, separate from actual-host/player qualification.
+- Installed host inspection: the expanded-app controller still returned no tabs. The previous rc.1 connection had exposed all 52 tools and passed live personal-library artist → album → song reads. That receipt does not qualify this candidate's UI clicks.
+- Windows SSH was reachable, but neither Apple Music nor Cider was running at inspection. No new interactive transport command or account mutation was made. Existing 0.5.2 player receipts keep their original scope.
+- npm registry lookup returned no public `groovectl` entry; the local npm client reported authentication required. Public distribution, signing/notarization, the docs hostname and directory submission remain the explicit gates in [candidate notes](releases/0.6.0-rc.2.md).
+
 ## 0.6.0-rc.1 collection detail candidate — October 15, 2026
 
 One read-only `inspect_api_library` tool now reads personal-library artist albums and album tracks using Apple's documented relationships. Each request validates resource type, personal authorization and same-resource pagination, returning at most 100 resources. UI details retain library IDs, loaded history and selection; stale responses cannot replace a later detail. No new write or playback operation is introduced.

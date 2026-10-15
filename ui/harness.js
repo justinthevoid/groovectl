@@ -67,8 +67,8 @@ const state = {
 		state: "paused",
 		volume: 30,
 		selected_player: "cider",
- position: 42,
- capabilities: { available: true, actions: ["play", "pause", "previous", "next", "volume", "seek"] },
+ position: 42, shuffle: false, repeat: "off",
+ capabilities: { available: true, actions: ["play", "pause", "previous", "next", "volume", "seek", "shuffle", "repeat"] },
 		track: {
 			duration_ms: 220000,
  name: "A House in the Trees",
@@ -230,6 +230,7 @@ const workspace = () => ({
 	studio: { ...state.studio, drafts: state.studio.drafts.map(summarizeDraft) },
 });
 const callHistory = [];
+let pageFailed = false, playbackFailed = false;
 bridge.oncalltool = async ({ name, arguments: args }) => {
 	callHistory.push({ name, arguments: args });
 	document.querySelector("#calls").dataset.history = JSON.stringify(callHistory);
@@ -240,10 +241,11 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 	if (name === "get_playback_state") { result = state.player;
  } else if (name === "get_playback_queue") { result = { player: "cider", tracks: songs, truncated: false };
  } else if (name === "browse_api_library") {
+  if (parameters.get("collection") === "pages-retry" && args.offset === 100 && !pageFailed) { pageFailed = true; return {isError:true,content:[{type:"text",text:"Synthetic next-page read failed once. Loaded items are preserved."}]}; }
   if (parameters.get("collection") === "error") return { isError:true, content:[{type:"text", text:"Synthetic library read failed. Refresh to try again."}] };
   if (parameters.get("collection") === "slow") await new Promise(resolve => setTimeout(resolve, 2500));
   const names = ["Open Windows", "Between Stations", "An Evening, Unhurried", "Small Hours", "Field Notes", "The Scenic Route", "風の中の手紙", "Sunday, Elsewhere"];
-  result = { data: parameters.get("collection") === "empty" ? [] : args.type === "songs" ? songs.map(t => ({ id: `i.${t.id}`, type:"library-songs", attributes:{name:t.name, artistName:t.artist, albumName:t.album, durationInMillis:t.duration_ms, playParams:{catalogId:t.id}} })) : names.map((name,i) => ({id:`p.fixture${i}`, type:`library-${args.type === "recently-added" ? "playlists" : args.type}`, attributes:{name, artistName:i % 3 === 0 ? "Mara Vale" : ""} })), ...(args.offset === 0 && parameters.get("collection") === "pages" ? {next:"/v1/me/library/playlists?offset=100"} : {}) };
+  result = { data: parameters.get("collection") === "empty" ? [] : args.type === "songs" ? songs.map(t => ({ id: `i.${t.id}`, type:"library-songs", attributes:{name:t.name, artistName:t.artist, albumName:t.album, durationInMillis:t.duration_ms, playParams:{catalogId:t.id}} })) : names.map((name,i) => ({id:`p.fixture${Number(args.offset ?? 0) + i}`, type:`library-${args.type === "recently-added" ? "playlists" : args.type}`, attributes:{name, artistName:i % 3 === 0 ? "Mara Vale" : ""} })), ...(args.offset === 0 && ["pages", "pages-retry"].includes(parameters.get("collection")) ? {next:"/v1/me/library/playlists?offset=100"} : {}) };
  } else if (name === "inspect_api_library") {
   if (parameters.get("detail") === "error") return {isError:true,content:[{type:"text",text:"Synthetic detail read failed. Try again."}]};
   result = { items: args.type === "artists" ? ["Between Stations", "Small Hours"].map((name,i) => ({id:`l.album${i}`,type:"library-albums",attributes:{name,artistName:"Mara Vale"}})) : songs.map(t => ({id:`i.${t.id}`,type:"library-songs",attributes:{name:t.name,artistName:t.artist,albumName:"Between Stations",durationInMillis:t.duration_ms,playParams:{catalogId:t.id}}})), next_page:null };
@@ -267,9 +269,12 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 	} else if (name === "control_playback") {
 		if (args.action === "volume") state.player.volume = args.value;
  else if (args.action === "seek") state.player.position = args.value;
+ else if (args.action === "shuffle") state.player.shuffle = args.value === 1;
+ else if (args.action === "repeat") state.player.repeat = ["off", "one", "all"][args.value];
 		else if (args.action === "play") state.player.state = "playing";
 		else if (args.action === "pause") state.player.state = "paused";
-		result = state.player;
+		if (parameters.get("playback") === "error-once" && !playbackFailed) { playbackFailed = true; return {isError:true,content:[{type:"text",text:"Synthetic command response lost."}]}; }
+  result = state.player;
 	} else if (name === "apply_music_change")
 		state.plans.find((p) => p.plan_id === args.plan_id).state = "accepted";
 	else if (name === "apply_playlist_plan") {

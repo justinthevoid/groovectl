@@ -1,6 +1,6 @@
 # Groovectl UI kit
 
-Source implementation, October 15, 2026. The 0.6.0-rc.1 candidate powers Library and the player with reusable Svelte 5 components inside the existing TypeScript MCP App. Public 0.5.2 and actual-host qualification remain separate checkpoints. The website retains its separate design system; Studio's existing forms and write flows are preserved.
+Source implementation, October 15, 2026. The 0.6.0-rc.2 candidate powers Library and the player with reusable Svelte 5 components inside the existing TypeScript MCP App. Public 0.5.2 and actual-host qualification remain separate checkpoints. The website retains its separate design system; Studio's existing forms and write flows are preserved.
 
 ## Implemented slice
 
@@ -10,7 +10,7 @@ Library reads API playlists, songs, albums, artists and recently added pages, or
 
 Artist details show albums from the personal library; opening an album shows its library songs. Back restores the already loaded artist page and moves focus to its heading. The same inspector and row components serve these paths. Relationship pages load explicitly, 100 at a time up to 1,000 related items; errors preserve loaded rows and selection, and retry retains navigation history. A catalog alias never replaces the library recording ID to enable a player button.
 
-The persistent player consumes observed state and live capabilities. Previous/next, one play/pause action, time/seek and volume are enabled only when supported. Missing time/volume stay unknown. Commands use adapter readback, with no automatic command retry. Visible documents refresh status every 15 seconds; full workspace histories are not polled. Queue availability follows the negotiated tool profile. Artwork URLs are restricted to Apple's CDN, with named fallbacks.
+The persistent player consumes observed state and live capabilities. Previous/next, one play/pause action, shuffle/repeat, time/seek and volume follow supported actions and observed values. The phone layout retains the timeline. Unknown mode values remain unavailable; mode buttons name their current state and next action. Missing time/volume stay unknown. Commands use adapter readback, with no automatic command retry. An uncertain command blocks further UI commands until a fresh observation; late results cannot replace a newer player. Range drafts survive background observations until submission. Visible documents refresh status every 15 seconds; full workspace histories are not polled. Queue availability follows the negotiated tool profile. Artwork URLs are restricted to Apple's CDN, with named fallbacks.
 
 Build the account-free gallery with `bun run build:gallery /absolute/output-directory`, after `bun install --frozen-lockfile`. Open the generated `gallery.html` through an isolated static server. It uses the actual components, synthetic recordings and an original example cover; it has no account connection. `node ui/build-harness.mjs /absolute/output-directory` additionally builds the synthetic MCP Apps host after `bun run build`. These previews do not qualify the real ChatGPT/Codex host.
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0-rc.2 — player and recovery candidate
+
+- Expose observed shuffle/repeat modes through the shared player, with named states, explicit actions and capability guards. Read Cider's documented now-playing mode fields without extra polling requests; unknown modes stay unavailable.
+- Keep the seek bar usable at phone widths and preserve a range adjustment across background observations until it is submitted.
+- Require a fresh player observation after an uncertain command. Prevent duplicate commands and late command results from replacing a newer selected-player observation.
+- Retry the actual failed collection page without resetting loaded rows, selection or the open inspector. Loading more collection items no longer closes details.
+- Fix the component gallery's state selector so synthetic command results remain visible.
+
 ## 0.6.0-rc.1 — collection browser candidate
 
 - Drill into library artists → albums → exact library songs with one read-only `inspect_api_library` tool. Bound each request to 100 related items and the same resource's validated pagination URL; preserve library-only recordings and loaded back-navigation state.
