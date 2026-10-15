@@ -44,6 +44,8 @@ Workspace and studio list responses are bounded navigation summaries. `inspect_p
 
 ## Provenance and tests
 
+Apple API GET requests can retry one transient network/body failure or HTTP 502/503/504, with a 250 ms backoff and the same 25-second deadline for both attempts and their response bodies. Authentication failures, rate limits, unknown failures and expired deadlines do not retry. POST/PUT/DELETE never replay automatically, including failures while reading their response. Error messages expose only recognized transport codes, never exception messages or response bodies. A timed-out read and a native playback failure remain distinct operations.
+
 The MIT Python implementation and its original 14 tests remain under `server/` as a regression reference. Active runtime, CLI and plugin use TypeScript. Matching and adjacency rules retain upstream MIT attribution in `THIRD_PARTY_NOTICES.md` and `licenses/`.
 
 Tests cover journal restart/idempotence, concurrent apply, uncertain writes, exact recording IDs, mutation guards, recording/version matching, optional-feature coverage, snapshots/import validation, Cider token/URL/queue boundaries, authorization callback checks and MCP SDK 1/2 interoperability. Native helper tests exercise request validation without controlling Music. Live transport qualification is recorded separately from unit tests.

@@ -52,6 +52,19 @@ test("playback validation rejects out-of-range and ambiguous operations before I
 	])
 		assert.throws(() => PlaybackRequest.parse(r));
 });
+test("empty Music.app resume reports how to choose a playable song", async () => {
+	class EmptyPlayer extends MacMusic {
+		override async request() { return { running: true, state: "stopped", track: null }; }
+	}
+	await assert.rejects(new EmptyPlayer().playback({ action: "play" }), /Music.app has no current song/);
+	assert.equal((await new EmptyPlayer().playback({ action: "pause" })).state, "stopped");
+});
+test("a selected native recording can be buffering before Music.app reports playing", async () => {
+	class BufferingPlayer extends MacMusic {
+		override async request() { return { running: true, state: "stopped", track: { source: "native", id: "0000000000000001", name: "Fixture", artist: "Artist", album: "Album", duration_ms: 1000 } }; }
+	}
+	assert.equal((await new BufferingPlayer().playback({ action: "play", track_id: "0000000000000001" })).track?.name, "Fixture");
+});
 test("Cider refuses remote URLs, credentials and path injection", () => {
 	for (const url of [
 		"https://localhost:10767",
