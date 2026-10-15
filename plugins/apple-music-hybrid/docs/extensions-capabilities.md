@@ -47,6 +47,14 @@ The chosen first path avoids making browser DRM a prerequisite for the product. 
 
 For a later embedded-audio spike, prove script loading, authorization, a user-initiated full track, encrypted-media support, seeking, host lifecycle, tab visibility and sign-out in the actual desktop/web/mobile hosts. Document precisely where it works. Apple supports MusicKit browser playback; the OpenAI documentation reviewed does not establish Apple DRM support in its sandbox. Do not infer it from an ordinary audio player demo, embed the whole Apple Music website as a shortcut, scrape a third-party developer token or expose Cider's asset/DRM URLs.
 
+## When the agent cannot see an open panel
+
+Check the frontend computer before requesting another restart. In the October 15 desktop qualification, the user had Groovectl open in Windows ChatGPT while the current chat's computer-use controller was attached to the Mac. Its MCP Apps inventory was empty, although it could inspect the Mac's ordinary preview tabs. Windows had downloaded the same rc.2 runtime bytes. This was a cross-host inspection mismatch, not evidence that the plugin failed to render.
+
+Keep three checks separate: which bundle the frontend has downloaded, where the selected MCP connection executes, and which frontend the UI controller can inspect. `get_capabilities` reports the tool connection's platform/player; it does not enumerate open frontend panels. A visible panel or a downloaded cache does not prove its current connection/version. Run the actual-panel test with the frontend and inspection controller on an accessible host; repeated plugin restarts do not change controller scope. The [qualification ledger](qualification.md) records sanitized findings, with detailed operator receipts stored outside the repository.
+
+The local player runs on the MCP executor's computer. A Windows view of a chat whose tool connection reports `darwin` does not turn that connection into Windows player control. Use a Windows-local execution context for Windows playback, or the Mac frontend/controller for Mac qualification. [OpenAI's remote-connection guide](https://learn.chatgpt.com/docs/remote-connections) explains that MCP and Computer Use come from the connected host. Its Git-backed chat handoff transfers repository state and requires a matching saved project; do not move an unrelated repository merely to test a music panel.
+
 ## Network and artwork
 
 The released app declares no external connect/resource domains. A library full of album artwork needs a deliberate change: allow only reviewed Apple artwork origins or fetch validated artwork through a bounded server resource. A catalog item's artwork template is data, not permission for arbitrary URLs. Keep scripts, fonts and icons bundled. Do not relax the CSP broadly to make a mockup render.
