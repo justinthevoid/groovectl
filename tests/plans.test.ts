@@ -189,6 +189,7 @@ test("fingerprints match legacy Python including Unicode and punctuation", async
 	const python = spawnSync(
 		process.platform === "win32" ? "python" : "python3",
 		[
+			"-Xutf8",
 			"-c",
 			'import sys,json,hashlib;p=json.load(sys.stdin);print(hashlib.sha256(json.dumps([p["id"],p["name"],[(t["source"],t["id"]) for t in p["tracks"]]],sort_keys=True).encode()).hexdigest())',
 		],
@@ -197,6 +198,9 @@ test("fingerprints match legacy Python including Unicode and punctuation", async
 	// The port runs without Python; this optional oracle checks compatibility when Python is installed.
 	if (!python.error && python.status === 0)
 		assert.equal(fingerprint(playlist), python.stdout.trim());
-	assert.equal(fingerprint(playlist).length, 64);
+	assert.equal(
+		fingerprint(playlist),
+		"af2432b6ee031224bdbadba5b4478e85332fb6d56962cb61ebf8204169ed4207",
+	);
 	f.plans.close();
 });

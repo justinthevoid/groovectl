@@ -53,7 +53,7 @@
 		"build": "tsc && node scripts/build.mjs",
 		"check": "tsc --noEmit && tsc -p tsconfig.ui.json",
 		"test": "node --import tsx --test tests/*.test.ts",
-		"test:legacy": "uv run --project server --extra dev --frozen pytest server/tests -q",
+		"test:legacy": "uv run --project server --group dev --frozen pytest server/tests -q",
 		"build:helper": "node scripts/build-helper.mjs",
 		"prepack": "bun run build",
 		"start": "node dist/cli.js serve",

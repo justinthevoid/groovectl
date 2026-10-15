@@ -46,7 +46,13 @@ async function licenses(metafile) {
 			name = parts[0].startsWith("@") ? parts.slice(0, 2).join("/") : parts[0];
 		roots.add(path.resolve(input.slice(0, marker) + "node_modules/" + name));
 	}
-	const notices = [];
+	const notices = new Map();
+	const addNotice = (identity, filename, content) => {
+		// Dependency layout differs across Bun/npm hosts. Preserve each distinct
+		// license once, independent of its physical node_modules location.
+		const key = `${identity}\0${filename}\0${content}`;
+		notices.set(key, `${identity} — ${filename}\n\n${content}`);
+	};
 	for (const dir of [...roots].sort()) {
 		const pkg = JSON.parse(
 			await readFile(path.join(dir, "package.json"), "utf8"),
@@ -56,19 +62,26 @@ async function licenses(metafile) {
 		);
 		if (!files.length) {
 			if (pkg.name === "@cfworker/json-schema") {
-				notices.push(
-					`${pkg.name}@${pkg.version} — upstream MIT license (npm package omits its license file)\n\n${await readFile("licenses/cfworker-json-schema-LICENSE", "utf8")}`,
+				addNotice(
+					`${pkg.name}@${pkg.version}`,
+					"upstream MIT license (npm package omits its license file)",
+					await readFile("licenses/cfworker-json-schema-LICENSE", "utf8"),
 				);
 				continue;
 			}
 			throw new Error(`Bundled package has no license file: ${pkg.name}`);
 		}
 		for (const name of files)
-			notices.push(
-				`${pkg.name}@${pkg.version} — ${name}\n\n${await readFile(path.join(dir, name), "utf8")}`,
+			addNotice(
+				`${pkg.name}@${pkg.version}`,
+				name,
+				await readFile(path.join(dir, name), "utf8"),
 			);
 	}
-	return notices.join("\n\n" + "=".repeat(72) + "\n\n");
+	return [...notices.entries()]
+		.sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+		.map(([, value]) => value)
+		.join("\n\n" + "=".repeat(72) + "\n\n");
 }
 await writeFile("UI_THIRD_PARTY_LICENSES.txt", await licenses(result.metafile));
 await writeFile(
