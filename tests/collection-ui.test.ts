@@ -6,12 +6,81 @@ import { artworkUrl, collectionPage, formatTime, resourceItem, targetFor } from 
 
 function deferred<T>() {
 	let resolve!: (value: T) => void;
-	const promise = new Promise<T>(r => { resolve = r; });
-	return { promise, resolve };
+	let reject!: (reason: Error) => void;
+	const promise = new Promise<T>((r, fail) => { resolve = r; reject = fail; });
+	return { promise, resolve, reject };
 }
 const track = { source: "catalog" as const, id: "101", name: "Fixture", artist: "Synthetic", album: "", duration_ms: 220000 };
 const paused = { running: true, state: "paused", selected_player: "cider", volume: 0, position: 0,
 	track, capabilities: { available: true, actions: ["play", "pause", "volume"] } };
+
+test("player selection routes reads, commands and queues without changing the host default", async () => {
+	const calls: { name: string; args?: Record<string, unknown> }[] = [];
+	const available_players = [{ id: "windows", label: "Apple Music", configured: true }, { id: "cider", label: "Cider", configured: true }];
+	const windows = { running: true, state: "paused", selected_player: "windows", execution_platform: "win32", available_players, capabilities: { available: true, actions: ["play", "pause"] } };
+	const controller = new PlaybackController(async (name, args) => {
+		calls.push({ name, args });
+		if (name === "get_playback_queue") return { tracks: [], truncated: false };
+		return args?.player === "cider" ? { ...paused, execution_platform: "win32", available_players } : windows;
+	});
+	let state!: PlayerState; controller.subscribe(s => state = s);
+	controller.observe(windows);
+	await controller.selectPlayer("cider");
+	assert.equal(calls.length, 1); assert.equal(calls[0]?.name, "get_playback_state");
+	assert.equal(state.player.selected_player, "cider");
+	controller.observe(windows);
+	assert.equal(state.player.selected_player, "cider");
+	await controller.command("play"); await controller.queue(); await controller.refresh();
+	assert.deepEqual(calls.map(c => c.args?.player), ["cider", "cider", "cider", "cider"]);
+	assert.equal(state.refreshing, false);
+});
+
+test("late reads and failed switches cannot send a command to the previous player", async () => {
+	const old = deferred<unknown>(), next = deferred<unknown>(); let reads = 0, commands = 0;
+	const available_players = [{id:"windows",label:"Apple Music",configured:true},{id:"cider",label:"Cider",configured:true}];
+	const initial = { ...paused, available_players };
+	const controller = new PlaybackController(async (name, args) => {
+		if (name === "control_playback") { commands++; return initial; }
+		if (args?.player === "windows") return next.promise;
+		reads++; return old.promise;
+	});
+	let state!: PlayerState; controller.subscribe(s => state = s); controller.observe(initial);
+	const first = controller.refresh(); const switching = controller.selectPlayer("windows");
+	old.resolve(initial); await first;
+	assert.equal(state.refreshing, true); assert.equal(state.player.selected_player, "windows");
+	assert.equal(state.player.track, undefined);
+	await controller.command("play"); assert.equal(commands, 0);
+	next.reject(new Error("Windows connection unavailable")); await switching;
+	assert.match(state.error!, /Windows connection/); assert.equal(state.needsRefresh, true);
+	await controller.command("play"); assert.equal(commands, 0); assert.equal(reads, 1);
+});
+
+test("a different-player response fails closed and unconfigured choices do not read or play", async () => {
+	let calls = 0;
+	const controller = new PlaybackController(async () => { calls++; return paused; });
+	let state!: PlayerState; controller.subscribe(s => state = s);
+	controller.observe({ ...paused, available_players: [{id:"windows",label:"Apple Music",configured:true},{id:"cider",label:"Cider",configured:false}] });
+	await controller.selectPlayer("cider"); assert.equal(calls, 0);
+	await controller.selectPlayer("windows");
+	assert.match(state.error!, /different player/); assert.equal(state.needsRefresh, true);
+	await controller.command("play"); assert.equal(calls, 1);
+});
+
+test("profile restrictions clear a selected player and cannot retain live command capabilities", async () => {
+	let commands = 0;
+	const choices = [{ id:"windows", label:"Apple Music", configured:true }, { id:"cider", label:"Cider", configured:true }];
+	const controller = new PlaybackController(async (name) => {
+		if (name === "control_playback") commands++;
+		return { ...paused, available_players: choices };
+	});
+	let state!: PlayerState; controller.subscribe(s => state = s);
+	controller.observe({ ...paused, selected_player:"windows", available_players: choices });
+	await controller.selectPlayer("cider");
+	controller.observe({ running:false, state:"profile-limited", selected_player:"windows", available_players:[], capabilities:{available:false,actions:[]} });
+	await controller.command("play"); assert.equal(commands, 0);
+	controller.observe({ ...paused, selected_player:"windows", available_players: choices });
+	assert.equal(state.player.selected_player, "windows");
+});
 
 test("collection normalizes real namespaces and refuses non-Apple artwork destinations", () => {
 	const item = resourceItem({ id: "i.local", type: "library-songs", attributes: { name: "Uploaded recording", artistName: "Artist", playParams: { catalogId: "101" }, artwork: { url: "https://is1-ssl.mzstatic.com/image/{w}x{h}bb.{f}" } } });

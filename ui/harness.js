@@ -67,6 +67,8 @@ const state = {
 		state: "paused",
 		volume: 30,
 		selected_player: "cider",
+		execution_platform: "win32",
+		available_players: [{id:"windows",label:"Apple Music",configured:true},{id:"cider",label:"Cider",configured:true}],
  position: 42, shuffle: false, repeat: "off",
  capabilities: { available: true, actions: ["play", "pause", "previous", "next", "volume", "seek", "shuffle", "repeat"] },
 		track: {
@@ -231,6 +233,7 @@ const workspace = () => ({
 });
 const callHistory = [];
 let pageFailed = false, playbackFailed = false;
+const windowsPlayer = { running:true, state:"paused", selected_player:"windows", execution_platform:"win32", available_players:state.player.available_players, media:{title:"",artist:"",album:""}, track:null, capabilities:{available:true,actions:["play","pause"]} };
 bridge.oncalltool = async ({ name, arguments: args }) => {
 	callHistory.push({ name, arguments: args });
 	document.querySelector("#calls").dataset.history = JSON.stringify(callHistory);
@@ -238,7 +241,7 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 		`${name} ${JSON.stringify(args)}`;
 	let result = state,
 		meta;
-	if (name === "get_playback_state") { result = state.player;
+	if (name === "get_playback_state") { result = args.player === "windows" ? windowsPlayer : state.player;
  } else if (name === "get_playback_queue") { result = { player: "cider", tracks: songs, truncated: false };
  } else if (name === "browse_api_library") {
   if (parameters.get("collection") === "pages-retry" && args.offset === 100 && !pageFailed) { pageFailed = true; return {isError:true,content:[{type:"text",text:"Synthetic next-page read failed once. Loaded items are preserved."}]}; }
@@ -267,14 +270,15 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 				: {}),
 		};
 	} else if (name === "control_playback") {
-		if (args.action === "volume") state.player.volume = args.value;
- else if (args.action === "seek") state.player.position = args.value;
- else if (args.action === "shuffle") state.player.shuffle = args.value === 1;
- else if (args.action === "repeat") state.player.repeat = ["off", "one", "all"][args.value];
-		else if (args.action === "play") state.player.state = "playing";
-		else if (args.action === "pause") state.player.state = "paused";
+		const target = args.player === "windows" ? windowsPlayer : state.player;
+		if (args.action === "volume") target.volume = args.value;
+ else if (args.action === "seek") target.position = args.value;
+ else if (args.action === "shuffle") target.shuffle = args.value === 1;
+ else if (args.action === "repeat") target.repeat = ["off", "one", "all"][args.value];
+		else if (args.action === "play") target.state = "playing";
+		else if (args.action === "pause") target.state = "paused";
 		if (parameters.get("playback") === "error-once" && !playbackFailed) { playbackFailed = true; return {isError:true,content:[{type:"text",text:"Synthetic command response lost."}]}; }
-  result = state.player;
+  result = target;
 	} else if (name === "apply_music_change")
 		state.plans.find((p) => p.plan_id === args.plan_id).state = "accepted";
 	else if (name === "apply_playlist_plan") {

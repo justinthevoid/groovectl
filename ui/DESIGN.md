@@ -51,6 +51,9 @@ typography:
   metadata:
     fontFamily: "var(--font-sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif)"
     fontSize: "11px"
+  input-mobile:
+    fontFamily: "var(--font-sans, ui-sans-serif, system-ui, sans-serif)"
+    fontSize: "16px"
   button:
     fontFamily: "var(--font-sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif)"
     fontSize: "13px"
@@ -230,6 +233,8 @@ Targeted play appears only for a source ID accepted by the selected adapter and 
 **The Exact Recording Rule.** Keep source plus ID intact when a recording moves to Studio. Browsing, opening details and selecting a recording do not request playback or an Apple Music write.
 
 ### Player, connection status and queue
+
+The labeled destination select offers supported local adapters and names the execution host. Selection reads state without playing or changing the saved default. It stays disabled during a command; failed switches clear the old track/actions until a fresh read. The phone select uses the 16px input-mobile role to avoid focus zoom. The scoped desktop/phone review confirmed the destination row and capability changes; it does not extend the older independent review to unrelated surfaces.
 
 The player names its device and last observed state. Closed, unavailable, profile-limited and API-only states have explicit messages. A playing or paused Windows session without metadata says “Track details unavailable”; unknown artist/album fields do not become invented listening data. Time is shown only when reported, and seek requires a valid duration/position pair plus seek capability. Volume appears only when a value and volume capability both exist; otherwise it says “Volume unavailable.” Command errors retain the last observation and disable further commands until a fresh observation, including a scheduled read, clears the uncertainty. A late command response cannot replace a newer player observation.
 

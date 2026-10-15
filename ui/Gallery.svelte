@@ -1,4 +1,5 @@
 <script lang="ts">
+ import { untrack } from "svelte";
  import exampleCover from "../assets/examples/between-stations.png";
  import { Play, Plus, Check, RefreshCw } from "@lucide/svelte";
  import Button from "./components/Button.svelte";
@@ -15,15 +16,18 @@
  const track: Recording = { source:'catalog', id:'101', name:'A House in the Trees', artist:'Mara Vale', album:'Afternoon Light', duration_ms:220000, explicit:true };
  const long: Recording = { source:'library-api', id:'i.synthetic', name:'風の中の手紙 — a very long recording title that should remain readable', artist:'架空のアーティスト · Synthetic artist', album:'Field recordings / alternate version', duration_ms:0 };
  const tile: CollectionItem = { source:'library-api', id:'p.synthetic', kind:'library-playlists', name:'Between Stations', artist:'Original Groovectl example cover', artwork:exampleCover };
- let playerData: Player = { running:true, state:'paused', selected_player:'cider', position:42, volume:30, shuffle:false, repeat:'off', track, capabilities:{ available:true, actions:['play','pause','previous','next','seek','volume','shuffle','repeat'] } };
- const controller = new PlaybackController(async (name, args) => {
+ const fixturePlayer = (mode: string): Player => ({ execution_platform: mode === 'closed' ? 'darwin' : 'win32', available_players: [{ id:mode === 'closed' ? 'native' : 'windows', label:mode === 'closed' ? 'Music.app' : 'Apple Music', configured:true }, {id:'cider',label:'Cider',configured:true}], ...(mode === 'windows' ? { running:true, state:'paused', selected_player:'windows', media:{title:'',artist:'',album:''}, capabilities:{available:true,actions:['play','pause','stop']} } : mode === 'closed' ? { running:false, state:'stopped', selected_player:'native', capabilities:{available:true,actions:[]} } : { running:true, state:'paused', selected_player:'cider', position:42, volume:30, shuffle:false, repeat:'off', track, capabilities:{available:true,actions:['play','pause','previous','next','seek','volume','shuffle','repeat']} }) });
+ let playerData: Player = fixturePlayer('cider');
+ const fixtureCall = async (name: string, args?: Record<string, unknown>) => {
+  if (name === 'get_playback_state' && args?.player && args.player !== playerData.selected_player) { playerData = fixturePlayer(args.player === 'native' ? 'closed' : String(args.player)); events = `Synthetic ${args.player} selected. No playback was requested.`; }
   if (name === 'control_playback') { events = `Synthetic ${args?.action} requested. No real player is connected.`; playerData = { ...playerData, ...(args?.action === 'play' ? { state:'playing' } : args?.action === 'pause' ? { state:'paused' } : args?.action === 'volume' ? { volume:Number(args.value) } : args?.action === 'seek' ? { position:Number(args.value) } : args?.action === 'shuffle' ? { shuffle:args.value === 1 } : args?.action === 'repeat' ? { repeat:args.value === 1 ? 'one' : args.value === 2 ? 'all' : 'off' } : {}) }; }
   return playerData;
- });
+ };
+ let controller = $state(new PlaybackController(fixtureCall));
  $effect(() => { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; });
  $effect(() => {
-  const next: Player = playerMode === 'windows' ? { running:true, state:'playing', selected_player:'windows', media:{title:'',artist:'',album:''}, capabilities:{available:true,actions:['pause','stop']} } : playerMode === 'closed' ? { running:false, state:'stopped', selected_player:'native', capabilities:{available:true,actions:[]} } : { running:true, state:'paused', selected_player:'cider', position:42, volume:30, shuffle:false, repeat:'off', track, capabilities:{available:true,actions:['play','pause','previous','next','seek','volume','shuffle','repeat']} };
-  playerData = next; controller.observe(next);
+  const next = fixturePlayer(playerMode);
+  untrack(() => { playerData = next; const nextController = new PlaybackController(fixtureCall); nextController.observe(next); controller = nextController; });
  });
 </script>
 <div class="g-kit g-gallery">

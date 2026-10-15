@@ -81,7 +81,10 @@ For Music.app, search_library returns native persistent IDs; use that exact ID f
 requested targeted playback. A catalog/API selection is not queued by selection,
 and Play without an ID only resumes the current desktop song. If the user sees
 Music.app from a Windows frontend, check the MCP execution platform before testing:
-the frontend's operating system does not move a local player connection. Inspect
+the frontend's operating system does not move a local player connection. Use the
+Windows-local plugin context for the PC. Playback tools accept an optional player
+for local adapter selection; this never changes the CLI default or routes to
+another computer. The UI names its execution host and offers local players. Inspect
 the returned state and read again if a selected song is still buffering; never
 claim audible playback from a command acknowledgment alone.
 Deletion is restricted to unchanged native playlists created by this integration,

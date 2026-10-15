@@ -1183,6 +1183,7 @@ const collection = new CollectionController(call);
 const playback = new PlaybackController(call);
 const queueOpen = writable(false);
 const queueEnabled = writable(false);
+playback.subscribe(state => { if (state.player.selected_player !== 'cider' || state.needsRefresh) queueOpen.set(false); });
 function useLibraryInStudio(tracks: Recording[]) {
  if (busy) throw new Error("Wait for the current Studio action to finish.");
  if (selectedStory) throw new Error("This mix has listening-story constraints. Open Sequence and remove its constraints before adding recordings.");
@@ -1195,7 +1196,7 @@ function useLibraryInStudio(tracks: Recording[]) {
 }
 mount(CollectionBrowser, { target: el("collection-root"), props: { controller: collection, playback, connection, onstudio: useLibraryInStudio } });
 mount(PlayerBar, { target: el("player-root"), props: { controller: playback, queueEnabled, onqueue: () => queueOpen.set(true) } });
-mount(QueuePanel, { target: el("queue-root"), props: { open: queueOpen, call } });
+mount(QueuePanel, { target: el("queue-root"), props: { open: queueOpen, playback } });
 // Native status reads are bounded; a hidden app never polls, and commands are never repeated.
 const footer = document.querySelector("footer");
 if (footer) new ResizeObserver(entries => {

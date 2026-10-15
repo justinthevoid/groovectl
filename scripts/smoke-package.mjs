@@ -87,7 +87,7 @@ try {
 	});
 	assert.equal(invalid.isError, true);
 	const ui = await call("resources/read", {
-		uri: "ui://apple-music-hybrid/workspace",
+		uri: `ui://apple-music-hybrid/${expectedVersion}/workspace`,
 	});
 	assert.ok(ui.contents.some((item) => item.text?.includes("Groovectl")));
 	const studio = await call("tools/call", {
