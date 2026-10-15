@@ -14,7 +14,7 @@ An Apple Music subscription is needed for subscription content. Creating a Music
 3. Open **Keys**, create a key, enable **MusicKit**, and configure it for your Media ID. Download its `.p8` file. Apple offers the download once; store a backup privately.
 4. Note the ten-character **Key ID** and **Team ID**. The Team ID appears in your developer account’s membership details.
 
-Use a dedicated key so it can be revoked independently. Never commit, upload, or paste the `.p8` contents or Music-User-Token into a chat.
+Use a dedicated key so it can be revoked independently. Keep its `.p8` contents and Music-User-Token out of chats, issues, repositories and shared services. Transfer credentials between your own computers only through a private, encrypted route to protected local storage.
 
 Apple’s references: [MusicKit](https://developer.apple.com/musickit/), [Developer token authentication](https://developer.apple.com/documentation/applemusicapi/generating-developer-tokens), and [user authentication](https://developer.apple.com/documentation/applemusicapi/user-authentication-for-musickit).
 
@@ -41,6 +41,33 @@ Create the `keys` directory and place the key there first. The example IDs are p
 
 Groovectl verifies the returned token against Apple’s `/v1/me/storefront` endpoint before saving it. It checks the callback Host and Origin, bounds request size, disables caching and does not log tokens or callback requests. The developer token expires in one hour and is refreshed in memory as needed.
 
+### Windows setup
+
+Install Node 24+ first. A published tarball needs no Bun, compiler, Python or npm account. This PowerShell example downloads the current preview and verifies its checksum before installation:
+
+```powershell
+$version = '0.6.0-rc.5'
+$archive = "groovectl-$version.tgz"
+$release = "https://github.com/justinthevoid/groovectl/releases/download/v$version"
+Invoke-WebRequest "$release/$archive" -OutFile $archive
+Invoke-WebRequest "$release/SHA256SUMS" -OutFile SHA256SUMS
+$pattern = '^[a-f0-9]{64}\s+\*?' + [regex]::Escape($archive) + '$'
+$lines = @(Get-Content SHA256SUMS | Where-Object { $_ -match $pattern })
+if ($lines.Count -ne 1) { throw 'Missing or ambiguous release checksum.' }
+$expected = ($lines[0] -split '\s+')[0]
+if ((Get-FileHash $archive -Algorithm SHA256).Hash -ine $expected) {
+    throw 'Release checksum mismatch.'
+}
+npm install --global (Join-Path $PWD $archive) --ignore-scripts --no-audit --no-fund
+groovectl --version
+```
+
+Put your MusicKit key in a private location such as `%APPDATA%\Groovectl\keys`, then run `groovectl setup`, `groovectl authorize` and `groovectl doctor` in your signed-in desktop session. Check the directory's Security properties: your account, SYSTEM and administrators may need access; shared user groups should not. Keep key and account files out of synced project folders.
+
+Finish both Apple's sign-in and Groovectl's local verification. Apple's popup closing is not completion: the local page must say **Connected. You can close this window.** `doctor` should then report both `developer_key_configured` and `user_authorized` as true. Refresh workspace in an already-open Groovectl app to pick up the connection. This does not require reinstalling the plugin.
+
+The rc.5 Windows qualification verified catalog and personal-library reads after securely migrating an existing Groovectl authorization for the same key and checking it against Apple. Chrome's fresh authorization attempts failed with the generic message below; their cause remains unresolved. This does not establish a working first-run Windows browser sign-in. See the [qualification ledger](https://github.com/justinthevoid/groovectl/blob/main/docs/qualification.md).
+
 ## Storage and migration
 
 Default locations are `~/.config/groovectl` on macOS/Linux and `%APPDATA%/Groovectl` on Windows. Use `GROOVECTL_DATA` for a private alternate directory.
@@ -56,6 +83,7 @@ On POSIX, configuration and journal files are created with mode `0600`, inside a
 | Catalog search says setup is pending | Configure a MusicKit-enabled `.p8` key, its Key ID and Team ID. |
 | Apple returns 401 | Check the key, IDs, clock and whether the key was revoked. |
 | Personal library returns 403 | Run `authorize` again and check subscription/account permissions. |
+| Sign-in closes, but Groovectl says “Connection was cancelled or could not be verified” | No verified connection was saved. Keep the local setup process running, check that the Apple Music account has access, and inspect browser popup/cookie restrictions. Do not send tokens or a network capture containing credentials to an issue. A successful Apple login alone does not qualify Groovectl's callback. |
 | A recording is absent | Search the configured storefront. Availability and alternate editions vary by region. |
 | A catalog/library read fails or times out | Temporary connection failures and HTTP 502/503/504 retry once within a shared 25-second request limit. A repeated error may include a safe transport code; inspect connectivity on the MCP execution host. HTTP 429 and authorization failures do not automatically retry. |
 | Play does nothing on Music.app | The footer resumes the desktop player's current song. Choose a native recording from the Music.app library or queue a song in Music.app first. Selecting a catalog/API recording does not queue it in Music.app; playback happens on the MCP execution host. |

@@ -52,6 +52,8 @@ groovectl doctor
 
 A built release tarball can be installed with `npm install --global ./groovectl-VERSION.tgz --ignore-scripts` after verifying its checksum. The installed CLI runs on Node and has no npm runtime dependency tree. There is no hidden postinstall native build or sign-in.
 
+On Windows, use the [PowerShell download, checksum and MusicKit setup walkthrough](docs/musickit.md#windows-setup). Catalog and personal-library reads are qualified on Windows; fresh browser sign-in and Cider's Stop behavior retain the limits recorded in the qualification ledger.
+
 Configure a local MCP client after installation:
 
 ```json
