@@ -166,6 +166,18 @@ if (parameters.get("profile") === "catalog") {
 		capabilities: { available: false, actions: [] },
 	};
 }
+if (parameters.get("player") === "windows-empty") {
+	state.player = {
+		running: true,
+		state: "playing",
+		selected_player: "windows",
+		track: null,
+		media: { title: "", artist: "", album: "" },
+		capabilities: { available: true, actions: ["pause", "stop"] },
+	};
+}
+if (parameters.get("auth") === "missing")
+	state.auth = { developer_key_configured: false, user_authorized: false };
 const bridge = new AppBridge(
 	null,
 	{ name: "Groovectl synthetic host", version: VERSION },

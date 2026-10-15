@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.5.2 — qualification in progress
+## Unreleased
+
+- Distinguish unavailable track metadata from stopped playback, name the actual output player and separate catalog/library configuration from player connectivity.
+- Add a source-backed ChatGPT Extensions capability map and proposed library/player dashboard and reusable UI kit. These documents do not claim the dashboard or component kit is implemented.
+
+## 0.5.2 prerelease — 2026-10-15
 
 - Respect the active Windows media session's controls in the studio instead of advertising commands disabled by that session.
 - Preserve new typing and brief selection when a saved-draft response arrives late.
