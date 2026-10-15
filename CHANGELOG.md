@@ -3,7 +3,9 @@
 ## Unreleased
 
 - Distinguish unavailable track metadata from stopped playback, name the actual output player and separate catalog/library configuration from player connectivity.
-- Add a source-backed ChatGPT Extensions capability map and proposed library/player dashboard and reusable UI kit. These documents do not claim the dashboard or component kit is implemented.
+- Add the first reusable Svelte collection browser and player: paginated Library categories, grid/list, playlist inspector, typed recording selection for Studio, capability-driven playback and a read-only Cider queue. Preserve Studio and existing reviewed writes. Include an account-free component gallery with original example artwork.
+- Preserve raw session fields while adding a shared capability projection to playback reads/commands. Use adapter readback instead of a duplicate state read after each command; respect negotiated queue access.
+- Add the ChatGPT Extensions capability map and dashboard/UI-kit documentation, with source, installed and live qualification kept separate.
 
 ## 0.5.2 prerelease — 2026-10-15
 

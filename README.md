@@ -122,7 +122,7 @@ The independent **Astro 7 + Svelte 5 + Starlight** website includes an account-f
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), the [development plan](docs/development-plan.md) and [release procedure](docs/releasing.md). Report reproducible bugs with synthetic evidence; never attach your private data directory or raw logs. [Support](SUPPORT.md) · [Code of conduct](CODE_OF_CONDUCT.md)
 
-The proposed [library/player dashboard](docs/design/library-player-brief.md), [UI kit](docs/ui-kit.md) and [ChatGPT Extensions capability map](docs/extensions-capabilities.md) describe the next cycle. They distinguish planned UI from released features and local-player control from embedded streaming.
+Unreleased source includes the selected collection browser: category rail, grid/list, playlist inspector, exact-recording selection for Studio and a shared capability-driven player. The [UI kit](docs/ui-kit.md) includes an account-free component gallery. The [dashboard brief](docs/design/library-player-brief.md) and [Extensions capability map](docs/extensions-capabilities.md) distinguish implemented source, later UI work and actual host qualification. Playback controls Music.app/Windows Apple Music/Cider; embedded streaming remains separate work. Published/installed 0.5.2 does not yet include this UI slice.
 
 ## Credits
 

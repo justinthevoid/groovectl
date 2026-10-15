@@ -2,6 +2,15 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## Collection browser and shared player — unreleased source, October 15, 2026
+
+Justin selected the Collection browser structure. The first Svelte slice implements category browsing, grid/list, playlist inspection, exact-recording selection into the preserved Studio, and the shared player/Cider queue. Its account-free gallery uses the real components with synthetic recordings and an original cover. Public/installed 0.5.2 remains the prior checkpoint.
+
+- VPS Node 24: TypeScript/Svelte checks passed with zero warnings/errors, all 116 tests passed, app/gallery builds and plugin packaging passed. The dependency audit returned no findings. New regressions cover stale collection/detail/player reads, recording namespaces, safe artwork origins, selection bounds, unknown/zero time values, single-command behavior and raw session-field compatibility.
+- Synthetic MCP Apps host: Library → playlist → select → Studio preserved the brief, source identities and keyboard focus. Explicit fixture play/pause used the adapter result without a duplicate read. Cider queue Escape restored focus. Desktop 1280×900, panel 640×900 and phone 390×844 captures were inspected; phone content had no horizontal overflow. These are browser-development checks, not live account or native-host receipts.
+- Independent finish review found and closed two material issues: queue availability now follows negotiated tools, and development metadata accurately records the user-pinned code-led path without claiming unavailable seed/QUALITY BAR receipts. Restricted Cider profile captures show Library working with queue absent and transport disabled; the full-profile queue positive control still works. Card-level comparison remains unqualified. App/kit documentation follows the finished source and preserves the website's separate system.
+- No personal playlist, account preference, real playback or live queue was changed for this UI qualification. Library album/artist relationships, broader live Cider transport and actual ChatGPT/Codex rendering/interaction retain their separate gates. The new UI is not installed by this source checkpoint.
+
 ## Player presentation and dashboard planning — October 15, 2026
 
 The 0.5.2 prerelease was published from f2d883a, with all seven merged-main CI jobs passing and all five uploaded asset digests verified. The next development branch corrects the supplied screenshot's contradictory player/setup labels and adds a proposed dashboard/kit/capability plan; it does not implement that dashboard or migrate UI frameworks.

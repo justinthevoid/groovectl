@@ -421,7 +421,10 @@ export function createTools(
 		"Read the selected player’s song and transport state. Does not start playback.",
 		"playback",
 		{},
-		() => player.status(),
+		async () => {
+ const status = await player.status();
+ return { ...status, selected_player: player.name, player_capabilities: sessionCapabilities(player.name, status) };
+ },
 		false,
 		false,
 	);
@@ -430,8 +433,10 @@ export function createTools(
 		"Control the selected player only when requested. Mac play IDs are native persistent IDs; Cider play IDs are catalog IDs. Windows supports session transport only. Volume 0–100; seek seconds; shuffle 0/1; repeat 0/1/2.",
 		"playback",
 		PlaybackRequest.shape,
-		(r) =>
-			music.plans.mutation(() => player.playback(PlaybackRequest.parse(r))),
+		(r) => music.plans.mutation(async () => {
+			const status = await player.playback(PlaybackRequest.parse(r));
+			return { ...status, selected_player: player.name, player_capabilities: sessionCapabilities(player.name, status) };
+		}),
 		true,
 		false,
 	);

@@ -28,6 +28,10 @@ the official MCP Apps and OpenAI Extensions browser libraries, retaining their
 license comments. Complete notices are in `UI_THIRD_PARTY_LICENSES.txt` and
 `SERVER_THIRD_PARTY_LICENSES.txt`. Active TypeScript uses MCP SDK 2.3.1 and OpenAI
 Extensions 0.2.0. Historical Python uses MCP SDK 2.2.0.
+The collection browser/player bundle Svelte 5.57.2 (MIT) and a subset of
+@lucide/svelte 1.57.0 (ISC). Complete bundled notices are retained in
+UI_THIRD_PARTY_LICENSES.txt. The gallery uses the original example cover
+documented in assets/examples/PROVENANCE.md.
 The browser Apps bridge uses the officially recommended 1.x client SDK (1.32.1,
 patched for GHSA-6qxp-vccf-f47h), while the server is SDK 2.x.
 

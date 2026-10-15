@@ -61,14 +61,15 @@
 	],
 	"scripts": {
 		"build": "tsc && node scripts/build.mjs",
-		"check": "tsc --noEmit && tsc -p tsconfig.ui.json",
+		"check": "tsc --noEmit && svelte-check --tsconfig ./tsconfig.ui.json --fail-on-warnings",
 		"test": "node --import tsx --test tests/*.test.ts",
 		"test:legacy": "uv run --project server --group dev --frozen pytest server/tests -q",
 		"build:helper": "node scripts/build-helper.mjs",
 		"prepack": "bun run build",
 		"start": "node dist/cli.js serve",
 		"package:plugin": "node scripts/package-plugin.mjs",
-		"preflight": "node scripts/release-preflight.mjs"
+		"preflight": "node scripts/release-preflight.mjs",
+		"build:gallery": "node scripts/build-gallery.mjs"
 	},
 	"devDependencies": {
 		"@modelcontextprotocol/client": "2.3.1",
@@ -82,6 +83,9 @@
 		"jose": "6.2.12",
 		"tsx": "4.23.15",
 		"typescript": "5.9.3",
-		"zod": "4.6.7"
+		"zod": "4.6.7",
+		"svelte": "5.57.2",
+		"svelte-check": "4.7.6",
+		"@lucide/svelte": "1.57.0"
 	}
 }

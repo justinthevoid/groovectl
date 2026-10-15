@@ -59,6 +59,23 @@ test("Windows workspace controls follow the live session and recover as it becom
 import { createTools } from "../src/tools.js";
 import { fixture } from "./helpers.js";
 
+test("playback tools preserve raw session capabilities and add the shared player projection", async t => {
+	const f = fixture(); t.after(() => f.plans.close());
+	let commands = 0;
+	const player = { name: "cider" as const,
+		status: async () => ({ running: true, state: "paused", capabilities: { pause: true } }),
+		playback: async () => { commands++; return { running: true, state: "playing", volume: 0, capabilities: { play: false, pause: true } }; },
+	};
+	const tools = createTools(f.music, player, new Cider("http://127.0.0.1:10767"));
+	const read = await tools.find(t => t.name === "get_playback_state")!.execute({});
+	assert.deepEqual(read.capabilities, { pause: true });
+	assert.equal(read.selected_player, "cider");
+	assert.ok((read.player_capabilities as { actions: string[] }).actions.includes("play"));
+	const command = await tools.find(t => t.name === "control_playback")!.execute({ action: "play" });
+	assert.deepEqual(command.capabilities, { play: false, pause: true });
+	assert.equal(command.state, "playing"); assert.equal(command.volume, 0); assert.equal(commands, 1);
+});
+
 test("API-only mode keeps useful curation/library tools and omits playback commands", async (t) => {
 	const f = fixture();
 	t.after(() => f.plans.close());

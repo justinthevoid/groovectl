@@ -8,7 +8,16 @@ import { z } from "zod";
 import { ListeningStory } from "../src/listening-story.js";
 import { VERSION } from "../src/version.js";
 import { PlanSummary, DraftSummary } from "../src/workspace-models.js";
-import { playerPresentation, catalogConnectionLabel } from "./player-state.js";
+import { catalogConnectionLabel } from "./player-state.js";
+import { mount } from "svelte";
+import { writable } from "svelte/store";
+import CollectionBrowser, { type Connection } from "./CollectionBrowser.svelte";
+import PlayerBar from "./components/PlayerBar.svelte";
+import QueuePanel from "./QueuePanel.svelte";
+import { CollectionController } from "./collection-controller.js";
+import { PlaybackController, Player } from "./playback-controller.js";
+import { Recording, recordingKey } from "./music-model.js";
+import "./kit.css";
 import {
 	InterviewField,
 	questionOptions,
@@ -88,22 +97,7 @@ const Art = z.object({
 const Workspace = z.object({
 	tool_profile: z.string().optional(),
 	available_tools: z.array(z.string()).optional(),
-	player: z.object({
-		running: z.boolean(),
-		state: z.string(),
-		selected_player: z.string().optional(),
-		capabilities: z
-			.object({ available: z.boolean(), actions: z.array(z.string()) })
-			.optional(),
-		volume: z.number().optional(),
-		error: z.string().optional(),
-		track: z
-			.object({ name: z.string(), artist: z.string(), album: z.string() })
-			.nullish(),
-		media: z
-			.object({ title: z.string(), artist: z.string(), album: z.string() })
-			.optional(),
-	}),
+	player: Player,
 	auth: z.object({
 		developer_key_configured: z.boolean(),
 		user_authorized: z.boolean(),
@@ -198,6 +192,8 @@ function step(value: string) {
 	}
 }
 function view(value: string) {
+ document.body.dataset.route = value;
+ connection.update(state => ({ ...state, active: value === "library" }));
 	for (const name of ["studio", "library", "activity"])
 		el(`view-${name}`).hidden = value !== name;
 	for (const n of document.querySelectorAll<HTMLButtonElement>("[data-view]")) {
@@ -612,6 +608,8 @@ async function render(value: unknown) {
 	availableTools = data.available_tools
 		? new Set(data.available_tools)
 		: undefined;
+ queueEnabled.set(can("get_playback_queue"));
+ if (!can("get_playback_queue")) queueOpen.set(false);
 	text(
 		"profile-note",
 		data.tool_profile && data.tool_profile !== "full"
@@ -622,26 +620,10 @@ async function render(value: unknown) {
 		"save-brief": "save_listening_brief",
 		surprise: "save_listening_brief",
 		"search-submit": "search_catalog",
-		"load-library": "browse_api_library",
 	}))
 		button(id).disabled = !can(tool);
-	const playback = playerPresentation(p);
-	text("song", playback.title);
-	text("artist", playback.subtitle);
-	text("state", playback.status);
-	field("volume").value = String(p.volume ?? 50);
-	field("volume").disabled = p.volume == null || p.state === "unavailable";
-	text(
-		"volume-label",
-		p.volume == null ? "Volume unavailable" : `Volume ${p.volume}%`,
-	);
-	for (const b of document.querySelectorAll<HTMLButtonElement>("[data-action]"))
-		b.disabled =
-			p.state === "unavailable" ||
-			p.state === "api-only" ||
-			(p.capabilities
-				? !p.capabilities.actions.includes(b.dataset.action ?? "")
-				: false);
+ playback.observe(p);
+ connection.update(current => ({ ...current, connected: true, auth: data.auth, tools: data.available_tools }));
 	text("auth", catalogConnectionLabel(data.auth));
 	el("plans").replaceChildren(...data.plans.map(planSummaryCard));
 	el("empty").hidden = !!data.plans.length;
@@ -1176,56 +1158,13 @@ el("check-cover").onclick = () =>
 			button("generate-cover").textContent = "Try a new cover request";
 		}
 	});
-el("load-library").onclick = () =>
-	void task(async () => {
-		const result = z
-			.object({
-				data: z
-					.array(
-						z.object({
-							id: z.string(),
-							attributes: z
-								.object({ name: z.string().optional() })
-								.passthrough(),
-						}),
-					)
-					.optional(),
-			})
-			.parse(
-				await call("browse_api_library", { type: "playlists", offset: 0 }),
-			);
-		const root = el("library-results");
-		root.replaceChildren(
-			...(result.data ?? []).map((p) =>
-				node("p", p.attributes.name || "Untitled playlist"),
-			),
-		);
-		if (!result.data?.length)
-			root.append(node("p", "No playlists returned on this page."));
-	});
 for (const b of document.querySelectorAll<HTMLButtonElement>(
 	"[data-step],[data-go]",
 ))
 	b.onclick = () => step(b.dataset.step ?? b.dataset.go!);
 for (const b of document.querySelectorAll<HTMLButtonElement>("[data-view]"))
 	b.onclick = () => view(b.dataset.view!);
-for (const b of document.querySelectorAll<HTMLButtonElement>("[data-action]"))
-	b.onclick = () =>
-		void task(async () => {
-			await call("control_playback", { action: b.dataset.action });
-			await refresh();
-		});
 el("refresh").onclick = () => void task(refresh);
-field("volume").onchange = () =>
-	void task(async () => {
-		await call("control_playback", {
-			action: "volume",
-			value: Number(field("volume").value),
-		});
-		await refresh();
-	});
-field("volume").oninput = () =>
-	text("volume-label", `Volume ${field("volume").value}%`);
 function theme(context: ReturnType<App["getHostContext"]>) {
 	if (context?.theme) applyDocumentTheme(context.theme);
 	if (context?.styles?.variables)
@@ -1239,12 +1178,46 @@ app.ontoolresult = async (result) => {
 el("intent").addEventListener("input", () => {
 	draftLoadGeneration++;
 });
+const connection = writable<Connection>({ connected: false, active: false, auth: { developer_key_configured: false, user_authorized: false } });
+const collection = new CollectionController(call);
+const playback = new PlaybackController(call);
+const queueOpen = writable(false);
+const queueEnabled = writable(false);
+function useLibraryInStudio(tracks: Recording[]) {
+ if (busy) throw new Error("Wait for the current Studio action to finish.");
+ if (selectedStory) throw new Error("This mix has listening-story constraints. Open Sequence and remove its constraints before adding recordings.");
+ const merged = [...new Map([...selected, ...tracks].map(track => [recordingKey(track), track])).values()];
+ if (merged.length > 200) throw new Error("Studio accepts at most 200 recordings. Select fewer recordings or start a new brief.");
+ selected = merged;
+ invalidatePreview(); renderSelection(); view("studio"); step("sequence");
+ notice(`${tracks.length} selected recordings carried to Studio. Review the sequence before creating a playlist.`);
+ document.querySelector<HTMLElement>('[data-stage="sequence"] h2')?.focus();
+}
+mount(CollectionBrowser, { target: el("collection-root"), props: { controller: collection, playback, connection, onstudio: useLibraryInStudio } });
+mount(PlayerBar, { target: el("player-root"), props: { controller: playback, queueEnabled, onqueue: () => queueOpen.set(true) } });
+mount(QueuePanel, { target: el("queue-root"), props: { open: queueOpen, call } });
+// Native status reads are bounded; a hidden app never polls, and commands are never repeated.
+const footer = document.querySelector("footer");
+if (footer) new ResizeObserver(entries => {
+ const height = entries[0]?.target.getBoundingClientRect().height;
+ if (height) document.documentElement.style.setProperty("--groovectl-player-height", `${Math.ceil(height)}px`);
+}).observe(footer);
+const playbackTimer = window.setInterval(() => {
+ if (connectionReady && document.visibilityState === "visible" && can("get_playback_state")) void playback.refresh();
+}, 15000);
+let connectionReady = false;
+window.addEventListener("pagehide", () => window.clearInterval(playbackTimer), { once: true });
+document.addEventListener("visibilitychange", () => {
+ if (connectionReady && document.visibilityState === "visible" && can("get_playback_state")) void playback.refresh();
+});
 renderSelection();
 renderIdeas();
+view("studio");
 try {
 	await app.connect();
 	theme(app.getHostContext());
 	await refresh();
+ connectionReady = true;
 	notice("Ready.");
 } catch {
 	notice(

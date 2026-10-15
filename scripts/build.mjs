@@ -1,6 +1,7 @@
 import { build } from "esbuild";
 import { readFile, writeFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import { sveltePlugin } from "./svelte-build.mjs";
 const cli = await build({
 	entryPoints: ["src/cli.ts"],
 	outfile: "dist/cli.js",
@@ -15,6 +16,9 @@ const cli = await build({
 });
 const result = await build({
 	entryPoints: ["ui/workspace.ts"],
+ outfile: "dist/workspace.js",
+ conditions: ["svelte", "browser"],
+ plugins: [sveltePlugin],
 	// Ignore retained legacy ui/node_modules; use the release's locked dependencies.
 	alias: {
 		zod: path.resolve("node_modules/zod"),
@@ -32,10 +36,13 @@ const result = await build({
 	minify: true,
 	metafile: true,
 });
-const script = result.outputFiles[0].text.replaceAll("</script", "<\\/script");
+const script = result.outputFiles.find(f => f.path.endsWith(".js")).text.replaceAll("</script", "<\\/script");
+const theme = await readFile("ui/theme.css", "utf8");
 const html = (await readFile("ui/template.html", "utf8"))
 	.replaceAll("Apple Music Hybrid", "Groovectl")
-	.replace("__SCRIPT__", () => script);
+	.replace("__SCRIPT__", () => script)
+ .replace("__THEME_CSS__", () => theme)
+ .replace("__KIT_CSS__", () => result.outputFiles.find(f => f.path.endsWith(".css"))?.text ?? "");
 await writeFile("dist/workspace.html", html);
 async function licenses(metafile) {
 	const roots = new Set();
