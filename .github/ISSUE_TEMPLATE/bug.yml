@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible behavior or documentation failure.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Never include credentials, personal listening data or private logs. Security issues use SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Groovectl and Node versions
+    validations:
+      required: true
+  - type: dropdown
+    id: backend
+    attributes:
+      label: Backend
+      options: [macOS Music.app, Windows Apple Music, Cider, API-only, Website or docs, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Synthetic reproduction and expected/observed behavior
+      description: Include OS/version. Redact account IDs, private paths, names and data.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Safe evidence and qualification scope
+      description: State whether this is a contract test, live API read/write, desktop session or browser result.

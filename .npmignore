@@ -1,0 +1,8 @@
+native/GroovectlHelper.app/
+native/.build/
+**/.DS_Store
+**/*.p8
+**/*.pem
+**/*.sqlite*
+dist/*.map
+dist/artifacts/

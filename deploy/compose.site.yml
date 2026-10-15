@@ -1,0 +1,16 @@
+services:
+  docs:
+    build:
+      context: ..
+      dockerfile: deploy/site.Dockerfile
+    image: groovectl-docs:local
+    ports:
+      - "127.0.0.1:${GROOVECTL_DOCS_PORT:-57784}:8080"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m,mode=1777
+    restart: unless-stopped
+    mem_limit: 128m
+    cpus: 0.5

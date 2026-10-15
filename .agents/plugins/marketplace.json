@@ -1,0 +1,10 @@
+{
+  "name": "justin-local",
+  "interface": {"displayName": "Justin's Local Plugins"},
+  "plugins": [{
+    "name": "apple-music-hybrid",
+    "source": {"source": "local", "path": "./plugins/apple-music-hybrid"},
+    "policy": {"installation": "AVAILABLE", "authentication": "ON_USE"},
+    "category": "Productivity"
+  }]
+}

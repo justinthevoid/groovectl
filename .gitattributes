@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.zip binary
+*.tgz binary
+server/src/apple_music_hybrid/workspace.html linguist-generated=true whitespace=-blank-at-eol

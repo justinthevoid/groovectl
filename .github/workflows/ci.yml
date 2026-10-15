@@ -1,0 +1,91 @@
+name: Validate Groovectl
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  typescript:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.3.10'
+      - run: bun install --frozen-lockfile
+      - run: bun run check
+      - run: bun run build
+      - run: bun run test
+      - run: bun run package:plugin -- --archive ${{ runner.temp }}/groovectl-plugin.zip
+      - run: npm pack --ignore-scripts --pack-destination ${{ runner.temp }}
+      - run: bun run preflight
+      - name: Check isolated npm and plugin artifacts
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/npm-unpacked" "$RUNNER_TEMP/plugin-unpacked"
+          (
+            cd "$RUNNER_TEMP"
+            tar -xzf groovectl-*.tgz -C npm-unpacked
+            unzip -q groovectl-plugin.zip -d plugin-unpacked
+          )
+          node scripts/smoke-package.mjs "$RUNNER_TEMP/npm-unpacked/package/dist/cli.js"
+          node scripts/smoke-package.mjs "$RUNNER_TEMP/plugin-unpacked/apple-music-hybrid/runtime/dist/cli.js"
+  headless:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.3.10'
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: docker build -f deploy/server.Dockerfile -t groovectl-ci .
+      - name: Check two isolated headless sessions
+        run: |
+          mkdir -p "$RUNNER_TEMP/groovectl-data"
+          sudo chown 1000:1000 "$RUNNER_TEMP/groovectl-data"
+          node scripts/smoke-headless.mjs docker run --rm -i --read-only --cap-drop=ALL --security-opt=no-new-privileges --tmpfs /tmp:rw,noexec,nosuid,size=32m --memory=256m --cpus=1 -e GROOVECTL_PLAYER=none -v "$RUNNER_TEMP/groovectl-data:/data" groovectl-ci
+  website:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.3.10'
+      - run: bun install --frozen-lockfile
+      - run: bun run check
+      - run: bun run build
+      - run: bun run deploy:check
+  swift:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+      - run: /bin/bash scripts/native/gate.sh package
+        env:
+          GROOVECTL_BUILD_ROOT: ${{ runner.temp }}/groovectl-native
+  legacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+      - run: uv sync --project server --extra dev --frozen
+      - run: uv run --project server pytest server/tests -q

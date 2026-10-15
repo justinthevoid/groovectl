@@ -1,0 +1,71 @@
+---
+import { Image } from "astro:assets";
+import BriefLab from "../components/BriefLab.svelte";
+import hero from "../../../assets/brand/mixtape-hero.png";
+import cover from "../../../assets/examples/night-ferry.png";
+import "../styles/global.css";
+const base = import.meta.env.BASE_URL;
+const doc = (slug: string) => base + "docs/" + slug + "/";
+const steps = [
+ ["Brief", "Start with a sentence, an optional interview, or a happy accident. Keep the parts you love and reroll the rest."],
+ ["Recordings", "Resolve real Apple Music IDs. Review live versions, remasters and alternate releases before they sneak into your mix."],
+ ["Sequence", "Shape the listening order, space out artists and inspect the runtime. Musical judgment stays with your agent."],
+ ["Cover", "Give the mix an original image through a configured image provider. Export the cover and make it yours."],
+];
+---
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width" />
+  <title>Groovectl — Apple Music for agents, with a little imagination</title>
+  <meta name="description" content="Make thoughtful playlists, explore your Apple Music library, generate original covers and control a supported player. A local TypeScript MCP server, CLI and interactive studio." />
+  <meta name="theme-color" content="#faf7ef" />
+  <link rel="icon" type="image/svg+xml" href={base + "favicon.svg"} />
+ </head>
+ <body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+   <a class="brand" href={base}><img src={base + "favicon.svg"} alt="" width="38" height="38" />Groovectl</a>
+   <nav aria-label="Main navigation"><a class="nav-demo" href="#brief">Try a brief</a><a href={doc("overview")}>Docs</a><a href={doc("install")}>Get started</a></nav>
+  </header>
+  <main id="main">
+   <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-copy">
+     <h1 id="hero-title">Make a mixtape.<br />Make it yours.</h1>
+     <p>Apple Music for your agent. Find the right recordings, shape a listening journey, give it a cover, and press play.</p>
+     <div class="actions"><a class="button primary" href={doc("install")}>Set up Groovectl <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></a><a class="button secondary" href="#brief">Find your starting point</a></div>
+     <div class="hero-note">Open source · MCP server, CLI & interactive studio<br /><a href={doc("reference/platforms")}>macOS, Windows, Cider and API-only hosts</a></div>
+    </div>
+    <figure class="hero-art"><Image src={hero} alt="A translucent red cassette and three original record sleeves connected by a looping ribbon of magnetic tape." widths={[640,960,1536]} sizes="(max-width: 760px) 100vw, 56vw" format="webp" quality={85} loading="eager" fetchpriority="high" /></figure>
+   </section>
+   <section class="section wrap" aria-labelledby="journey-title">
+    <div class="section-intro"><h2 id="journey-title">A playlist is more<br />than a pile of songs.</h2><p>Groovectl gives your agent the tools to be a thoughtful curator: exact recordings, a listening order you can inspect, and a saved plan before anything changes in your library.</p></div>
+    <div class="journey">{steps.map(([title,body],index) => <article><div class="sequence"><span>{"STEP " + (index + 1)}</span><svg viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h26m-5-5 5 5-5 5" /></svg></div><h3>{title}</h3><p>{body}</p></article>)}</div>
+   </section>
+   <section id="brief" class="studio-section" aria-labelledby="brief-title">
+    <div class="wrap">
+     <div class="section-intro"><h2 id="brief-title">Turn your brain off.<br />Keep your taste.</h2><p>Pick a few things, or leave it to chance. This little brief builder is a starting point; the full studio also takes your own words and fresh suggestions from your agent.</p></div>
+     <BriefLab client:visible />
+    </div>
+   </section>
+   <section class="section wrap cover-story" aria-labelledby="cover-title">
+    <figure><Image src={cover} alt="Original Night Ferry cover: a small warm-lit ferry reflected in a deep green sea beneath an amber moon." widths={[360,640,960]} sizes="(max-width: 760px) 90vw, 32vw" format="webp" quality={85} loading="lazy" /><figcaption>Night Ferry · Original demo artwork</figcaption></figure>
+    <div><h2 id="cover-title">A cover that belongs<br />to your mix.</h2><p>Describe the scene, choose your image route, and give the playlist its own visual world. Export the finished PNG or JPEG for your record shelf.</p><p>Use a configured Codex CLI or your own OpenAI, Gemini or OpenRouter key. The agy route is experimental. Applying a custom cover in Apple Music is currently manual.</p><a class="button secondary" href={doc("reference/artwork")}>Explore artwork options</a></div>
+   </section>
+   <section class="section wrap" aria-labelledby="platform-title">
+    <div class="section-intro"><h2 id="platform-title">Your player.<br />Its real capabilities.</h2><p>Catalog and library tools use the official Apple Music API. Playback happens through a player on its own host. Choose the route that fits where you listen.</p></div>
+    <div class="platforms">
+     <article class="platform"><h3>Music.app on Mac</h3><p>Native library access, playlist plans, transport, volume, seek, shuffle and repeat.</p><p class="qualification">Requires Automation permission. The optional Swift helper has a separate setup and qualification path.</p></article>
+     <article class="platform"><h3>Cider</h3><p>Targeted song playback, transport and queue tools through Cider’s authenticated local API.</p><p class="qualification">Requires Cider and an application token. Live behavior depends on its version and host.</p></article>
+     <article class="platform"><h3>Apple Music on Windows</h3><p>Experimental media-session transport and seek. Use MusicKit for catalog and library tools.</p><p class="qualification">Interactive session qualification is pending. Targeted playback and session volume are not provided by this adapter.</p></article>
+     <article class="platform"><h3>API-only / VPS</h3><p>Discovery, personal library data, curation and reviewed account writes without a desktop player.</p><p class="qualification">MusicKit is required for API access. A server does not control a player on another computer.</p></article>
+    </div>
+    <a class="button secondary" href={doc("reference/apple-music-capabilities")}>Read the capability map <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></a>
+   </section>
+   <section class="section wrap" aria-labelledby="safety-title">
+    <div class="safety"><h2 id="safety-title">A good mix.<br />A clear receipt.</h2><div><p>Preview account changes, apply a saved plan once, then inspect what Apple returned. If the outcome is uncertain, Groovectl keeps the receipt and blocks automatic replay.</p><p>Your keys and listening data stay in private operator storage. Cover generation uses your selected route with local attempt limits and no automatic paid fallback.</p><a href={doc("security")}>Understand the safety and privacy model</a></div></div>
+   </section>
+  </main>
+  <footer class="site-footer wrap"><p>Groovectl. Made for people who care about the next song.<br />Independent of Apple and Cider.</p><div><a href={doc("contribute")}>Contribute</a><a href={doc("security")}>Security & privacy</a><a href={base + "LICENSE.txt"}>MIT license</a></div></footer>
+ </body>
+</html>

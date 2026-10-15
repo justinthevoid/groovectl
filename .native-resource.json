@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "project": "Groovectl",
+  "allowed_operations": ["package"],
+  "dispatchers": ["gate.sh", "helper-job.sh"],
+  "package_dispatchers": ["gate.sh"],
+  "legacy_locks": ["/tmp/shuttercoach-native-build.lock"],
+  "unmanaged_runner_roots": [],
+  "min_free_disk_gib": 2,
+  "min_memory_free_percent": 15
+}

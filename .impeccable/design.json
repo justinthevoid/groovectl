@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T05:45:28Z",
+  "title": "Design System: Groovectl website",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cream paper",
+        "tonalRamp": [
+          "oklch(15.00% 0.01105 89.72)",
+          "oklch(26.43% 0.01105 89.72)",
+          "oklch(37.86% 0.01105 89.72)",
+          "oklch(49.29% 0.01105 89.72)",
+          "oklch(60.71% 0.01105 89.72)",
+          "oklch(72.14% 0.01105 89.72)",
+          "oklch(83.57% 0.01105 89.72)",
+          "oklch(95.00% 0.01105 89.72)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Dark ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.01764 107.50)",
+          "oklch(26.43% 0.01764 107.50)",
+          "oklch(37.86% 0.01764 107.50)",
+          "oklch(49.29% 0.01764 107.50)",
+          "oklch(60.71% 0.01764 107.50)",
+          "oklch(72.14% 0.01764 107.50)",
+          "oklch(83.57% 0.01764 107.50)",
+          "oklch(95.00% 0.01764 107.50)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.02469 104.33)",
+          "oklch(26.43% 0.02469 104.33)",
+          "oklch(37.86% 0.02469 104.33)",
+          "oklch(49.29% 0.02469 104.33)",
+          "oklch(60.71% 0.02469 104.33)",
+          "oklch(72.14% 0.02469 104.33)",
+          "oklch(83.57% 0.02469 104.33)",
+          "oklch(95.00% 0.02469 104.33)"
+        ]
+      },
+      "berry": {
+        "role": "primary",
+        "displayName": "Raspberry",
+        "tonalRamp": [
+          "oklch(15.00% 0.16553 12.09)",
+          "oklch(26.43% 0.16553 12.09)",
+          "oklch(37.86% 0.16553 12.09)",
+          "oklch(49.29% 0.16553 12.09)",
+          "oklch(60.71% 0.16553 12.09)",
+          "oklch(72.14% 0.16553 12.09)",
+          "oklch(83.57% 0.16553 12.09)",
+          "oklch(95.00% 0.16553 12.09)"
+        ]
+      },
+      "berry-dark": {
+        "role": "primary",
+        "displayName": "Deep raspberry",
+        "tonalRamp": [
+          "oklch(15.00% 0.13756 12.03)",
+          "oklch(26.43% 0.13756 12.03)",
+          "oklch(37.86% 0.13756 12.03)",
+          "oklch(49.29% 0.13756 12.03)",
+          "oklch(60.71% 0.13756 12.03)",
+          "oklch(72.14% 0.13756 12.03)",
+          "oklch(83.57% 0.13756 12.03)",
+          "oklch(95.00% 0.13756 12.03)"
+        ]
+      },
+      "olive": {
+        "role": "secondary",
+        "displayName": "Record-sleeve olive",
+        "tonalRamp": [
+          "oklch(15.00% 0.04078 119.33)",
+          "oklch(26.43% 0.04078 119.33)",
+          "oklch(37.86% 0.04078 119.33)",
+          "oklch(49.29% 0.04078 119.33)",
+          "oklch(60.71% 0.04078 119.33)",
+          "oklch(72.14% 0.04078 119.33)",
+          "oklch(83.57% 0.04078 119.33)",
+          "oklch(95.00% 0.04078 119.33)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Paper divider",
+        "tonalRamp": [
+          "oklch(15.00% 0.01951 93.69)",
+          "oklch(26.43% 0.01951 93.69)",
+          "oklch(37.86% 0.01951 93.69)",
+          "oklch(49.29% 0.01951 93.69)",
+          "oklch(60.71% 0.01951 93.69)",
+          "oklch(72.14% 0.01951 93.69)",
+          "oklch(83.57% 0.01951 93.69)",
+          "oklch(95.00% 0.01951 93.69)"
+        ]
+      },
+      "wash": {
+        "role": "neutral",
+        "displayName": "Paper wash",
+        "tonalRamp": [
+          "oklch(15.00% 0.01780 92.69)",
+          "oklch(26.43% 0.01780 92.69)",
+          "oklch(37.86% 0.01780 92.69)",
+          "oklch(49.29% 0.01780 92.69)",
+          "oklch(60.71% 0.01780 92.69)",
+          "oklch(72.14% 0.01780 92.69)",
+          "oklch(83.57% 0.01780 92.69)",
+          "oklch(95.00% 0.01780 92.69)"
+        ]
+      },
+      "studio-heading": {
+        "role": "neutral",
+        "displayName": "Studio heading",
+        "tonalRamp": [
+          "oklch(15.00% 0.01892 93.66)",
+          "oklch(26.43% 0.01892 93.66)",
+          "oklch(37.86% 0.01892 93.66)",
+          "oklch(49.29% 0.01892 93.66)",
+          "oklch(60.71% 0.01892 93.66)",
+          "oklch(72.14% 0.01892 93.66)",
+          "oklch(83.57% 0.01892 93.66)",
+          "oklch(95.00% 0.01892 93.66)"
+        ]
+      },
+      "studio-muted": {
+        "role": "neutral",
+        "displayName": "Studio muted",
+        "tonalRamp": [
+          "oklch(15.00% 0.02546 111.78)",
+          "oklch(26.43% 0.02546 111.78)",
+          "oklch(37.86% 0.02546 111.78)",
+          "oklch(49.29% 0.02546 111.78)",
+          "oklch(60.71% 0.02546 111.78)",
+          "oklch(72.14% 0.02546 111.78)",
+          "oklch(83.57% 0.02546 111.78)",
+          "oklch(95.00% 0.02546 111.78)"
+        ]
+      },
+      "field-paper": {
+        "role": "neutral",
+        "displayName": "Field paper",
+        "tonalRamp": [
+          "oklch(15.00% 0.01489 94.20)",
+          "oklch(26.43% 0.01489 94.20)",
+          "oklch(37.86% 0.01489 94.20)",
+          "oklch(49.29% 0.01489 94.20)",
+          "oklch(60.71% 0.01489 94.20)",
+          "oklch(72.14% 0.01489 94.20)",
+          "oklch(83.57% 0.01489 94.20)",
+          "oklch(95.00% 0.01489 94.20)"
+        ]
+      },
+      "studio-control": {
+        "role": "neutral",
+        "displayName": "Studio control",
+        "tonalRamp": [
+          "oklch(15.00% 0.02110 85.94)",
+          "oklch(26.43% 0.02110 85.94)",
+          "oklch(37.86% 0.02110 85.94)",
+          "oklch(49.29% 0.02110 85.94)",
+          "oklch(60.71% 0.02110 85.94)",
+          "oklch(72.14% 0.02110 85.94)",
+          "oklch(83.57% 0.02110 85.94)",
+          "oklch(95.00% 0.02110 85.94)"
+        ]
+      },
+      "studio-line": {
+        "role": "neutral",
+        "displayName": "Studio line",
+        "tonalRamp": [
+          "oklch(15.00% 0.03952 117.70)",
+          "oklch(26.43% 0.03952 117.70)",
+          "oklch(37.86% 0.03952 117.70)",
+          "oklch(49.29% 0.03952 117.70)",
+          "oklch(60.71% 0.03952 117.70)",
+          "oklch(72.14% 0.03952 117.70)",
+          "oklch(83.57% 0.03952 117.70)",
+          "oklch(95.00% 0.03952 117.70)"
+        ]
+      },
+      "studio-button-line": {
+        "role": "neutral",
+        "displayName": "Studio button line",
+        "tonalRamp": [
+          "oklch(15.00% 0.04374 116.39)",
+          "oklch(26.43% 0.04374 116.39)",
+          "oklch(37.86% 0.04374 116.39)",
+          "oklch(49.29% 0.04374 116.39)",
+          "oklch(60.71% 0.04374 116.39)",
+          "oklch(72.14% 0.04374 116.39)",
+          "oklch(83.57% 0.04374 116.39)",
+          "oklch(95.00% 0.04374 116.39)"
+        ]
+      },
+      "studio-hover": {
+        "role": "secondary",
+        "displayName": "Olive hover",
+        "tonalRamp": [
+          "oklch(15.00% 0.05214 117.91)",
+          "oklch(26.43% 0.05214 117.91)",
+          "oklch(37.86% 0.05214 117.91)",
+          "oklch(49.29% 0.05214 117.91)",
+          "oklch(60.71% 0.05214 117.91)",
+          "oklch(72.14% 0.05214 117.91)",
+          "oklch(83.57% 0.05214 117.91)",
+          "oklch(95.00% 0.05214 117.91)"
+        ]
+      },
+      "focus-on-olive": {
+        "role": "neutral",
+        "displayName": "Focus on olive",
+        "tonalRamp": [
+          "oklch(15.00% 0.06294 32.11)",
+          "oklch(26.43% 0.06294 32.11)",
+          "oklch(37.86% 0.06294 32.11)",
+          "oklch(49.29% 0.06294 32.11)",
+          "oklch(60.71% 0.06294 32.11)",
+          "oklch(72.14% 0.06294 32.11)",
+          "oklch(83.57% 0.06294 32.11)",
+          "oklch(95.00% 0.06294 32.11)"
+        ]
+      },
+      "docs-light-accent-low": {
+        "role": "primary",
+        "displayName": "Docs light accent-low",
+        "tonalRamp": [
+          "oklch(15.00% 0.03006 359.54)",
+          "oklch(26.43% 0.03006 359.54)",
+          "oklch(37.86% 0.03006 359.54)",
+          "oklch(49.29% 0.03006 359.54)",
+          "oklch(60.71% 0.03006 359.54)",
+          "oklch(72.14% 0.03006 359.54)",
+          "oklch(83.57% 0.03006 359.54)",
+          "oklch(95.00% 0.03006 359.54)"
+        ]
+      },
+      "docs-light-accent-high": {
+        "role": "primary",
+        "displayName": "Docs light accent-high",
+        "tonalRamp": [
+          "oklch(15.00% 0.11558 8.08)",
+          "oklch(26.43% 0.11558 8.08)",
+          "oklch(37.86% 0.11558 8.08)",
+          "oklch(49.29% 0.11558 8.08)",
+          "oklch(60.71% 0.11558 8.08)",
+          "oklch(72.14% 0.11558 8.08)",
+          "oklch(83.57% 0.11558 8.08)",
+          "oklch(95.00% 0.11558 8.08)"
+        ]
+      },
+      "docs-light-ink": {
+        "role": "neutral",
+        "displayName": "Docs light ink",
+        "tonalRamp": [
+          "oklch(15.00% 0.01086 107.13)",
+          "oklch(26.43% 0.01086 107.13)",
+          "oklch(37.86% 0.01086 107.13)",
+          "oklch(49.29% 0.01086 107.13)",
+          "oklch(60.71% 0.01086 107.13)",
+          "oklch(72.14% 0.01086 107.13)",
+          "oklch(83.57% 0.01086 107.13)",
+          "oklch(95.00% 0.01086 107.13)"
+        ]
+      },
+      "docs-dark-accent-low": {
+        "role": "primary",
+        "displayName": "Docs dark accent-low",
+        "tonalRamp": [
+          "oklch(15.00% 0.05829 2.30)",
+          "oklch(26.43% 0.05829 2.30)",
+          "oklch(37.86% 0.05829 2.30)",
+          "oklch(49.29% 0.05829 2.30)",
+          "oklch(60.71% 0.05829 2.30)",
+          "oklch(72.14% 0.05829 2.30)",
+          "oklch(83.57% 0.05829 2.30)",
+          "oklch(95.00% 0.05829 2.30)"
+        ]
+      },
+      "docs-dark-accent": {
+        "role": "primary",
+        "displayName": "Docs dark accent",
+        "tonalRamp": [
+          "oklch(15.00% 0.16035 7.68)",
+          "oklch(26.43% 0.16035 7.68)",
+          "oklch(37.86% 0.16035 7.68)",
+          "oklch(49.29% 0.16035 7.68)",
+          "oklch(60.71% 0.16035 7.68)",
+          "oklch(72.14% 0.16035 7.68)",
+          "oklch(83.57% 0.16035 7.68)",
+          "oklch(95.00% 0.16035 7.68)"
+        ]
+      },
+      "docs-dark-accent-high": {
+        "role": "primary",
+        "displayName": "Docs dark accent-high",
+        "tonalRamp": [
+          "oklch(15.00% 0.03951 0.12)",
+          "oklch(26.43% 0.03951 0.12)",
+          "oklch(37.86% 0.03951 0.12)",
+          "oklch(49.29% 0.03951 0.12)",
+          "oklch(60.71% 0.03951 0.12)",
+          "oklch(72.14% 0.03951 0.12)",
+          "oklch(83.57% 0.03951 0.12)",
+          "oklch(95.00% 0.03951 0.12)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing-page hero only; phone size is a source override."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Landing-page section headings, not Starlight heading sizes."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Journey headings; platform rows use a local smaller override."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Explanations and general landing-page prose."
+      },
+      "label": {
+        "displayName": "Action label",
+        "purpose": "Button labels; navigation does not inherit this weight."
+      },
+      "field-label": {
+        "displayName": "Field label",
+        "purpose": "Question and exclusions labels."
+      },
+      "brief": {
+        "displayName": "Listening brief",
+        "purpose": "Selectable generated prose, in ordinary inherited weight."
+      },
+      "small": {
+        "displayName": "Helper text",
+        "purpose": "Brief-composer supporting and status text."
+      },
+      "brand": {
+        "displayName": "Wordmark",
+        "purpose": "Groovectl brand link alongside its image mark."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "action-background-color",
+        "value": "background 0.18s, color 0.18s",
+        "purpose": "Existing button state transitions; the source uses the default CSS ease."
+      },
+      {
+        "name": "anchor-scroll",
+        "value": "smooth",
+        "purpose": "html scroll-behavior outside reduced-motion mode."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition: none !important; animation: none !important; scroll-behavior: auto",
+        "purpose": "The source removes transitions/animations on all elements and restores automatic HTML scrolling."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "1000px"
+      },
+      {
+        "name": "phone-stack",
+        "value": "760px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Raspberry setup or copy action on a paper surface.",
+      "html": "<button class=\"ds-primary\" type=\"button\">Set up Groovectl</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:var(--berry,#a82646);color:var(--paper,#faf7ef);}.ds-primary:hover{background:var(--berry-dark,#841d36);color:var(--paper,#faf7ef);}.ds-primary:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-primary:disabled{cursor:not-allowed;opacity:.5;}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none!important;animation:none!important;}}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined action on the landing page paper.",
+      "html": "<button class=\"ds-secondary\" type=\"button\">Find your starting point</button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:transparent;border-color:var(--line,#d4d0c2);color:var(--ink,#29291f);}.ds-secondary:hover{background:var(--wash,#f0ecdf);}.ds-secondary:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-secondary:disabled{cursor:not-allowed;opacity:.5;}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none!important;animation:none!important;}}"
+    },
+    {
+      "name": "Studio secondary button",
+      "kind": "button",
+      "refersTo": "button-studio-secondary",
+      "description": "The existing surprise action, shown on its olive working surface.",
+      "html": "<div class=\"ds-studio-context\"><button class=\"ds-studio-secondary\" type=\"button\">Surprise me <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m4 7 4-3 4 3 4-3 4 3v10l-4 3-4-3-4 3-4-3zM8 4v13m4-10v10m4-13v13\"/></svg></button></div>",
+      "css": ".ds-studio-context{background:var(--olive,#41472e);padding:1rem;}.ds-studio-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:transparent;border-color:#a6ac8d;color:#fff8e9;}.ds-studio-secondary:hover{background:#59603e;}.ds-studio-secondary:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}.ds-studio-secondary:disabled{cursor:not-allowed;opacity:.5;}.ds-studio-secondary svg{width:1.15rem;height:1.15rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}@media(prefers-reduced-motion:reduce){.ds-studio-secondary{transition:none!important;animation:none!important;}}"
+    },
+    {
+      "name": "Native answer select",
+      "kind": "input",
+      "refersTo": "select",
+      "description": "An existing question and native select on olive.",
+      "html": "<div class=\"ds-select-context\"><label class=\"ds-select-label\" for=\"ds-scene\">Where are we listening?</label><select class=\"ds-select\" id=\"ds-scene\"><option>The long way home</option><option>Dinner with the windows open</option><option>A quiet Sunday morning</option></select></div>",
+      "css": ".ds-select-context{background:var(--olive,#41472e);padding:1rem;color:#fbf7e9;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-select-label{display:block;margin-bottom:.5rem;font-size:1rem;font-weight:620;}.ds-select{width:100%;min-width:0;padding:.75rem 2rem .75rem .8rem;background:#f7f4e9;color:var(--ink,#29291f);border:1px solid transparent;border-radius:10px;font-family:inherit;font-size:.93rem;line-height:inherit;cursor:pointer;}.ds-select:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}@media(max-width:760px){.ds-select{font-size:1rem;}}"
+    },
+    {
+      "name": "Exclusions field",
+      "kind": "input",
+      "refersTo": "exclusions-field",
+      "description": "A vertically resizable text field on the studio surface.",
+      "html": "<div class=\"ds-field-context\"><label class=\"ds-field-label\" for=\"ds-exclusions\">Anything to keep out?</label><textarea class=\"ds-exclusions\" id=\"ds-exclusions\" rows=\"2\">No live versions. Avoid consecutive songs by the same artist.</textarea></div>",
+      "css": ".ds-field-context{background:var(--olive,#41472e);padding:1rem;color:#fbf7e9;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-field-label{display:block;margin-bottom:.5rem;font-size:1rem;font-weight:620;}.ds-exclusions{width:100%;border:1px solid #8a9075;border-radius:10px;color:#fff8e9;background:transparent;padding:.7rem .8rem;resize:vertical;font-family:inherit;font-size:.95rem;line-height:inherit;caret-color:var(--berry,#a82646);}.ds-exclusions:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}"
+    },
+    {
+      "name": "Reroll button",
+      "kind": "button",
+      "refersTo": "button-reroll",
+      "description": "The adjacent icon action for an unlocked question.",
+      "html": "<div class=\"ds-reroll-context\"><button class=\"ds-reroll\" type=\"button\" aria-label=\"Reroll where are we listening?\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 8a8 8 0 0 0-14-2L3 9m0-6v6h6M4 16a8 8 0 0 0 14 2l3-3m0 6v-6h-6\"/></svg></button></div>",
+      "css": ".ds-reroll-context{background:var(--olive,#41472e);padding:1rem;}.ds-reroll{width:48px;min-height:48px;border:1px solid #8a9075;border-radius:10px;background:transparent;color:#fff8e9;display:grid;place-items:center;cursor:pointer;}.ds-reroll:hover{background:#59603e;}.ds-reroll:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}.ds-reroll:disabled{cursor:not-allowed;opacity:.5;}.ds-reroll svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}"
+    },
+    {
+      "name": "Text navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "The landing header links, including its persistent setup underline.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-nav-demo\" href=\"#brief\">Try a brief</a><a href=\"/docs/overview/\">Docs</a><a href=\"/docs/install/\">Get started</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:1.6rem;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;line-height:1.6;color:var(--ink,#29291f);}.ds-nav a{color:inherit;text-decoration:none;text-underline-offset:.22em;}.ds-nav a:last-child{text-decoration:underline;text-decoration-color:var(--berry,#a82646);text-decoration-thickness:2px;}.ds-nav a:hover{color:var(--berry,#a82646);}.ds-nav a:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}@media(max-width:760px){.ds-nav{gap:1rem;font-size:.85rem;}.ds-nav-demo{display:none;}}"
+    },
+    {
+      "name": "Listening brief panel",
+      "kind": "card",
+      "refersTo": "brief-output",
+      "description": "The paper output on olive; its complete text remains in normal flow.",
+      "html": "<div class=\"ds-output-context\"><div class=\"ds-output\"><div class=\"ds-output-heading\"><span>Your listening brief</span><span class=\"ds-duration\">60 min</span></div><div class=\"ds-brief\" role=\"region\" aria-label=\"Your listening brief\" tabindex=\"0\">Make me a 60-minute Apple Music playlist for: the long way home.\n\nWarm, textured and a little unexpected. Mostly discoveries, with a few familiar anchors.\n\nNo live versions. Avoid consecutive songs by the same artist.\n\nChoose exact recordings, explain the listening flow, and show me the playlist before creating it. Suggest an original cover direction too.</div><button class=\"ds-output-copy\" type=\"button\">Copy listening brief</button><p class=\"ds-output-help\">Try it with Groovectl in your agent. This demo composes a brief; it does not access an account.</p></div></div>",
+      "css": ".ds-output-context{padding:1rem;background:var(--olive,#41472e);}.ds-output{background:var(--paper,#faf7ef);color:var(--ink,#29291f);border-radius:16px;padding:1.7rem;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-output-heading{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem;font-weight:650;padding-bottom:1rem;border-bottom:1px solid var(--line,#d4d0c2);}.ds-duration{font-variant-numeric:tabular-nums;color:var(--muted,#626151);}.ds-brief{display:block;width:100%;min-height:20rem;padding:1.3rem 0 1rem;border:0;color:var(--ink,#29291f);background:transparent;font-family:\"Fraunces Variable\",Georgia,serif;font-size:1.3rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;}.ds-output-copy{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;width:100%;background:var(--berry,#a82646);color:var(--paper,#faf7ef);}.ds-output-copy:hover{background:var(--berry-dark,#841d36);}.ds-output :focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-output-help{margin:1rem 0 0;color:var(--muted,#626151);font-size:.83rem;line-height:1.5;min-height:2.6em;}@media(max-width:760px){.ds-output{padding:1.3rem;}.ds-brief{font-size:1.2rem;}}@media(prefers-reduced-motion:reduce){.ds-output-copy{transition:none!important;animation:none!important;}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The independent record shop",
+    "overview": "Warm paper, compact sans-serif controls and generous serif headlines frame a small collection of original music artwork. The site feels editorial and tactile: thin dividers organize the page, raspberry identifies actions, and olive provides a distinct working surface for the brief composer.\n\nThis is a scan of the implemented website, not a product-wide identity specification. It covers the landing page, brief composer and explicit Starlight overrides. It does not govern the MCP App. The north-star phrase and atmosphere language are descriptive and provisional. The unattended implementation did not establish a user-selected comp or a public seed reference; the later direction roll does not replace that missing pre-implementation workshop. Documentation records observed design, not whole-surface ship approval. See [the website brief](docs/design/site-brief.md) for the process record.",
+    "keyCharacteristics": [
+      "Cream paper and dark ink support long reading; raspberry distinguishes actions.",
+      "Fraunces supplies headings and the composed brief; DM Sans supplies prose and controls.",
+      "Flat interface surfaces use thin dividers and tonal changes, while imagery carries physical texture.",
+      "The brief remains selectable, wraps naturally and grows with its content on narrow screens."
+    ],
+    "rules": [
+      {
+        "name": "The Surface Focus Rule",
+        "body": "Use the raspberry focus outline on paper, including the paper panel inside the olive section. Use the warm light outline on the olive working surface. The nested paper panel must restore its own focus color.",
+        "section": "colors"
+      },
+      {
+        "name": "The Type Role Rule",
+        "body": "Use Fraunces for editorial headings and the composed listening brief. Use DM Sans for explanations, field labels, actions and navigation.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Interface Rule",
+        "body": "Separate interface surfaces through tone, spacing and thin dividers. The incumbent UI has no CSS box shadows; physical lighting belongs to the original artwork.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do reuse the existing paper, ink, raspberry and olive roles before adding another palette.",
+      "Do keep original music artwork distinct from interface surfaces and preserve its aspect ratio.",
+      "Do keep visible keyboard focus appropriate to the immediate surface, including nested paper panels.",
+      "Do let the composed brief wrap and grow so its complete text remains inspectable and selectable.",
+      "Do preserve the single-column phone flow and the existing reduced-motion override."
+    ],
+    "donts": [
+      "Don't infer a dark landing-page theme from the separate Starlight dark accent overrides.",
+      "Don't replace thin dividers and tonal grouping with a new shadow vocabulary when extending this site.",
+      "Don't turn the page-specific hero columns, step labels or brief questions into mandatory patterns for every future surface.",
+      "Don't treat this observed system, generated tonal ramps or provisional atmosphere language as evidence of user approval or release qualification."
+    ]
+  }
+}

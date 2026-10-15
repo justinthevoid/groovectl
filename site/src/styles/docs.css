@@ -1,0 +1,30 @@
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/fraunces";
+:root {
+	--sl-font: "DM Sans Variable", sans-serif;
+	--sl-color-accent-low: #45202b;
+	--sl-color-accent: #e96987;
+	--sl-color-accent-high: #f9d7e0;
+}
+:root[data-theme="light"] {
+	--sl-color-accent-low: #f6dce3;
+	--sl-color-accent: #a82646;
+	--sl-color-accent-high: #6a1830;
+	--sl-color-white: #25251f;
+	--sl-color-gray-7: #faf7ef;
+}
+h1,
+h2,
+h3 {
+	font-family: "Fraunces Variable", Georgia, serif;
+	font-weight: 570;
+	letter-spacing: -0.025em;
+}
+:focus-visible {
+	outline: 3px solid var(--sl-color-accent);
+	outline-offset: 4px;
+}
+::selection {
+	color: #fff8ee;
+	background: #8e203c;
+}

@@ -1,0 +1,14 @@
+.git
+node_modules
+site/node_modules
+site/.astro
+site/.wrangler
+server/.venv
+native/.build
+native/GroovectlHelper.app
+plugins
+*.p8
+*.pem
+*.sqlite*
+*.log
+.env*
