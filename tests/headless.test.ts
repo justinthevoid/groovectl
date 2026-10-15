@@ -1,6 +1,61 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { NoPlayer, playerCapabilities, Cider } from "../src/players.js";
+import {
+	NoPlayer,
+	playerCapabilities,
+	sessionCapabilities,
+	Cider,
+} from "../src/players.js";
+
+test("Windows workspace controls follow the live session and recover as it becomes playable", () => {
+	assert.deepEqual(
+		sessionCapabilities(
+			"windows",
+			{
+				running: true,
+				capabilities: { play: true, pause: false, seek: false, next: false },
+			},
+			"win32",
+		).actions,
+		["play"],
+	);
+	assert.deepEqual(
+		sessionCapabilities(
+			"windows",
+			{
+				running: true,
+				capabilities: { play: false, pause: true, seek: true, next: false },
+			},
+			"win32",
+		).actions,
+		["pause", "seek"],
+	);
+	for (const status of [
+		{ running: false },
+		{ running: true },
+		{ running: true, capabilities: { play: "yes" } },
+	])
+		assert.deepEqual(
+			sessionCapabilities("windows", status, "win32").actions,
+			[],
+		);
+	assert.deepEqual(
+		sessionCapabilities(
+			"windows",
+			{ running: true, capabilities: { play: true } },
+			"linux",
+		).actions,
+		[],
+	);
+	assert.equal(
+		sessionCapabilities(
+			"windows",
+			{ running: true, capabilities: { volume: true } },
+			"win32",
+		).volume,
+		false,
+	);
+});
 import { createTools } from "../src/tools.js";
 import { fixture } from "./helpers.js";
 

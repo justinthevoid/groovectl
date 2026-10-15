@@ -111,6 +111,31 @@ test("Cider HTTP failure cannot retry a command or expose a token-bearing body",
 	);
 	assert.equal(calls, 1);
 });
+test("Cider accepts documented empty seek responses without inventing a playback timestamp", async () => {
+	let seeks = 0;
+	const cider = new Cider(
+		"http://127.0.0.1:10767",
+		"synthetic",
+		async (url) => {
+			const endpoint = new URL(String(url)).pathname.split("/").at(-1);
+			if (endpoint === "seek") {
+				seeks++;
+				return new Response(null, { status: 204 });
+			}
+			return Response.json(
+				endpoint === "is-playing"
+					? { is_playing: false }
+					: endpoint === "volume"
+						? { volume: 0.3 }
+						: { info: { name: "Song", playParams: { id: "123" } } },
+			);
+		},
+	);
+	const result = await cider.playback({ action: "seek", value: 20 });
+	assert.equal(seeks, 1);
+	assert.equal(result.state, "paused");
+	assert.equal(result.position, undefined);
+});
 test("Cider queue omits asset URLs and DRM metadata", async () => {
 	const cider = new Cider("http://127.0.0.1:10767", "token", async () =>
 		Response.json([

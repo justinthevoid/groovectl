@@ -65,7 +65,10 @@ for (const modern of [false, true])
 				name: "get_playlist_studio",
 				arguments: { include_recipes: true },
 			});
-			assert.equal((recipeCatalog.structuredContent?.recipes as unknown[]).length, 6);
+			assert.equal(
+				(recipeCatalog.structuredContent?.recipes as unknown[]).length,
+				6,
+			);
 			const invalid = await client.callTool({
 				name: "control_playback",
 				arguments: { action: "volume", value: 101 },
@@ -81,6 +84,13 @@ for (const modern of [false, true])
 			);
 			const open = await client.callTool({ name: "open_music", arguments: {} });
 			assert.ok(open.structuredContent?.auth);
+			assert.ok(JSON.stringify(open).length < 20000);
+			const textResult = open.content?.find((c) => c.type === "text");
+			assert.ok(textResult && "text" in textResult);
+			assert.deepEqual(
+				JSON.parse(textResult.text as string),
+				open.structuredContent,
+			);
 			const cover = await client.callTool({
 				name: "get_playlist_artwork",
 				arguments: { artwork_id: art.artwork_id },
@@ -143,13 +153,13 @@ for (const modern of [false, true])
 			);
 			const studio = await client.callTool({
 				name: "get_playlist_studio",
-				arguments: {},
+				arguments: { draft_id: draftId },
 			});
-			const drafts = studio.structuredContent?.drafts as Array<{
+			const draft = studio.structuredContent?.draft as {
 				brief: { explicit: string; exclude: string[] };
-			}>;
-			assert.equal(drafts[0]?.brief.explicit, "avoid");
-			assert.deepEqual(drafts[0]?.brief.exclude, ["live versions"]);
+			};
+			assert.equal(draft.brief.explicit, "avoid");
+			assert.deepEqual(draft.brief.exclude, ["live versions"]);
 			assert.equal(
 				studio.structuredContent?.provider &&
 					typeof studio.structuredContent.provider,

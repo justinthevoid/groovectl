@@ -47,14 +47,19 @@ for (let run = 0; run < 2; run++) {
 		} else {
 			const result = await client.callTool({
 				name: "get_playlist_studio",
-				arguments: { include_recipes: true },
+				arguments: { draft_id: draftId, include_recipes: true },
 			});
 			assert.equal(result.isError, undefined);
 			assert.ok(
 				result.structuredContent?.drafts.some(
-					(d) => d.draft_id === draftId && d.brief.title === marker,
+					(d) => d.draft_id === draftId && d.title === marker,
 				),
 				"Private draft did not survive process replacement.",
+			);
+			assert.equal(result.structuredContent?.draft.brief.title, marker);
+			assert.equal(
+				result.structuredContent?.draft.brief.intent,
+				"Synthetic qualification only. No music account writes, playback or image generation.",
 			);
 			assert.equal(result.structuredContent?.recipes.length, 6);
 		}

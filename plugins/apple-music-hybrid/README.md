@@ -96,7 +96,7 @@ groovectl call get_capabilities
 groovectl tools --profile curator
 ```
 
-Profiles `full`, `catalog`, `curator` and `player` reduce tool exposure. They are not account permission boundaries; inspect individual annotations. Windows/Cider interactive qualification and several live provider/write paths remain pending. Read the [platform guide](docs/platforms.md) before assuming parity.
+Profiles `full`, `catalog`, `curator` and `player` reduce tool exposure. They are not account permission boundaries; inspect individual annotations. Basic Windows/Cider controls have live receipts; further player, provider and write paths retain separate qualification. Read the [platform guide](docs/platforms.md) before assuming parity.
 
 ## A good mix. A clear receipt.
 

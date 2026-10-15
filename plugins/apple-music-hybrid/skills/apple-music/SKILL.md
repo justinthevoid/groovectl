@@ -31,6 +31,12 @@ Open_music presents brief → recordings → sequence → cover with a compact p
 The agent can curate from a saved brief, preview the selection, and the user can load
 that plan's sequence from Activity. The dashboard does not autonomously invent music.
 
+Workspace and studio lists contain compact summaries. Use inspect_playlist_plan
+with the selected plan_id for complete recordings, audits and durable write receipts;
+use get_playlist_studio with draft_id for the full saved brief, exclusions, locks and
+agent suggestions. A summary is navigation, not a complete preview or receipt. Inspect
+details before deciding whether a requested write is ready or needs investigation.
+
 For a playlist request, infer a sensible count and listening context from the brief.
 Search the catalog, then resolve exact title/artist recordings. Check live, cover,
 remix, and remastered matches. Preserve the requested era, artists, mood, exclusions,

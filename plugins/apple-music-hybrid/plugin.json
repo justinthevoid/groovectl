@@ -1,7 +1,7 @@
 {
 	"$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
 	"name": "apple-music-hybrid",
-	"version": "0.5.0",
+	"version": "0.5.2",
 	"description": "Groovectl: Apple Music playlist studio, exact recordings, original covers, library discovery and player control.",
 	"author": {
 		"name": "Justin Hogan"
@@ -25,7 +25,11 @@
 				"longDescription": "Build an optional listening brief, explore fresh ideas, find exact recordings and shape a playlist with an original cover. Use Codex, experimental agy or your own image API key. Review library, favorites and ratings changes, and control Music.app, Windows Apple Music or Cider. Runs locally with your own MusicKit key. Capabilities vary by player.",
 				"developerName": "Justin Hogan",
 				"category": "Productivity",
-				"capabilities": ["Interactive", "Read", "Write"],
+				"capabilities": [
+					"Interactive",
+					"Read",
+					"Write"
+				],
 				"composerIcon": "./assets/icon.svg",
 				"logo": "./assets/icon.svg",
 				"defaultPrompt": [

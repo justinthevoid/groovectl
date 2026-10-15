@@ -41,6 +41,8 @@ The experimental adapter uses Microsoft’s [Windows.Media.Control](https://lear
 
 Run in the signed-in Windows desktop session. SSH/service sessions may not have access to the interactive media-session broker. Open Apple Music and start a song once if it has not registered a session. A missing session is reported as such, not as successful control. Apple Music’s desktop app has no macOS AppleScript dictionary; its library and catalog integration here use MusicKit instead of an invented iTunes COM bridge.
 
+0.5.2 qualification verified live play/pause and unsupported seek/volume rejection in a real desktop session. The workspace now narrows its actions to that session's enabled controls. Seek, next/previous and stop remain dependent on the app/session and are not all live-qualified; portable CI does not establish them.
+
 ## Cider
 
 Use Cider’s maintained [client RPC documentation](https://github.com/ciderapp/docs/blob/main/docs/1.client/rpc.md). This adapter targets the documented `/api/v1/playback` contract, not the discontinued Cider 1 implementation. API availability can vary with the installed Cider release.
@@ -51,5 +53,7 @@ Use Cider’s maintained [client RPC documentation](https://github.com/ciderapp/
 4. Run `groovectl doctor --probe`.
 
 The default origin is `http://127.0.0.1:10767`; IPv6 loopback is supported through `--url http://[::1]:10767`. Remote hosts, credentials in URLs, redirects and arbitrary paths are rejected. The token is sent only as an `apptoken` header. The queue response removes raw asset URLs, DRM metadata and download keys.
+
+Windows Store Cider 4.0.27.0 passed authenticated state/queue reads and play/pause, seek, volume, shuffle and repeat readbacks in the 0.5.2 qualification cycle. Invalid/anonymous tokens were rejected. Targeted play, enqueue, next/previous and stop retain separate live qualification. A missing playback timestamp remains unknown; an accepted seek response alone does not establish its resulting position. The adapter accepts Cider's documented empty `204` responses.
 
 Select another player with `groovectl select-player native|windows|cider`, or set `GROOVECTL_PLAYER`. Player selection affects playback, while a playlist plan’s `source` selects its ID namespace and write backend.
