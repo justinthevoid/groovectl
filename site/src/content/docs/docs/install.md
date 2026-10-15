@@ -11,6 +11,8 @@ Use Node 24 or newer. Development uses Bun 1.3.10. Native Music.app access requi
 
 From a trusted Groovectl checkout:
 
+    git clone https://github.com/justinthevoid/groovectl.git
+    cd groovectl
     bun install --frozen-lockfile
     bun run build
     npm install --global . --ignore-scripts

@@ -62,6 +62,7 @@ writeFileSync(
 for (const file of [
 	"LICENSE",
 	"README.md",
+	"CHANGELOG.md",
 	"THIRD_PARTY_NOTICES.md",
 	"UI_THIRD_PARTY_LICENSES.txt",
 	"SERVER_THIRD_PARTY_LICENSES.txt",
@@ -77,8 +78,9 @@ for (const dir of ["docs", "licenses"])
 	cpSync(join(root, dir), join(plugin, dir), { recursive: true });
 for (const file of [
 	"assets/brand/mark.svg",
-	"assets/brand/mixtape-hero.webp",
-	"assets/brand/mixtape-hero.webp.json",
+	"assets/brand/vinyl-journey.webp",
+	"assets/brand/vinyl-journey.webp.json",
+	"assets/brand/vinyl-journey.prompt.txt",
 	"assets/brand/PROVENANCE.md",
 	"assets/examples/between-stations.png",
 	"assets/examples/between-stations.prompt.txt",

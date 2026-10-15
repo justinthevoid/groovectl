@@ -1,5 +1,13 @@
 {
 	"name": "groovectl",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/justinthevoid/groovectl.git"
+	},
+	"homepage": "https://github.com/justinthevoid/groovectl#readme",
+	"bugs": {
+		"url": "https://github.com/justinthevoid/groovectl/issues"
+	},
 	"version": "0.5.0",
 	"description": "Apple Music for agents: thoughtful playlists, library exploration, and native or Cider playback.",
 	"type": "module",
@@ -27,6 +35,7 @@
 		"scripts/package-helper.mjs",
 		"scripts/native",
 		"README.md",
+		"CHANGELOG.md",
 		"docs",
 		"LICENSE",
 		"THIRD_PARTY_NOTICES.md",
@@ -34,8 +43,9 @@
 		"SERVER_THIRD_PARTY_LICENSES.txt",
 		"licenses",
 		"assets/brand/mark.svg",
-		"assets/brand/mixtape-hero.webp",
-		"assets/brand/mixtape-hero.webp.json",
+		"assets/brand/vinyl-journey.webp",
+		"assets/brand/vinyl-journey.webp.json",
+		"assets/brand/vinyl-journey.prompt.txt",
 		"assets/brand/PROVENANCE.md",
 		"assets/examples/between-stations.png",
 		"assets/examples/between-stations.prompt.txt",

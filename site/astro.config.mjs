@@ -14,6 +14,7 @@ export default defineConfig({
    description: "Apple Music for agents: playlist craft, useful library tools and honest player control.",
    logo: { src: "./src/assets/mark.svg" },
    customCss: ["./src/styles/docs.css"],
+   social: [{ icon: "github", label: "GitHub", href: "https://github.com/justinthevoid/groovectl" }],
    sidebar: [
     { label: "Start here", items: [
      { label: "Overview", slug: "docs/overview" },

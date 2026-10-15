@@ -3,7 +3,7 @@
 <h1 align="center">Groovectl</h1>
 <p align="center"><strong>Make a mixtape. Make it yours.</strong><br>Apple Music for agents — exact recordings, thoughtful playlists, original covers and useful player control.</p>
 
-![A translucent raspberry cassette, original record sleeves and a ribbon of magnetic tape on cream paper.](assets/brand/mixtape-hero.webp)
+![A translucent raspberry vinyl record and flowing olive tape emerging from a cream record sleeve.](assets/brand/vinyl-journey.webp)
 
 <p align="center"><a href="docs/musickit.md">MusicKit setup</a> · <a href="docs/playlist-studio.md">Playlist studio</a> · <a href="docs/apple-music-capabilities.md">Capability map</a> · <a href="deploy/README.md">Deploy</a> · <a href="CONTRIBUTING.md">Contribute</a></p>
 
@@ -11,7 +11,7 @@ Groovectl gives your agent a record shop's worth of possibilities and a sensible
 
 **TypeScript MCP server · CLI · interactive MCP App / OpenAI Extension · optional Swift helper.** Runs on Node 24+. No Python or second LLM service is needed at runtime. Formerly Apple Music Hybrid; existing local credentials and write receipts are preserved.
 
-> **Pre-public development:** source and reviewed local packages are the current installation paths. A public npm package, GitHub release or plugin listing must be verified before using a registry install command. The [qualification ledger](docs/qualification.md) distinguishes contract tests, live Apple reads/writes, native builds and interactive player checks.
+> **Public preview:** [source is on GitHub](https://github.com/justinthevoid/groovectl). Use a source checkout or a checksum-verified release artifact. npm and the public plugin directory are not published. The [qualification ledger](docs/qualification.md) distinguishes contract tests, live Apple reads/writes, native builds and interactive player checks.
 
 ## A little imagination, with working tools behind it
 
@@ -42,6 +42,8 @@ Try a brief like:
 Use **Node 24+** and **Bun 1.3.10**. From a trusted source checkout:
 
 ```sh
+git clone https://github.com/justinthevoid/groovectl.git
+cd groovectl
 bun install --frozen-lockfile
 bun run build
 npm install --global . --ignore-scripts

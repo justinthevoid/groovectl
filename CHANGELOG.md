@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.5.0 candidate — 2026-10-15
+## 0.5.0 preview — 2026-10-15
 
 - Listening stories with contiguous chapters, pinned recordings, preserved album runs, six reusable recipes and honest runtime budgets. Keep current stories through verified writes, snapshots and JSON exports; mark externally changed playlists stale.
 - Show chapters and anchors in the MCP studio and offer artist-spacing suggestions without changing Apple Music.
@@ -9,6 +9,9 @@
 - Keep missing energy estimates unknown, and report every omitted M3U link while rejecting non-Apple origins and line injection.
 - Flag fuzzy artist/title suggestions for review instead of implying an exact recording match.
 - Add public repository policies, pinned multi-platform/package/container CI, original branding and an Astro 7/Svelte 5/Starlight documentation site with Cloudflare/VPS deployment guidance.
+- Add a layered vinyl/sleeve/tape website scene with scroll separation/reassembly, word-level heading motion and control feedback, plus reduced-motion and static alternatives.
+- Qualify the first public CI run, including Swift helper tests/build/packaging, after fixing the legacy uv group, deterministic license inventory and Windows UTF-8 test oracle.
+- Update retained Python-reference pins to PyJWT 2.15.0 and pytest 9.0.3 for reported security fixes. Python remains outside the shipped TypeScript runtime.
 - Mix catalog songs and API-library imports in one playlist plan. Preserve Apple's direct recording aliases during deduplication and exact-order verification.
 - Browse library folders and preview folder creation through the existing music-change workflow. Choose and verify a parent folder for new API playlists.
 - Select an explicit API-only player mode. Linux defaults to it; capability reports and the studio no longer imply desktop playback on a headless host.

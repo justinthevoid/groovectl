@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-15T05:45:28Z",
+  "generatedAt": "2026-10-15T12:20:24Z",
   "title": "Design System: Groovectl website",
   "extensions": {
     "colorMeta": {
@@ -316,7 +316,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Landing-page hero only; phone size is a source override."
+        "purpose": "Landing hero: responsive overrides at 761–1080px and at 760px and below; SplitText enhancement preserves accessible labeling."
       },
       "headline": {
         "displayName": "Headline",
@@ -351,28 +351,98 @@
         "purpose": "Groovectl brand link alongside its image mark."
       }
     },
-    "shadows": [],
+    "shadows": [
+      {
+        "name": "hero-cover-artwork",
+        "value": "3px 9px 22px #29291f24",
+        "purpose": "Diffuse depth for the two small cover images in the hero sculpture only; interface panels and controls remain flat."
+      }
+    ],
     "motion": [
+      {
+        "name": "hero-entrance",
+        "value": "duration: 1.1s; ease: expo.out; offsets: 0 / 0.06 / 0.1 / 0.14 / 0.18s",
+        "purpose": "Finite independent arrival of disc, sleeve, tape and two cover layers. The entrance pauses while the document is hidden."
+      },
+      {
+        "name": "hero-scroll-story",
+        "value": "start: top top; end: bottom bottom; scrub: 0.65; ease: power2.inOut",
+        "purpose": "One ordinary-scroll timeline separates five objects in position, rotation and depth, then reassembles them. The rig scales to 0.66 during separation; phone translation/depth strength is 0.65. No wheel interception."
+      },
+      {
+        "name": "hero-scroll-layout",
+        "value": "235svh; phone: 215svh; sticky top: 0; min-height: 100svh; perspective: 1100px",
+        "purpose": "Enhanced hero only. Static reduced-motion and no-JavaScript states retain natural height. Pausing preserves this layout distance."
+      },
+      {
+        "name": "listening-rail",
+        "value": "strokeDashoffset: 1 → 0; duration: 0.8 timeline units; ease: none",
+        "purpose": "Draws Brief → Recordings → Sequence → Cover with the hero scroll story. Decorative annotations fade in at 0.18 and out at 0.62 timeline units."
+      },
+      {
+        "name": "heading-reveal",
+        "value": "words,lines; mask: lines; autoSplit: true; aria: auto; duration: 0.85s hero / 0.7s sections; stagger: 0.055s; ease: expo.out",
+        "purpose": "Hero words enter once; selected section headings reveal at top 92%. Body copy is not split or hidden."
+      },
+      {
+        "name": "fine-pointer-feedback",
+        "value": "tilt: 10deg X / 14deg Y range; duration: 0.7s; ease: power3.out; button factors: x 0.06 / y 0.1; duration: 0.3s",
+        "purpose": "Stage tilt and light attraction on hero/artwork-story buttons only for fine hover pointers while motion is enabled and unpaused."
+      },
+      {
+        "name": "cover-story-turn",
+        "value": "rotation: -8deg; scale: 0.86; scrub: 0.5; start: top bottom; end: center center",
+        "purpose": "The cover-story figure settles as it scrolls into view."
+      },
+      {
+        "name": "journey-arrow-draw",
+        "value": "strokeDashoffset: 40 → 0; duration: 0.45s; stagger: 0.1s; ease: power2.out; start: top 85%",
+        "purpose": "Draws the existing journey arrows once on entry."
+      },
       {
         "name": "action-background-color",
         "value": "background 0.18s, color 0.18s",
-        "purpose": "Existing button state transitions; the source uses the default CSS ease."
+        "purpose": "Button color feedback uses the default CSS ease."
+      },
+      {
+        "name": "brand-and-navigation",
+        "value": "brand rotation: -24deg / 500ms; underline scaleX: 0 → 1 / 250ms; cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Hover feedback on the existing groove mark and text navigation."
+      },
+      {
+        "name": "pressed-and-kept-controls",
+        "value": "button/reroll active scale: 0.97; checked checkbox scale: 1.12; checkbox transition: scale 160ms ease-out",
+        "purpose": "Compact press feedback and native Keep checkbox state. The primary arrow moves 3px on hover with a 150ms ease-out transition."
+      },
+      {
+        "name": "brief-reroll-feedback",
+        "value": "icon rotation: 0 → 180deg / 0.22s expo.out; paper: #f2e4d3 → #faf7ef / 0.4s power2.out",
+        "purpose": "Answer text changes immediately and a polite live region announces it. Decorative GSAP feedback is skipped when paused or reduced."
+      },
+      {
+        "name": "pause-motion",
+        "value": "tracked animations progress(1).pause(); scroll triggers disabled; pointer/button offsets reset",
+        "purpose": "Settles readable content, retains the enhanced hero layout, changes aria-pressed and the Resume motion label, and removes CSS transition/animation timing. Resume re-enables triggers and refreshes scroll geometry."
       },
       {
         "name": "anchor-scroll",
         "value": "smooth",
-        "purpose": "html scroll-behavior outside reduced-motion mode."
+        "purpose": "HTML anchor scrolling outside reduced-motion mode."
       },
       {
         "name": "reduced-motion",
-        "value": "transition: none !important; animation: none !important; scroll-behavior: auto",
-        "purpose": "The source removes transitions/animations on all elements and restores automatic HTML scrolling."
+        "value": "GSAP context inactive/reverted; transition: none !important; animation: none !important; scroll-behavior: auto",
+        "purpose": "Static composed artwork and rail, normal headings and natural non-sticky height. Preference changes revert the enhancement. Form text/status updates remain immediate."
       }
     ],
     "breakpoints": [
       {
         "name": "compact-desktop",
         "value": "1000px"
+      },
+      {
+        "name": "hero-heading-intermediate",
+        "value": "761px–1080px"
       },
       {
         "name": "phone-stack",
@@ -386,8 +456,8 @@
       "kind": "button",
       "refersTo": "button-primary",
       "description": "Raspberry setup or copy action on a paper surface.",
-      "html": "<button class=\"ds-primary\" type=\"button\">Set up Groovectl</button>",
-      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:var(--berry,#a82646);color:var(--paper,#faf7ef);}.ds-primary:hover{background:var(--berry-dark,#841d36);color:var(--paper,#faf7ef);}.ds-primary:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-primary:disabled{cursor:not-allowed;opacity:.5;}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none!important;animation:none!important;}}"
+      "html": "<button class=\"ds-primary\" type=\"button\">Set up Groovectl <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\" /></svg></button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:var(--berry,#a82646);color:var(--paper,#faf7ef);}.ds-primary:hover{background:var(--berry-dark,#841d36);color:var(--paper,#faf7ef);}.ds-primary:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-primary:disabled{cursor:not-allowed;opacity:.5;}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none!important;animation:none!important;}}.ds-primary:active{scale:.97;}.ds-primary svg{width:1.15rem;height:1.15rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform 150ms ease-out;}.ds-primary:hover svg{transform:translateX(3px);}@media(prefers-reduced-motion:reduce){.ds-primary svg{transition:none!important;}}"
     },
     {
       "name": "Secondary button",
@@ -395,7 +465,7 @@
       "refersTo": "button-secondary",
       "description": "Outlined action on the landing page paper.",
       "html": "<button class=\"ds-secondary\" type=\"button\">Find your starting point</button>",
-      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:transparent;border-color:var(--line,#d4d0c2);color:var(--ink,#29291f);}.ds-secondary:hover{background:var(--wash,#f0ecdf);}.ds-secondary:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-secondary:disabled{cursor:not-allowed;opacity:.5;}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none!important;animation:none!important;}}"
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:transparent;border-color:var(--line,#d4d0c2);color:var(--ink,#29291f);}.ds-secondary:hover{background:var(--wash,#f0ecdf);}.ds-secondary:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-secondary:disabled{cursor:not-allowed;opacity:.5;}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none!important;animation:none!important;}}.ds-secondary:active{scale:.97;}"
     },
     {
       "name": "Studio secondary button",
@@ -403,56 +473,65 @@
       "refersTo": "button-studio-secondary",
       "description": "The existing surprise action, shown on its olive working surface.",
       "html": "<div class=\"ds-studio-context\"><button class=\"ds-studio-secondary\" type=\"button\">Surprise me <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m4 7 4-3 4 3 4-3 4 3v10l-4 3-4-3-4 3-4-3zM8 4v13m4-10v10m4-13v13\"/></svg></button></div>",
-      "css": ".ds-studio-context{background:var(--olive,#41472e);padding:1rem;}.ds-studio-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:transparent;border-color:#a6ac8d;color:#fff8e9;}.ds-studio-secondary:hover{background:#59603e;}.ds-studio-secondary:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}.ds-studio-secondary:disabled{cursor:not-allowed;opacity:.5;}.ds-studio-secondary svg{width:1.15rem;height:1.15rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}@media(prefers-reduced-motion:reduce){.ds-studio-secondary{transition:none!important;animation:none!important;}}"
+      "css": ".ds-studio-context{background:var(--olive,#41472e);padding:1rem;}.ds-studio-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;background:transparent;border-color:#a6ac8d;color:#fff8e9;}.ds-studio-secondary:hover{background:#59603e;}.ds-studio-secondary:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}.ds-studio-secondary:disabled{cursor:not-allowed;opacity:.5;}.ds-studio-secondary svg{width:1.15rem;height:1.15rem;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}@media(prefers-reduced-motion:reduce){.ds-studio-secondary{transition:none!important;animation:none!important;}}.ds-studio-secondary:active{scale:.97;}"
     },
     {
       "name": "Native answer select",
       "kind": "input",
       "refersTo": "select",
-      "description": "An existing question and native select on olive.",
+      "description": "Hydrated native answer field on olive. The website disables its surrounding fieldset until Svelte mounts.",
       "html": "<div class=\"ds-select-context\"><label class=\"ds-select-label\" for=\"ds-scene\">Where are we listening?</label><select class=\"ds-select\" id=\"ds-scene\"><option>The long way home</option><option>Dinner with the windows open</option><option>A quiet Sunday morning</option></select></div>",
-      "css": ".ds-select-context{background:var(--olive,#41472e);padding:1rem;color:#fbf7e9;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-select-label{display:block;margin-bottom:.5rem;font-size:1rem;font-weight:620;}.ds-select{width:100%;min-width:0;padding:.75rem 2rem .75rem .8rem;background:#f7f4e9;color:var(--ink,#29291f);border:1px solid transparent;border-radius:10px;font-family:inherit;font-size:.93rem;line-height:inherit;cursor:pointer;}.ds-select:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}@media(max-width:760px){.ds-select{font-size:1rem;}}"
+      "css": ".ds-select-context{background:var(--olive,#41472e);padding:1rem;color:#fbf7e9;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-select-label{display:block;margin-bottom:.5rem;font-size:1rem;font-weight:620;}.ds-select{width:100%;min-width:0;padding:.75rem 2rem .75rem .8rem;background:#f7f4e9;color:var(--ink,#29291f);border:1px solid transparent;border-radius:10px;font-family:inherit;font-size:.93rem;line-height:inherit;cursor:pointer;}.ds-select:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}@media(max-width:760px){.ds-select{font-size:1rem;}}.ds-select:disabled{opacity:.55;cursor:not-allowed;}"
     },
     {
       "name": "Exclusions field",
       "kind": "input",
       "refersTo": "exclusions-field",
-      "description": "A vertically resizable text field on the studio surface.",
+      "description": "Hydrated resizable studio field; disabled with the question fieldset before hydration.",
       "html": "<div class=\"ds-field-context\"><label class=\"ds-field-label\" for=\"ds-exclusions\">Anything to keep out?</label><textarea class=\"ds-exclusions\" id=\"ds-exclusions\" rows=\"2\">No live versions. Avoid consecutive songs by the same artist.</textarea></div>",
-      "css": ".ds-field-context{background:var(--olive,#41472e);padding:1rem;color:#fbf7e9;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-field-label{display:block;margin-bottom:.5rem;font-size:1rem;font-weight:620;}.ds-exclusions{width:100%;border:1px solid #8a9075;border-radius:10px;color:#fff8e9;background:transparent;padding:.7rem .8rem;resize:vertical;font-family:inherit;font-size:.95rem;line-height:inherit;caret-color:var(--berry,#a82646);}.ds-exclusions:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}"
+      "css": ".ds-field-context{background:var(--olive,#41472e);padding:1rem;color:#fbf7e9;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-field-label{display:block;margin-bottom:.5rem;font-size:1rem;font-weight:620;}.ds-exclusions{width:100%;border:1px solid #8a9075;border-radius:10px;color:#fff8e9;background:transparent;padding:.7rem .8rem;resize:vertical;font-family:inherit;font-size:.95rem;line-height:inherit;caret-color:var(--berry,#a82646);}.ds-exclusions:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}.ds-exclusions:disabled{opacity:.55;cursor:not-allowed;}"
     },
     {
       "name": "Reroll button",
       "kind": "button",
       "refersTo": "button-reroll",
-      "description": "The adjacent icon action for an unlocked question.",
+      "description": "Adjacent action for an unlocked, hydrated question. Runtime reroll feedback is owned by Svelte/GSAP.",
       "html": "<div class=\"ds-reroll-context\"><button class=\"ds-reroll\" type=\"button\" aria-label=\"Reroll where are we listening?\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 8a8 8 0 0 0-14-2L3 9m0-6v6h6M4 16a8 8 0 0 0 14 2l3-3m0 6v-6h-6\"/></svg></button></div>",
-      "css": ".ds-reroll-context{background:var(--olive,#41472e);padding:1rem;}.ds-reroll{width:48px;min-height:48px;border:1px solid #8a9075;border-radius:10px;background:transparent;color:#fff8e9;display:grid;place-items:center;cursor:pointer;}.ds-reroll:hover{background:#59603e;}.ds-reroll:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}.ds-reroll:disabled{cursor:not-allowed;opacity:.5;}.ds-reroll svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}"
+      "css": ".ds-reroll-context{background:var(--olive,#41472e);padding:1rem;}.ds-reroll{width:48px;min-height:48px;border:1px solid #8a9075;border-radius:10px;background:transparent;color:#fff8e9;display:grid;place-items:center;cursor:pointer;}.ds-reroll:hover{background:#59603e;}.ds-reroll:focus-visible{outline:3px solid #e7b3a8;outline-offset:4px;}.ds-reroll:disabled{cursor:not-allowed;opacity:.5;}.ds-reroll svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}.ds-reroll:active{scale:.97;}"
     },
     {
       "name": "Text navigation",
       "kind": "nav",
       "refersTo": "navigation",
       "description": "The landing header links, including its persistent setup underline.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-nav-demo\" href=\"#brief\">Try a brief</a><a href=\"/docs/overview/\">Docs</a><a href=\"/docs/install/\">Get started</a></nav>",
-      "css": ".ds-nav{display:flex;align-items:center;gap:1.6rem;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;line-height:1.6;color:var(--ink,#29291f);}.ds-nav a{color:inherit;text-decoration:none;text-underline-offset:.22em;}.ds-nav a:last-child{text-decoration:underline;text-decoration-color:var(--berry,#a82646);text-decoration-thickness:2px;}.ds-nav a:hover{color:var(--berry,#a82646);}.ds-nav a:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}@media(max-width:760px){.ds-nav{gap:1rem;font-size:.85rem;}.ds-nav-demo{display:none;}}"
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-nav-demo\" href=\"https://github.com/justinthevoid/groovectl\">GitHub</a><a href=\"/docs/overview/\">Docs</a><a href=\"/docs/install/\">Get started</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:1.6rem;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;line-height:1.6;color:var(--ink,#29291f);}.ds-nav a{color:inherit;text-decoration:none;text-underline-offset:.22em;}.ds-nav a:last-child{text-decoration:underline;text-decoration-color:var(--berry,#a82646);text-decoration-thickness:2px;}.ds-nav a:hover{color:var(--berry,#a82646);}.ds-nav a:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}@media(max-width:760px){.ds-nav{gap:1rem;font-size:.85rem;}.ds-nav-demo{display:none;}}.ds-nav a{position:relative;}.ds-nav a::after{content:\"\";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--berry,#a82646);transform:scaleX(0);transform-origin:left;transition:transform 250ms cubic-bezier(.16,1,.3,1);}.ds-nav a:hover::after{transform:scaleX(1);}@media(prefers-reduced-motion:reduce){.ds-nav a::after{transition:none!important;}}"
     },
     {
       "name": "Listening brief panel",
       "kind": "card",
       "refersTo": "brief-output",
-      "description": "The paper output on olive; its complete text remains in normal flow.",
-      "html": "<div class=\"ds-output-context\"><div class=\"ds-output\"><div class=\"ds-output-heading\"><span>Your listening brief</span><span class=\"ds-duration\">60 min</span></div><div class=\"ds-brief\" role=\"region\" aria-label=\"Your listening brief\" tabindex=\"0\">Make me a 60-minute Apple Music playlist for: the long way home.\n\nWarm, textured and a little unexpected. Mostly discoveries, with a few familiar anchors.\n\nNo live versions. Avoid consecutive songs by the same artist.\n\nChoose exact recordings, explain the listening flow, and show me the playlist before creating it. Suggest an original cover direction too.</div><button class=\"ds-output-copy\" type=\"button\">Copy listening brief</button><p class=\"ds-output-help\">Try it with Groovectl in your agent. This demo composes a brief; it does not access an account.</p></div></div>",
-      "css": ".ds-output-context{padding:1rem;background:var(--olive,#41472e);}.ds-output{background:var(--paper,#faf7ef);color:var(--ink,#29291f);border-radius:16px;padding:1.7rem;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-output-heading{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem;font-weight:650;padding-bottom:1rem;border-bottom:1px solid var(--line,#d4d0c2);}.ds-duration{font-variant-numeric:tabular-nums;color:var(--muted,#626151);}.ds-brief{display:block;width:100%;min-height:20rem;padding:1.3rem 0 1rem;border:0;color:var(--ink,#29291f);background:transparent;font-family:\"Fraunces Variable\",Georgia,serif;font-size:1.3rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;}.ds-output-copy{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;width:100%;background:var(--berry,#a82646);color:var(--paper,#faf7ef);}.ds-output-copy:hover{background:var(--berry-dark,#841d36);}.ds-output :focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-output-help{margin:1rem 0 0;color:var(--muted,#626151);font-size:.83rem;line-height:1.5;min-height:2.6em;}@media(max-width:760px){.ds-output{padding:1.3rem;}.ds-brief{font-size:1.2rem;}}@media(prefers-reduced-motion:reduce){.ds-output-copy{transition:none!important;animation:none!important;}}"
+      "description": "Server-rendered sample state: complete selectable text and a disabled copy action until Svelte mounts.",
+      "html": "<div class=\"ds-output-context\"><div class=\"ds-output\"><div class=\"ds-output-heading\"><span>Sample listening brief</span><span class=\"ds-duration\">60 min</span></div><div class=\"ds-brief\" role=\"region\" aria-label=\"Your listening brief\" tabindex=\"0\">Make me a 60-minute Apple Music playlist for: the long way home.\n\nWarm, textured and a little unexpected. Mostly discoveries, with a few familiar anchors.\n\nNo live versions. Avoid consecutive songs by the same artist.\n\nChoose exact recordings, explain the listening flow, and show me the playlist before creating it. Suggest an original cover direction too.</div><button class=\"ds-output-copy\" type=\"button\" disabled>Copy listening brief</button><p class=\"ds-output-help\">Try it with Groovectl in your agent. This demo composes a brief; it does not access an account.</p></div></div>",
+      "css": ".ds-output-context{padding:1rem;background:var(--olive,#41472e);}.ds-output{background:var(--paper,#faf7ef);color:var(--ink,#29291f);border-radius:16px;padding:1.7rem;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);line-height:1.6;}.ds-output-heading{display:flex;justify-content:space-between;gap:1rem;font-size:.85rem;font-weight:650;padding-bottom:1rem;border-bottom:1px solid var(--line,#d4d0c2);}.ds-duration{font-variant-numeric:tabular-nums;color:var(--muted,#626151);}.ds-brief{display:block;width:100%;min-height:20rem;padding:1.3rem 0 1rem;border:0;color:var(--ink,#29291f);background:transparent;font-family:\"Fraunces Variable\",Georgia,serif;font-size:1.3rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;}.ds-output-copy{display:inline-flex;align-items:center;justify-content:center;gap:.8rem;min-height:48px;padding:.75rem 1.15rem;border-radius:12px;border:1px solid transparent;font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.95rem;font-weight:650;line-height:1.4;text-decoration:none;cursor:pointer;transition:background .18s,color .18s;width:100%;background:var(--berry,#a82646);color:var(--paper,#faf7ef);}.ds-output-copy:hover{background:var(--berry-dark,#841d36);}.ds-output :focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}.ds-output-help{margin:1rem 0 0;color:var(--muted,#626151);font-size:.83rem;line-height:1.5;min-height:2.6em;}@media(max-width:760px){.ds-output{padding:1.3rem;}.ds-brief{font-size:1.2rem;}}@media(prefers-reduced-motion:reduce){.ds-output-copy{transition:none!important;animation:none!important;}}.ds-output-copy:active{scale:.97;}.ds-output-copy:disabled{opacity:.5;cursor:not-allowed;}"
+    },
+    {
+      "name": "Motion toggle",
+      "kind": "button",
+      "refersTo": "button-motion",
+      "description": "Hero pause control visual sample. The live control is hidden until motion enhancement is active; JavaScript owns its pause/resume behavior.",
+      "html": "<button class=\"ds-motion-toggle\" type=\"button\" aria-pressed=\"false\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 5v14M16 5v14\" /></svg><span>Pause motion</span></button>",
+      "css": ".ds-motion-toggle{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 0;min-height:44px;border:0;background:transparent;color:var(--muted,#626151);font-family:var(--font-body,\"DM Sans Variable\",sans-serif);font-size:.76rem;line-height:1.6;cursor:pointer;}.ds-motion-toggle svg{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}.ds-motion-toggle:hover,.ds-motion-toggle[aria-pressed=\"true\"]{color:var(--berry,#a82646);}.ds-motion-toggle:focus-visible{outline:3px solid var(--berry,#a82646);outline-offset:4px;}@media(max-width:760px){.ds-motion-toggle{font-size:.7rem;}}"
     }
   ],
   "narrative": {
     "northStar": "The independent record shop",
-    "overview": "Warm paper, compact sans-serif controls and generous serif headlines frame a small collection of original music artwork. The site feels editorial and tactile: thin dividers organize the page, raspberry identifies actions, and olive provides a distinct working surface for the brief composer.\n\nThis is a scan of the implemented website, not a product-wide identity specification. It covers the landing page, brief composer and explicit Starlight overrides. It does not govern the MCP App. The north-star phrase and atmosphere language are descriptive and provisional. The unattended implementation did not establish a user-selected comp or a public seed reference; the later direction roll does not replace that missing pre-implementation workshop. Documentation records observed design, not whole-surface ship approval. See [the website brief](docs/design/site-brief.md) for the process record.",
+    "overview": "Warm paper, compact sans-serif controls and generous serif headlines frame original music artwork. The site feels editorial and tactile: thin dividers organize the page, raspberry identifies actions, and olive provides a distinct working surface for the brief composer. In the hero, a vinyl record, paper sleeve, flowing tape and two covers form a sculpture that separates and reassembles with scrolling.\n\nThis is a scan of the implemented website, not a product-wide identity specification. It covers the landing page, brief composer and explicit Starlight overrides. It does not govern the MCP App. The north-star phrase and atmosphere language are descriptive and provisional. The unattended implementation did not establish a user-selected comp or a public seed reference; the later direction roll does not replace that missing pre-implementation workshop. The user subsequently selected the surreal record-sculpture direction and requested the exploded motion recorded in [the motion brief](docs/design/site-motion-brief.md); that selected artwork direction is not a full-page comp approval. Documentation records observed design, not whole-surface ship approval. See [the website brief](docs/design/site-brief.md) for the process record.",
     "keyCharacteristics": [
       "Cream paper and dark ink support long reading; raspberry distinguishes actions.",
       "Fraunces supplies headings and the composed brief; DM Sans supplies prose and controls.",
       "Flat interface surfaces use thin dividers and tonal changes, while imagery carries physical texture.",
+      "Five independent hero layers supply depth and scroll motion; body copy and setup links remain readable.",
       "The brief remains selectable, wraps naturally and grows with its content on narrow screens."
     ],
     "rules": [
@@ -468,8 +547,18 @@
       },
       {
         "name": "The Flat Interface Rule",
-        "body": "Separate interface surfaces through tone, spacing and thin dividers. The incumbent UI has no CSS box shadows; physical lighting belongs to the original artwork.",
+        "body": "Separate interface surfaces through tone, spacing and thin dividers. Reserve the existing diffuse cover shadow for artwork inside the hero sculpture; do not transfer it to interface panels or controls.",
         "section": "elevation"
+      },
+      {
+        "name": "The Readable Motion Rule",
+        "body": "Animate the artwork and bounded heading reveals while preserving ordinary body copy, working setup links and document scrolling. Motion adds relationships; it does not gate access to the brief or setup.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Hydration Honesty Rule",
+        "body": "Keep the question fieldset and copy button disabled until the Svelte component mounts. Server-rendered output is labeled “Sample listening brief”; hydration changes the heading to “Your listening brief.” Without JavaScript the sample remains focusable and selectable, with an explanatory note and no enabled controls that imply a working composer. Disabled selects and textarea dim and use the disabled cursor.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -477,11 +566,13 @@
       "Do keep original music artwork distinct from interface surfaces and preserve its aspect ratio.",
       "Do keep visible keyboard focus appropriate to the immediate surface, including nested paper panels.",
       "Do let the composed brief wrap and grow so its complete text remains inspectable and selectable.",
-      "Do preserve the single-column phone flow and the existing reduced-motion override."
+      "Do preserve the single-column phone flow, static reduced-motion/no-JavaScript artwork and readable paused state.",
+      "Do keep composer controls disabled until hydration while leaving the sample brief selectable."
     ],
     "donts": [
       "Don't infer a dark landing-page theme from the separate Starlight dark accent overrides.",
-      "Don't replace thin dividers and tonal grouping with a new shadow vocabulary when extending this site.",
+      "Don't transfer the hero cover shadow to interface panels or controls.",
+      "Don't make scroll animation or heading reveals a condition of reading, setup or brief access.",
       "Don't turn the page-specific hero columns, step labels or brief questions into mandatory patterns for every future surface.",
       "Don't treat this observed system, generated tonal ramps or provisional atmosphere language as evidence of user approval or release qualification."
     ]
