@@ -111,7 +111,7 @@ assert.equal(findings.length, 0, findings.join("\n"));
 const dirty = git("status", "--porcelain");
 if (dirty && !process.argv.includes("--allow-dirty"))
 	throw new Error(
-		"Source worktree is not clean. Commit reviewed changes before the final preflight; --allow-dirty is a development scan only.",
+		`Source worktree is not clean. Commit reviewed changes before the final preflight; --allow-dirty is a development scan only.\n${dirty}`,
 	);
 console.log(
 	JSON.stringify(
