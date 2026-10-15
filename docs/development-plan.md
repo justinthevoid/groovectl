@@ -1,6 +1,6 @@
 # Groovectl public-release development cycle
 
-This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The 0.6.0-rc.2 candidate extends the selected Collection browser with artist/album drill-downs, shuffle/repeat, a phone timeline and preserved paging/error recovery, prioritizing Music.app/Cider control. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
+This is an active implementation plan, not a release claim. The 0.5.2 public prerelease is published with successful merged-main CI and verified CLI/plugin/source artifacts; 0.5.1 was a private response-size checkpoint. Installation receipts are kept separately from distributable source. The 0.6.0-rc.3 candidate extends the selected Collection browser with artist/album drill-downs, shuffle/repeat, a phone timeline and preserved paging/error recovery, prioritizing Music.app/Cider control. Actual expanded-host interaction and remaining live paths retain their qualification gates. See the [dashboard brief](design/library-player-brief.md), [UI kit plan](ui-kit.md) and [Extensions capability map](extensions-capabilities.md).
 
 ## Product outcome
 
@@ -97,4 +97,4 @@ The 0.5 source candidate includes a scoped independent studio verdict (four mate
 
 ## Distribution follow-through
 
-The [0.6.0-rc.2 candidate notes](releases/0.6.0-rc.2.md) track the remaining owner/setup gates for npm, public listing, signed helper distribution and a public docs hostname. Current registry/auth checks do not constitute publication. Actual expanded-host interaction stays pending while its controller exposes no app tab; continue independent package, protocol, browser and source checks.
+The [0.6.0-rc.3 candidate notes](releases/0.6.0-rc.3.md) track read reliability and native playback follow-up. Remaining owner/setup gates cover npm, public listing, signed helper distribution and a public docs hostname. Current registry/auth checks do not constitute publication. A real expanded panel was observed during the latest follow-up, but its retry interaction could not be verified after the UI controller timed out. Keep actual-host interaction separate from successful direct account and desktop-player checks.

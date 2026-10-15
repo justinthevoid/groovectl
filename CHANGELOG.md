@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0-rc.3 — read reliability and native search candidate
+
+- Correct Music.app's search-area enum so title/artist library searches return native recording IDs instead of an Apple Event type error. Keep the retained Python bridge aligned.
+- Retry transient Apple API GET failures once within the original 25-second deadline, including interrupted response bodies and HTTP 502/503/504. Preserve authorization and redact exception details. Authentication errors, rate limits, unknown failures and all writes are excluded from automatic retries.
+- Explain an empty Music.app resume instead of returning a stopped player as if a song had started. Catalog/API selections remain separate from native playback targets.
+
 ## 0.6.0-rc.2 — player and recovery candidate
 
 - Expose observed shuffle/repeat modes through the shared player, with named states, explicit actions and capability guards. Read Cider's documented now-playing mode fields without extra polling requests; unknown modes stay unavailable.

@@ -403,7 +403,10 @@ export class MacMusic implements NativeBackend, Player {
 		const r = PlaybackRequest.parse(input);
 		if (r.track_id) r.track_id = nativeId(r.track_id);
 		if (r.playlist_id) r.playlist_id = nativeId(r.playlist_id);
-		return playbackSchema.parse(await this.request("playback", r));
+		const result = playbackSchema.parse(await this.request("playback", r));
+		if (r.action === "play" && !r.track_id && !r.playlist_id && result.state === "stopped" && !result.track)
+			throw new Error("Music.app has no current song. Play a recording from Groovectl’s Music.app library, or queue one in Music.app first. Selecting a catalog/API library song does not queue it in Music.app.");
+		return result;
 	}
 	async deleteOwned(id: string, expectedName: string) {
 		await this.request("delete_owned", {

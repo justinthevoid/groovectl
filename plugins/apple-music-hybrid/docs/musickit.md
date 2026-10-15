@@ -57,6 +57,8 @@ On POSIX, configuration and journal files are created with mode `0600`, inside a
 | Apple returns 401 | Check the key, IDs, clock and whether the key was revoked. |
 | Personal library returns 403 | Run `authorize` again and check subscription/account permissions. |
 | A recording is absent | Search the configured storefront. Availability and alternate editions vary by region. |
+| A catalog/library read fails or times out | Temporary connection failures and HTTP 502/503/504 retry once within a shared 25-second request limit. A repeated error may include a safe transport code; inspect connectivity on the MCP execution host. HTTP 429 and authorization failures do not automatically retry. |
+| Play does nothing on Music.app | The footer resumes the desktop player's current song. Choose a native recording from the Music.app library or queue a song in Music.app first. Selecting a catalog/API recording does not queue it in Music.app; playback happens on the MCP execution host. |
 | A write times out | Inspect the saved plan and your library. An `applying`, `unknown` or `needs_review` plan is blocked from automatic replay. |
 | Music.app refuses automation | Allow the responsible host in System Settings → Privacy & Security → Automation. With the Swift helper installed, that host is Groovectl Helper. |
 

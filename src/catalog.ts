@@ -2,6 +2,7 @@ import { readFileSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { SignJWT, importPKCS8 } from "jose";
+import { setTimeout as delay } from "node:timers/promises";
 import { z } from "zod";
 import { dataDir, loadPrivate } from "./storage.js";
 import {
@@ -78,6 +79,31 @@ export function song(item: Resource): Track {
 		playable: !!a.playParams,
 	});
 }
+const transientNetworkCodes = new Set([
+	"ECONNRESET",
+	"ETIMEDOUT",
+	"EAI_AGAIN",
+	"EPIPE",
+	"UND_ERR_CONNECT_TIMEOUT",
+	"UND_ERR_HEADERS_TIMEOUT",
+	"UND_ERR_BODY_TIMEOUT",
+	"UND_ERR_SOCKET",
+]);
+const diagnosticNetworkCodes = new Set([
+	...transientNetworkCodes,
+	"ENOTFOUND",
+	"ECONNREFUSED",
+	"CERT_HAS_EXPIRED",
+	"UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+]);
+function networkCode(error: unknown): string | undefined {
+	// Only expose recognized transport codes, never exception messages or URLs.
+	for (let depth = 0; depth < 3 && typeof error === "object" && error !== null; depth++) {
+		if ("code" in error && typeof error.code === "string" && diagnosticNetworkCodes.has(error.code)) return error.code;
+		error = "cause" in error ? error.cause : undefined;
+	}
+	return undefined;
+}
 export class AppleCatalog implements PlaylistBackend {
 	private cached?: { token: string; expiry: number };
 	constructor(
@@ -150,27 +176,38 @@ export class AppleCatalog implements PlaylistBackend {
 		if (options.body) headers["Content-Type"] = "application/json";
 		const url = new URL(path, "https://api.music.apple.com");
 		url.search = new URLSearchParams(options.params).toString();
-		let response: Response;
-		try {
-			response = await this.fetcher(url, {
-				method,
-				headers,
-				body: options.body ? JSON.stringify(options.body) : undefined,
-				redirect: "error",
-				signal: AbortSignal.timeout(25000),
-			});
-		} catch {
-			throw new Error(
-				`Apple Music ${method} request failed or timed out. Writes are not retried automatically.`,
-			);
+		// Both attempts and the response body share one deadline. A slow read must
+		// not become a second 25-second wait, and an uncertain write is never replayed.
+		const signal = AbortSignal.timeout(25000);
+		for (let attempt = 0; ; attempt++) {
+			let response: Response;
+			let body: unknown;
+			try {
+				signal.throwIfAborted();
+				response = await this.fetcher(url, {
+					method, headers,
+					body: options.body ? JSON.stringify(options.body) : undefined,
+					redirect: "error", signal,
+				});
+				if (response.ok) body = response.status === 204 || response.status === 202
+					? { http_status: response.status } : await response.json();
+			} catch (error) {
+				const code = networkCode(error);
+				const timedOut = signal.aborted || (error instanceof Error && ["TimeoutError", "AbortError"].includes(error.name));
+				if (method === "GET" && attempt === 0 && code && transientNetworkCodes.has(code) && !timedOut) {
+					await delay(250, undefined, { signal }).catch(() => {});
+					continue;
+				}
+				throw new Error(`Apple Music ${method} request ${timedOut ? "timed out within the 25-second request limit" : `failed${code ? ` (${code})` : ""}`}.${method === "GET" ? " Try the read again when the connection is available." : " Writes are not retried automatically; inspect the result before trying again."}`);
+			}
+			if (response.ok) return Page.parse(body);
+			if (method === "GET" && attempt === 0 && [502, 503, 504].includes(response.status) && !signal.aborted) {
+				await response.body?.cancel().catch(() => {});
+				await delay(250, undefined, { signal }).catch(() => {});
+				continue;
+			}
+			throw new Error(`Apple Music API returned HTTP ${response.status} for ${method} ${path}.${method === "GET" ? "" : " Writes are not retried automatically."}`);
 		}
-		if (!response.ok)
-			throw new Error(
-				`Apple Music API returned HTTP ${response.status} for ${method} ${path}. Writes are not retried automatically.`,
-			);
-		if (response.status === 204 || response.status === 202)
-			return Page.parse({ http_status: response.status });
-		return Page.parse(await response.json());
 	}
 	async search(query: string, limit = 20): Promise<Track[]> {
 		const r = await this.searchAll(query, ["songs"], limit);

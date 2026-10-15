@@ -77,6 +77,13 @@ the playlist hasn't changed before writing. A completed plan can be safely reque
 again; unknown/needs_review states require inspection, never blind write retries.
 
 Only control playback when the user requests it. Keep volume changes explicit.
+For Music.app, search_library returns native persistent IDs; use that exact ID for
+requested targeted playback. A catalog/API selection is not queued by selection,
+and Play without an ID only resumes the current desktop song. If the user sees
+Music.app from a Windows frontend, check the MCP execution platform before testing:
+the frontend's operating system does not move a local player connection. Inspect
+the returned state and read again if a selected song is still buffering; never
+claim audible playback from a command acknowledgment alone.
 Deletion is restricted to unchanged native playlists created by this integration,
 requires an explicit deletion request and the exact name, and cannot delete library
 tracks or pre-existing playlists.

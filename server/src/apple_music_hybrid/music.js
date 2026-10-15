@@ -33,7 +33,7 @@ function run(argv) {
     const library = music.libraryPlaylists[0];
     if (request.op === 'tracks') return JSON.stringify({tracks:request.ids.map(id=>track(byID(library.tracks,id)))});
     if (request.op === 'search') {
-      const found = request.query ? music.search(library,{for:request.query,only:'songs'}) : library.tracks();
+      const found = request.query ? music.search(library,{for:request.query,only:'all'}) : library.tracks();
       return JSON.stringify({total:found.length,offset:request.offset,
         tracks:found.slice(request.offset,request.offset+request.limit).map(track)});
     }

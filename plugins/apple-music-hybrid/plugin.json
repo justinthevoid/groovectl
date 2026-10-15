@@ -1,7 +1,7 @@
 {
 	"$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
 	"name": "apple-music-hybrid",
-	"version": "0.6.0-rc.2",
+	"version": "0.6.0-rc.3",
 	"description": "Groovectl: Apple Music playlist studio, exact recordings, original covers, library discovery and player control.",
 	"author": {
 		"name": "Justin Hogan"

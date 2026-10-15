@@ -2,6 +2,16 @@
 
 Evidence belongs to a specific source checkpoint. Passing contract tests does not establish live account or desktop behavior.
 
+## 0.6.0-rc.3 read and playback diagnosis — October 15, 2026
+
+- The actual expanded MCP App became visible through the controller. Its API playlist inspector contained six recordings and a failed/timed-out GET alert; the footer was stopped on Music.app with no current song. One read-only retry was clicked, but the subsequent controller read timed out and its MCP Apps provider became unavailable. That inspection failure is not evidence of an Apple API failure or a successful UI retry. No playback command was clicked in the panel.
+- Direct personal-library list and playlist reads succeeded through both the installed CLI and the connected MCP server, taking approximately one to two seconds. No failing network trace was captured, so the panel timeout's original network cause remains unproven. Private diagnostic traces omit headers, tokens and query strings.
+- Native Music.app search with a nonempty query reproducibly failed with a type-conversion error, while an empty-query library read succeeded. The installed Music scripting dictionary's search-area enum accepts `all`, but not `songs`. The corrected source bridge found an exact native recording. The existing playback adapter selected it, a later resume/read reported playing with an advancing position, and Pause returned paused. The initial targeted command reported stopped while loading; it is retained as an intermediate observation, not proof of failed or successful audible playback.
+- VPS Node 24 TypeScript/Svelte checks, the app build and all 137 tests passed. Regressions cover a shared retry deadline, response-body interruption, safe error messages, bounded GET retries, non-retriable errors, write non-replay, legal native search areas/paging and empty-player guidance. An initial full run collected three macOS transfer sidecars as test files; transferring source without that metadata corrected the isolated runner. CI and artifact receipts qualify the final candidate separately.
+- API-library selection does not queue a native recording, and the footer resumes the selected desktop player. The Windows frontend and Mac execution-host mismatch remains distinct from transport reliability. The previous Windows SMTC missing-metadata and Cider queue-order limitations remain open at their recorded scope.
+
+Private receipts contain the listening metadata and actual-panel capture; they are excluded from public source and packages. No personal-library write, credential transfer, local native build or npm/directory publication was performed for this diagnosis.
+
 ## 0.6.0-rc.2 Windows desktop follow-up — October 15, 2026
 
 PR [#14](https://github.com/justinthevoid/groovectl/pull/14) merged as `4f2574b534b5a8e9deca4b3ce62c5e42dc8b4828`. Its tree matches validated candidate `e8eba9f`; [merged-main CI](https://github.com/justinthevoid/groovectl/actions/runs/38773959715) passed all seven jobs. The installed CLI and local/private plugin runtime hashes match the candidate archives. Windows downloaded the same rc.2 CLI/UI bytes; cache presence alone does not identify the bundle currently rendered in a panel.
