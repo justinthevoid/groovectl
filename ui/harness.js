@@ -216,6 +216,8 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 	if (name === "inspect_playlist_plan") {
 		result = state.plans.find((p) => p.plan_id === args.plan_id);
 	} else if (name === "get_playlist_studio") {
+		if (parameters.has("slow-draft"))
+			await new Promise((resolve) => setTimeout(resolve, 5000));
 		result = {
 			...workspace().studio,
 			...(args.draft_id
@@ -232,9 +234,18 @@ bridge.oncalltool = async ({ name, arguments: args }) => {
 		else if (args.action === "pause") state.player.state = "paused";
 	} else if (name === "apply_music_change")
 		state.plans.find((p) => p.plan_id === args.plan_id).state = "accepted";
-	else if (name === "apply_playlist_plan")
-		state.plans.find((p) => p.plan_id === args.plan_id).state = "applied";
-	else if (name === "cancel_playlist_plan")
+	else if (name === "apply_playlist_plan") {
+		const plan = state.plans.find((p) => p.plan_id === args.plan_id);
+		plan.state = "applied";
+		plan.result = {
+			verified: true,
+			playlist: {
+				id: "fixture-created",
+				name: plan.payload.name,
+				tracks: plan.payload.tracks,
+			},
+		};
+	} else if (name === "cancel_playlist_plan")
 		state.plans.find((p) => p.plan_id === args.plan_id).state = "cancelled";
 	else if (name === "save_listening_brief") {
 		const brief =

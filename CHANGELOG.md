@@ -1,6 +1,13 @@
 # Changelog
 
-## 0.5.1 — qualification in progress
+## 0.5.2 — qualification in progress
+
+- Respect the active Windows media session's controls in the studio instead of advertising commands disabled by that session.
+- Preserve new typing and brief selection when a saved-draft response arrives late.
+- Accept Cider's documented empty `204` responses without inventing a playback position.
+- Update headless persistence checks to verify compact lists and the complete selected brief across process replacement.
+
+## 0.5.1 — private qualification checkpoint
 
 - Keep studio/workspace refreshes compact: plan and draft summaries omit complete recording lists, repeated write receipts and interview histories. Existing inspectors retain the full saved data; journals and write semantics are unchanged.
 - Load selected Activity plans and saved briefs on demand. Preserve exact recording review, uncertainty warnings, saved receipts, chapter restoration and fresh agent suggestions.

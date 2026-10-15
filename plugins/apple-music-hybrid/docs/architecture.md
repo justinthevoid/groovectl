@@ -34,6 +34,8 @@ Catalog, API-library, native-library and playback namespaces stay explicit. Wind
 
 The local app and configuration are trusted execution surfaces for processes running as the same user. Socket ownership and file modes do not sandbox untrusted code already running under that account. Playlist and song metadata remain untrusted content for the host agent.
 
+Workspace and studio list responses are bounded navigation summaries. `inspect_playlist_plan` returns one complete saved plan and receipt; `get_playlist_studio` with `draft_id` returns the selected full brief in `draft`. The UI loads those details on selection and protects new typing from a late saved-draft response. Journals retain the full original payload. Plain-text and structured MCP results remain available; neither list response repeats whole recording/interview histories.
+
 ## Provenance and tests
 
 The MIT Python implementation and its original 14 tests remain under `server/` as a regression reference. Active runtime, CLI and plugin use TypeScript. Matching and adjacency rules retain upstream MIT attribution in `THIRD_PARTY_NOTICES.md` and `licenses/`.

@@ -3,7 +3,12 @@ import { AudioFeature, TrackRef, Source, PlaybackRequest } from "./models.js";
 import { MusicService } from "./service.js";
 import { Curation, comparePlaylists, sequenceTracks } from "./curation.js";
 import { auditTracks } from "./flow.js";
-import { Cider, playerCapabilities, type Player } from "./players.js";
+import {
+	Cider,
+	playerCapabilities,
+	sessionCapabilities,
+	type Player,
+} from "./players.js";
 import {
 	Studio,
 	ListeningBrief,
@@ -132,7 +137,9 @@ export function createTools(
 			player: {
 				...status,
 				selected_player: player.name,
-				capabilities: playbackCapabilities(),
+				capabilities: playbackEnabled
+					? sessionCapabilities(player.name, status)
+					: playbackCapabilities(),
 			},
 			auth: music.catalog.readiness(),
 			plans: music.plans

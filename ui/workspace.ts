@@ -142,6 +142,7 @@ let selected: Song[] = [],
 	providerEnabled = false;
 let initializedDraft = false;
 let selectedDraftUpdatedAt: string | undefined;
+let draftLoadGeneration = 0;
 let currentIdeas: ReturnType<typeof questionOptions> | undefined;
 let locked = new Set<InterviewField>(),
 	customSuggestions: Suggestions = {},
@@ -391,8 +392,13 @@ function planCard(plan: Plan) {
 		const receipt = node("details");
 		receipt.append(node("summary", "Saved write receipt"));
 		receipt.ontoggle = () => {
-			if (receipt.open && !receipt.querySelector("pre"))
-				receipt.append(node("pre", JSON.stringify(plan.result, null, 2)));
+			if (receipt.open && !receipt.querySelector("pre")) {
+				const content = node("pre", JSON.stringify(plan.result, null, 2));
+				content.className = "receipt-json";
+				content.tabIndex = 0;
+				content.setAttribute("aria-label", "Saved write receipt JSON");
+				receipt.append(content);
+			}
 		};
 		card.append(receipt);
 	}
@@ -479,8 +485,8 @@ function planSummaryCard(plan: z.infer<typeof PlanSummary>) {
 			"p",
 			[
 				plan.operation === "change"
-					? `${plan.target_count} affected items`
-					: `${plan.track_count} tracks`,
+					? `${plan.target_count} affected ${plan.target_count === 1 ? "item" : "items"}`
+					: `${plan.track_count} ${plan.track_count === 1 ? "track" : "tracks"}`,
 				plan.operation !== "change" && plan.duration_minutes !== null
 					? `${plan.duration_minutes} min`
 					: "",
@@ -515,10 +521,17 @@ function planSummaryCard(plan: z.infer<typeof PlanSummary>) {
 	);
 	return card;
 }
-async function restoreDraft(id: string) {
+async function restoreDraft(id: string, initial = false) {
+	const generation = ++draftLoadGeneration;
 	const result = z
 		.object({ draft: Draft })
 		.parse(await call("get_playlist_studio", { draft_id: id }));
+	if (generation !== draftLoadGeneration) {
+		if (initial) return;
+		throw new Error(
+			"Your brief changed while loading. Select the saved brief again to replace it.",
+		);
+	}
 	loadDraft(result.draft);
 }
 function loadDraft(draft: Draft) {
@@ -707,9 +720,11 @@ async function render(value: unknown) {
 			const result = z
 				.object({ draft: Draft })
 				.parse(await call("get_playlist_studio", { draft_id: saved.draft_id }));
-			customSuggestions = result.draft.suggestions as Suggestions;
-			selectedDraftUpdatedAt = saved.updated_at;
-			renderIdeas(true);
+			if (draftId === saved.draft_id) {
+				customSuggestions = result.draft.suggestions as Suggestions;
+				selectedDraftUpdatedAt = saved.updated_at;
+				renderIdeas(true);
+			}
 		}
 		if (draftId && !artworkId) {
 			const existing = artworks.find((a) => a.draft_id === draftId);
@@ -728,7 +743,7 @@ async function render(value: unknown) {
 		if (!initializedDraft) {
 			initializedDraft = true;
 			if (!draftId && data.studio.drafts.length && !field("intent").value)
-				await restoreDraft(data.studio.drafts[0].draft_id);
+				await restoreDraft(data.studio.drafts[0].draft_id, true);
 		}
 		button("generate-cover").disabled =
 			!draftId || !providerEnabled || !can("generate_playlist_artwork");
@@ -841,6 +856,7 @@ async function saveBrief(surprise = false) {
 	await refresh();
 }
 function applyIdea(key: InterviewField, choice: Choice) {
+	draftLoadGeneration++;
 	field(inputId(key)).value = Array.isArray(choice.value)
 		? choice.value.join(key === "exclude" ? "; " : "\n")
 		: String(choice.value);
@@ -895,6 +911,7 @@ el("idea-more").onclick = () => {
 	notice("Fresh options. Your answers are unchanged.");
 };
 el("idea-lock").onchange = () => {
+	draftLoadGeneration++;
 	const key = InterviewField.parse(field("idea-field").value);
 	if ((el("idea-lock") as HTMLInputElement).checked) locked.add(key);
 	else locked.delete(key);
@@ -913,6 +930,7 @@ el("idea-random").onclick = () => {
 	if (c) applyIdea(key, c);
 };
 function remixInputs(onlyEmpty: boolean) {
+	draftLoadGeneration++;
 	for (const key of creativeFields) {
 		if (locked.has(key) || (onlyEmpty && field(inputId(key)).value)) continue;
 		const c = questionOptions(
@@ -953,6 +971,7 @@ el("idea-agent").onclick = () =>
 	}, "Fresh suggestions requested from your agent. Refresh the workspace when they are saved.");
 for (const key of InterviewField.options)
 	field(inputId(key)).addEventListener("input", () => {
+		draftLoadGeneration++;
 		locked.add(key);
 		if (field("idea-field").value === key) renderIdeas();
 	});
@@ -1001,6 +1020,7 @@ for (const [formId, buttonId] of [
 	el(formId!).onsubmit = (event) => event.preventDefault();
 }
 el("new-draft").onclick = () => {
+	draftLoadGeneration++;
 	draftId = undefined;
 	locked.clear();
 	customSuggestions = {};
@@ -1239,6 +1259,9 @@ app.ontoolresult = async (result) => {
 	if (Workspace.safeParse(result.structuredContent).success)
 		await render(result.structuredContent);
 };
+el("intent").addEventListener("input", () => {
+	draftLoadGeneration++;
+});
 renderSelection();
 renderIdeas();
 try {

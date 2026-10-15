@@ -101,6 +101,24 @@ export function playerCapabilities(
 							: "Requires Music.app automation permission on this Mac.",
 	};
 }
+export function sessionCapabilities(
+	name: PlayerName,
+	status: Record<string, unknown>,
+	platform: NodeJS.Platform = process.platform,
+) {
+	const supported = playerCapabilities(name, platform);
+	if (name !== "windows") return supported;
+	const session = z
+		.record(z.string(), z.boolean())
+		.safeParse(status.capabilities);
+	return {
+		...supported,
+		actions:
+			status.running === true && session.success
+				? supported.actions.filter((action) => session.data[action] === true)
+				: [],
+	};
+}
 export class MacMusic implements NativeBackend, Player {
 	name = "native" as const;
 	private launching?: Promise<void>;
@@ -495,6 +513,7 @@ export class Cider implements Player {
 			throw new Error(
 				`Cider returned HTTP ${response.status}. For 401/403, configure an external application token with groovectl setup-cider.`,
 			);
+		if (response.status === 204) return {};
 		const result: unknown = await response.json();
 		const envelope = z
 			.object({ status: z.string().optional(), error: z.unknown().optional() })
