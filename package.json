@@ -82,7 +82,7 @@
 		"fflate": "0.8.3",
 		"jose": "6.2.12",
 		"tsx": "4.23.15",
-		"typescript": "5.9.3",
+		"typescript": "7.0.2",
 		"zod": "4.6.7",
 		"svelte": "5.57.2",
 		"svelte-check": "4.7.6",
