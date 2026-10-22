@@ -16,17 +16,17 @@
 	},
 	"dependencies": {
 		"@astrojs/starlight": "0.42.6",
-		"@astrojs/svelte": "9.0.1",
-		"@astrojs/markdown-remark": "7.3.2",
+		"@astrojs/svelte": "9.1.0",
+		"@astrojs/markdown-remark": "7.3.3",
 		"@fontsource-variable/fraunces": "5.3.0",
 		"@fontsource-variable/dm-sans": "5.3.0",
-		"astro": "7.3.8",
+		"astro": "7.4.1",
 		"gsap": "3.15.0",
 		"svelte": "5.57.2"
 	},
 	"devDependencies": {
-		"@astrojs/check": "0.9.10",
+		"@astrojs/check": "0.9.11",
 		"typescript": "5.9.3",
-		"wrangler": "4.151.0"
+		"wrangler": "4.151.2"
 	}
 }
